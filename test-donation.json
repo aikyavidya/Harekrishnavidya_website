@@ -1,0 +1,9 @@
+{
+  "sevaName": "Annadan Seva",
+  "sevaType": "VIDHYA_DANA",
+  "sevaAmount": 1,
+  "donorName": "Test User",
+  "donorEmail": "test@example.com",
+  "donorPhone": "9876543210",
+  "donorType": "Indian Citizen"
+}
