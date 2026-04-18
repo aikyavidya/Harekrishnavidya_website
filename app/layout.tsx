@@ -34,6 +34,7 @@ export default function RootLayout({
         <meta name="facebook-domain-verification" content="rcwjc3ukylcext6a4w0pdz2m4wa30p" />
         <script
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",

@@ -2,6 +2,8 @@
 
 import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { SlideIn, StaggerContainer, StaggerItem } from "./AnimationProvider";
 
 type Card = {
   id: number | string;
@@ -22,6 +24,8 @@ export default function TestimonialSection({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -82,9 +86,47 @@ export default function TestimonialSection({
     return () => container.removeEventListener('scroll', handleScrollEvent);
   }, []);
 
+  // Update active index based on scroll position
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScrollIndex = () => {
+      const scrollPosition = container.scrollLeft;
+      const cardWidth = 280 + 16; /* width + gap */
+      const index = Math.round(scrollPosition / cardWidth);
+      setActiveIndex(index);
+    };
+
+    container.addEventListener('scroll', handleScrollIndex);
+    return () => container.removeEventListener('scroll', handleScrollIndex);
+  }, []);
+
+  // Auto scroll functionality
+  useEffect(() => {
+    if (!isHovering && isMobile) {
+      const interval = setInterval(() => {
+        if (!scrollContainerRef.current) return;
+        
+        if (canScrollRight) {
+          handleScroll('right');
+        } else {
+          // Reset to start
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+      }, 5000); // Scroll every 5 seconds
+      
+      return () => clearInterval(interval);
+    }
+  }, [canScrollRight, isHovering, isMobile]);
+
   return (
     <section className="relative bg-[#f0f2f8] py-10 lg:py-16 px-6 overflow-hidden max-w-6xl mx-auto">
-      <div className="relative">
+      <div 
+        className="relative" 
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         {/* Mobile scroll arrows */}
         {isMobile && (
           <>
@@ -123,25 +165,23 @@ export default function TestimonialSection({
         )}
 
         {/* Grid container */}
-        <div 
-          ref={scrollContainerRef}
+        <StaggerContainer
           className={`
             ${isMobile 
-              ? 'flex gap-4 overflow-x-auto scrollbar-hide pb-2 px-3' 
+              ? 'flex gap-4 overflow-x-auto scrollbar-hide pb-6 px-3 snap-x snap-mandatory' 
               : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
             }
           `}
-          style={isMobile ? { scrollbarWidth: 'none', msOverflowStyle: 'none' } : {}}
         >
           {cardData.map((card, index) => (
-            <div
+            <StaggerItem
               key={index}
               className={`
-                bg-white rounded-2xl hover:shadow-2xl transition-shadow p-6 relative
-                ${isMobile ? 'flex-none w-74' : ''}
+                bg-white rounded-2xl transition-all duration-300 p-6 relative hover-lift group border border-transparent hover:border-orange-100
+                ${isMobile ? 'flex-none w-[280px] snap-center hover:shadow-xl' : 'hover:shadow-2xl'}
               `}
             >
-              <div className="text-6xl text-orange-400 font-serif">&quot;</div>
+              <div className="text-6xl text-orange-400 font-serif group-hover:scale-110 transition-transform origin-bottom-left -mt-2 inline-block">&quot;</div>
               <p className="text-gray-700 text-sm leading-relaxed mb-6">
                 {card?.text}
               </p>
@@ -163,9 +203,21 @@ export default function TestimonialSection({
                   </p>
                 </div>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
+
+        {/* Scroll Indicators for Mobile */}
+        {isMobile && (
+          <div className="flex justify-center gap-2 mt-4 absolute -bottom-6 left-1/2 -translate-x-1/2">
+            {cardData.map((_, idx) => (
+              <div 
+                key={idx} 
+                className={`h-2 rounded-full transition-all duration-300 ${idx === activeIndex ? 'w-6 bg-orange-500' : 'w-2 bg-gray-300'}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Decorative elements */}
@@ -177,7 +229,7 @@ export default function TestimonialSection({
         <div className="w-4 h-4 bg-blue-900 rounded-full"></div>
       </div>
       <div className="absolute top-20 left-1/4 w-3 h-3 bg-orange-400 rounded-full"></div>
-      <div className="hidden lg:absolute bottom-36 right-1/3 w-5 h-5 bg-blue-900 rounded-full"></div>
+      <div className="hidden lg:absolute bottom-36 right-1/3 w-5 h-5 bg-blue-900 rounded-full animate-float-delay-2"></div>
 
       {/* Hide scrollbar CSS */}
       <style jsx>{`

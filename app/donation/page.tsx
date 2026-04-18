@@ -9,6 +9,7 @@ import useUTM from "../utils/useUTM";
 import mobileImg from "@/public/images/enrichBanner.jpg";
 import tabletImg from "@/public/images/enrichBanner.jpg";
 import desktopImg from "@/public/images/enrichBanner.jpg";
+import akshayaBanner from "@/public/images/akshaya_banner.jpg";
 
 // import k3 from "../../public/images/k3.png";
 // import k1 from "../../public/images/k1.png";
@@ -621,8 +622,8 @@ export default function DonationPage() {
         /> */}
 
         <Image
-          src={bannerUrl || (isMobile ? mobileImg : isTablet ? tabletImg : desktopImg)}
-          alt="Donation Banner"
+          src={akshayaBanner}
+          alt="Akshaya Tritiya Donation Banner"
           fill
           className="object-cover lg:px-3"
           priority

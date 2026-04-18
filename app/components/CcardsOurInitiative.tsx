@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { StaggerContainer, StaggerItem, FadeInOnScroll } from "./AnimationProvider";
 
 export default function ServicesSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -21,25 +23,37 @@ export default function ServicesSection() {
 
   return (
     <section className="bg-[#EEF1EC] mx-auto max-w-7xl relative overflow-hidden">
-      {/* Top banner */}
-      <div className="relative  px-6">
-        <div className="relative h-[280px] md:h-[340px] w-full overflow-hidden rounded-2xl">
-          <Image
-            src="/images/image-150.png"
-            alt="Rehab background"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-[#002A42]/60" />
+      <FadeInOnScroll>
+        <div className="relative  px-6">
+          <div className="relative h-[280px] md:h-[340px] w-full overflow-hidden rounded-2xl group">
+            <motion.div 
+               className="absolute inset-0 z-0"
+               whileHover={{ scale: 1.05 }}
+               transition={{ duration: 0.8 }}
+            >
+              <Image
+                src="/images/image-150.png"
+                alt="Rehab background"
+                fill
+                className="object-cover"
+                priority
+              />
+            </motion.div>
+            <div className="absolute inset-0 bg-[#002A42]/60 z-10" />
 
-          <div className="absolute -top-1/3 inset-0 flex flex-col items-center justify-center text-center text-white">
-            <h2 className=" text-2xl md:text-4xl font-semibold">
-              Where Spirituality Meets Practical Skills
-            </h2>
+            <div className="absolute -top-1/3 inset-0 flex flex-col items-center justify-center text-center text-white z-20">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className=" text-2xl md:text-4xl font-semibold"
+              >
+                Where Spirituality Meets Practical Skills
+              </motion.h2>
+            </div>
           </div>
         </div>
-      </div>
+      </FadeInOnScroll>
 
       {/* Cards with scroll + arrows */}
       <div className="relative mx-auto max-w-6xl px-6">
@@ -58,18 +72,22 @@ export default function ServicesSection() {
         </button>
 
         {/* Scrollable cards */}
-        <div
-          ref={scrollRef}
+        <StaggerContainer
           className="-mt-16 md:-mt-24 flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth pb-4"
-          style={{
-            scrollSnapType: "x mandatory",
-            msOverflowStyle: "none",
-            scrollbarWidth: "none",
-          }}
         >
+          <div
+            ref={scrollRef}
+            className="flex gap-6 w-full"
+            style={{
+              scrollSnapType: "x mandatory",
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
+            }}
+          >
           {/* Card 1 */}
-          <article className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full  bg-blue-100 shadow ring-8 ring-white/80">
+          <StaggerItem className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start hover-lift group border border-transparent hover:border-orange-200">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full  bg-blue-100 shadow ring-8 ring-white/80 group-hover:scale-110 transition-transform overflow-hidden relative">
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -91,11 +109,12 @@ export default function ServicesSection() {
               <li>Prayers</li>
               <li>Bhagavad Gita</li>
             </ul>
-          </article>
+          </StaggerItem>
 
           {/* Card 2 */}
-          <article className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100  shadow ring-8 ring-white/80">
+          <StaggerItem className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start hover-lift group border border-transparent hover:border-orange-200">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80 group-hover:scale-110 transition-transform overflow-hidden relative">
+            <motion.div animate={{ rotate: -360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -117,11 +136,12 @@ export default function ServicesSection() {
               <li>Dancing</li>
               <li>Music Instruments</li>
             </ul>
-          </article>
+          </StaggerItem>
 
           {/* Card 3 */}
-          <article className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80">
+          <StaggerItem className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start hover-lift group border border-transparent hover:border-orange-200">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80 group-hover:scale-110 transition-transform overflow-hidden relative">
+            <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -143,11 +163,12 @@ export default function ServicesSection() {
               <li>Event Management</li>
               <li>Financial Management</li>
             </ul>
-          </article>
+          </StaggerItem>
 
           {/* Card 4 */}
-          <article className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80">
+          <StaggerItem className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start hover-lift group border border-transparent hover:border-orange-200">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80 group-hover:scale-110 transition-transform overflow-hidden relative">
+            <motion.div animate={{ rotate: -360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -169,11 +190,12 @@ export default function ServicesSection() {
               <li>Basic Hygiene</li>
               <li>Cleanliness</li>
             </ul>
-          </article>
+          </StaggerItem>
 
           {/* Card 5 */}
-          <article className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80">
+          <StaggerItem className="bg-white rounded-[40px] pt-10 pb-8 px-8 text-center shadow-[0_12px_30px_rgba(0,0,0,0.08)] flex-shrink-0 w-[calc(33.333%-16px)] min-w-[280px] md:min-w-[320px] scroll-snap-align-start hover-lift group border border-transparent hover:border-orange-200">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow ring-8 ring-white/80 group-hover:scale-110 transition-transform overflow-hidden relative">
+            <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -195,8 +217,9 @@ export default function ServicesSection() {
               <li>Promoting Horticulture</li>
               <li>Waste Management</li>
             </ul>
-          </article>
-        </div>
+          </StaggerItem>
+          </div>
+        </StaggerContainer>
 
         <div className="h-16 md:h-20" />
       </div>

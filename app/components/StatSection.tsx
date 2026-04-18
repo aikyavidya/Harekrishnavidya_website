@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { fetchStats } from "../../utils/api";
+import { StaggerContainer, StaggerItem, FadeInOnScroll } from "./AnimationProvider";
 
 interface CountUpProps {
   end: number;
@@ -101,19 +102,20 @@ export default function StatsSection() {
       ></div>
 
       <div className="relative max-w-7xl mx-auto px-4">
-        <div className="bg-white rounded-xl shadow-md grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat, idx) => {
+        <FadeInOnScroll duration={0.8}>
+          <StaggerContainer className="bg-white rounded-xl shadow-md grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat, idx) => {
             const numberValue = parseFloat(stat.number.replace(/[^\d.]/g, ""));
             const suffixValue = stat.number.replace(/[\d.,]/g, "");
 
             return (
-              <div
+              <StaggerItem
                 key={stat._id}
-                className="flex flex-col items-center justify-center py-8 px-4 relative"
+                className="flex flex-col items-center justify-center py-8 px-4 relative hover-lift group"
               >
                 {/* Vertical line on the right, only if not last card */}
                 {idx < stats.length - 1 && (
-                  <div className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 h-10 w-px bg-orange-400" />
+                  <div className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 h-0 group-hover:h-20 transition-all duration-500 w-px bg-orange-400 group-hover:shadow-[0_0_8px_theme(colors.orange.400)]" style={{ height: "40px" }} />
                 )}
 
                 <span className="text-2xl md:text-3xl font-bold text-gray-900">
@@ -124,13 +126,14 @@ export default function StatsSection() {
                     trigger={inView}
                   />
                 </span>
-                <span className="text-gray-500 text-sm md:text-base mt-1 text-center">
+                <span className="text-gray-500 text-sm md:text-base mt-1 text-center transition-colors group-hover:text-orange-600">
                   {stat.label}
                 </span>
-              </div>
+              </StaggerItem>
             );
           })}
-        </div>
+          </StaggerContainer>
+        </FadeInOnScroll>
       </div>
     </section>
   );

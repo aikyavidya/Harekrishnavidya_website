@@ -1,8 +1,9 @@
 "use client";
-// import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 import HeroSection from "@/app/components/HeroSection";
+import { SlideIn, ScaleIn, StaggerContainer, StaggerItem } from "../components/AnimationProvider";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 //import isk2 from "../public/images/isk2c.png";
@@ -47,6 +48,16 @@ const HomePage = () => {
   const { appendUTMToUrl } = useUTM();
   const [cardData, setCardData] = useState<CardData[]>([]);
   const [testimonialsLoading, setTestimonialsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -95,7 +106,7 @@ const HomePage = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:items-center item-start sm:item-center  px-4 sm:px-6 md:px-8">
               {/* Left content */}
-              <div className="lg:pr-10  text-center lg:text-left">
+              <SlideIn direction="left" duration={0.8} className="lg:pr-10 text-center lg:text-left">
                 <h2 className="text-3xl sm:text-5xl md:text-5xl font-extrabold text-[#07133a] leading-tight mb-4 sm:mb-6">
                   Donate for cause
                 </h2>
@@ -112,7 +123,7 @@ const HomePage = () => {
                     Donate now
                   </button>
                 </Link>
-              </div>
+              </SlideIn>
 
               {/* Right testimonial stack */}
               <CausesSection className="my-4 sm:my-1 px-2 sm:px-4" />
@@ -142,13 +153,13 @@ const HomePage = () => {
         {/* ------------------------impact------------------ */}
 
         <section className="py-6 px-4 md:px-10 lg:px-20">
-          <div className=" flex items-center justify-center bg-white py-6">
-            <div className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
-              <p className="bg-[#F7F7F8] rounded-full px-2 py-1  text-2xl lg:text-[36px] font-semibold border-none ">
+          <div className="flex items-center justify-center bg-white py-6">
+            <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
+              <p className="bg-[#F7F7F8] rounded-full px-2 py-1 text-2xl lg:text-[36px] font-semibold border-none hover-lift cursor-default inline-block">
                 ✦ Testimonials
               </p>
               <h1 className="text-2xl lg:text-[40px] font-extrabold leading-[120%]">
-                Your <span className="text-[#FF9C5A] italic">Impact</span> in
+                Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">Impact</span> in
                 Their Words
               </h1>
               <p className="text-[20px] text-[#4F4F4F] leading-[1.5]">
@@ -156,7 +167,7 @@ const HomePage = () => {
                 <br />
                 been transformed by your kindness.
               </p>
-            </div>
+            </ScaleIn>
           </div>
         </section>
 
@@ -178,38 +189,82 @@ const HomePage = () => {
 
         {/* -------------------gallery------------------------ */}
         <section className="mt-5 px-4 md:px-10 lg:px-20">
-          <div className=" flex items-center justify-center bg-white mt-2">
-            <div className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
-              <h1 className=" text-2xl lg:text-[40px] font-extrabold leading-[120%]">
+          <div className="flex items-center justify-center bg-white mt-2">
+            <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
+              <h1 className="text-2xl lg:text-[40px] font-extrabold leading-[120%]">
                 A glimpse into the lives you&#39;ve <br />
                 touched with your{" "}
-                <span className="text-[#FF9C5A] italic">kindness</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
               </h1>
-            </div>
+            </ScaleIn>
           </div>
         </section>
-        <section className="px-4 py-6 bg-white flex justify-center">
+        <section className="px-4 py-6 bg-white flex justify-center pb-20">
           <div className="max-w-6xl w-full text-center">
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {galleryImages.map((item, index) => (
-                <div
+                <StaggerItem
                   key={index}
-                  className="relative group overflow-hidden rounded-md "
+                  className="relative group overflow-hidden rounded-md cursor-pointer aspect-square"
                 >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    className="  transition-transform duration-300 group-hover:scale-105"
-                  />
-
-                  {/* 🔁 Inverted overlay logic: starts dark, fades on hover */}
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/10 bg-opacity-60 group-hover:bg-opacity-0 transition-all duration-300"></div>
-                </div>
+                  <div className="w-full h-full relative" onClick={() => setSelectedImage(item.src.src)}>
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    {/* Hover overlay with icon */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                       <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                       </svg>
+                    </div>
+                  </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
+
+        {/* --- Lightbox Modal --- */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="lightbox-overlay"
+              onClick={() => setSelectedImage(null)}
+            >
+              <div className="absolute top-4 right-4 text-white hover:text-orange-400 cursor-pointer p-2 z-50">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="relative max-w-5xl max-h-[90vh] w-[90%] h-[90%] m-4 bg-black rounded-lg overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="w-full h-full relative">
+                  <Image
+                    src={selectedImage}
+                    alt="Gallery Full Size"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* <div className="mt-16">
           

@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { StaticImageData } from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { SlideIn } from "./AnimationProvider";
 
 // Define the Cause interface
 interface Cause {
@@ -69,20 +71,21 @@ const CausesSection: React.FC<CausesSectionProps> = ({ className = "" }) => {
     >
       {/* Vertical accent bar */}
 
-      <div className="flex flex-col gap-6 ">
+      <div className="flex flex-col gap-6">
         {causes.map((cause, index) => {
           const isExpanded = expandedCards.has(index);
           const truncatedText = truncateToLines(cause.text);
           const shouldShowReadMore = cause.text !== truncatedText;
+          const direction = index % 2 === 0 ? "left" : "right";
 
           return (
-            <article
-              key={`cause-${index}`}
-              className={`flex items-start gap-5 p-5 rounded-lg border border-gray-100 bg-white shadow-sm transform transition-all duration-300 relative hover:shadow-lg
-    ${cause.accent ? "scale-[1.01] shadow-lg" : ""}
-    ${index === 1 ? "lg:translate-x-8" : ""} hover:scale-105`}
-            >
-              {/* Avatar */}
+            <SlideIn key={`cause-${index}`} direction={direction} delay={index * 0.1}>
+              <article
+                className={`flex items-start gap-5 p-5 rounded-lg border-l-4 ${cause.accent ? 'border-[#fb923c]' : 'border-transparent group-hover:border-blue-300'} bg-white shadow-sm transform transition-all duration-300 relative hover:shadow-lg
+      ${cause.accent ? "scale-[1.01] shadow-lg" : ""}
+      ${index === 1 ? "lg:translate-x-8" : ""} hover-lift group`}
+              >
+                {/* Avatar */}
 
               {/* Text content */}
               <div className="flex-1">
@@ -105,20 +108,24 @@ const CausesSection: React.FC<CausesSectionProps> = ({ className = "" }) => {
                 </div>
 
                 <div className="mt-2">
-                  <p
-                    className="text-sm text-gray-600 leading-relaxed"
-                    style={{
-                      lineHeight: "1.5",
-                      display: isExpanded ? "block" : "-webkit-box",
-                      WebkitLineClamp: isExpanded ? "none" : "2",
-                      WebkitBoxOrient: "vertical",
-                      overflow: isExpanded ? "visible" : "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                    id={`cause-text-${index}`}
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isExpanded ? "auto" : "3rem" }}
+                    className="overflow-hidden"
                   >
-                    {isExpanded ? cause.text : truncatedText}
-                  </p>
+                    <p
+                      className="text-sm text-gray-600 leading-relaxed"
+                      style={{
+                        lineHeight: "1.5",
+                        display: isExpanded ? "block" : "-webkit-box",
+                        WebkitLineClamp: isExpanded ? "none" : "2",
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      id={`cause-text-${index}`}
+                    >
+                      {isExpanded ? cause.text : truncatedText}
+                    </p>
+                  </motion.div>
 
                   {shouldShowReadMore && (
                     <button
@@ -168,7 +175,8 @@ const CausesSection: React.FC<CausesSectionProps> = ({ className = "" }) => {
                   )}
                 </div>
               </div>
-            </article>
+              </article>
+            </SlideIn>
           );
         })}
       </div>

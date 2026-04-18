@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { StaggerContainer, StaggerItem } from "./AnimationProvider";
 
 import {
   FaPhoneAlt,
@@ -15,13 +17,13 @@ import logo from "../../public/images/logo.png";
 export default function Footer() {
   return (
     <>
-      <footer className="bg-[#002A42] text-white px-2 lg:px-4 py-5 ">
-        <div className="max-w-7xl mx-auto">
+      <footer className="bg-[#002A42] text-white px-2 lg:px-4 py-5 overflow-hidden">
+        <StaggerContainer className="max-w-7xl mx-auto">
           {/* Main Footer Content */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
             {/* Logo and About Section */}
-            <div className="col-span-1 md:col-span-2 lg:col-span-1 ">
-              <div>
+            <StaggerItem className="col-span-1 md:col-span-2 lg:col-span-1 ">
+              <motion.div whileHover={{ scale: 1.05 }} className="inline-block transform origin-left">
                 <Image
                   src={logo}
                   alt="HARE KRISHNA MOVEMENT INDIA Logo"
@@ -29,21 +31,21 @@ export default function Footer() {
                   height={100}
                   className="object-contain"
                 />
-              </div>
+              </motion.div>
               <div className="pt-2">
                 <p className="text-sm   text-white leading-[1.8]">
                   &quot;Hare Krishna Vidya&quot;, by HARE KRISHNA MOVEMENT INDIA,
                   serves underprivileged students of  classes 1–10, especially in <br />
                   rural areas.
                 </p>
-                <div className="mt-1">
+                <div className="mt-4">
                   <ul className="flex items-center gap-3">
                     <li>
                       <a
                         href="https://www.facebook.com/people/Hare-Krishna-Vidya/pfbid05sv1xecw33n1XMN9WmiSoUNLmiQGf1xVwnW7znm2CaTcpShPSPjBKQZ2i1E9uqqpl/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block p-2 rounded-full bg-white/10 hover:bg-[#1877F2] transition-colors"
+                        className="inline-block p-2 rounded-full bg-white/10 hover:bg-[#1877F2] social-icon-hover"
                         aria-label="Facebook"
                       >
                         <FaFacebookF
@@ -57,7 +59,7 @@ export default function Footer() {
                         href="https://www.instagram.com/harekrishnavidya_official/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block p-2 rounded-full bg-white/10 hover:bg-[#E4405F] transition-colors"
+                        className="inline-block p-2 rounded-full bg-white/10 hover:bg-[#E4405F] social-icon-hover"
                         aria-label="Instagram"
                       >
                         <FaInstagram
@@ -71,7 +73,7 @@ export default function Footer() {
                         href="http://www.youtube.com/@HarekrishnaVidya"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block p-2 rounded-full bg-white/10 hover:bg-[#FF0000] transition-colors"
+                        className="inline-block p-2 rounded-full bg-white/10 hover:bg-[#FF0000] social-icon-hover"
                         aria-label="YouTube"
                       >
                         <FaYoutube
@@ -83,16 +85,16 @@ export default function Footer() {
                   </ul>
                 </div>
               </div>
-            </div>
+            </StaggerItem>
 
             {/* Quick Links */}
-            <div className="space-y-4">
+            <StaggerItem className="space-y-4">
               <h2 className="text-[#F4A261] text-xl font-bold">Quick Links</h2>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href="/about-us"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     About Us
                   </Link>
@@ -100,23 +102,15 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/our-initiative"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Our Initiative
                   </Link>
                 </li>
-                {/* <li>
-                  <Link
-                    href="/volunteer"
-                    className="text-white hover:text-yellow-200 text-base"
-                  >
-                    Volunteer
-                  </Link>
-                </li> */}
                 <li>
                   <Link
                     href="/blog"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Blogs
                   </Link>
@@ -125,7 +119,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/events"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Events
                   </Link>
@@ -133,31 +127,22 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/career"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Career
                   </Link>
                 </li>
-
-                {/* <li>
-                  <Link
-                    href="/urban"
-                    className="text-white hover:text-yellow-200 text-base"
-                  >
-                    Urban
-                  </Link>
-                </li> */}
               </ul>
-            </div>
+            </StaggerItem>
 
             {/* Useful Links */}
-            <div className="space-y-4">
+            <StaggerItem className="space-y-4">
               <h2 className="text-[#F4A261] text-xl font-bold">Useful Links</h2>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href="/policies"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Privacy Policy
                   </Link>
@@ -165,7 +150,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/terms-conditions"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Terms and Conditions
                   </Link>
@@ -173,7 +158,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/refund"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Refund Policy
                   </Link>
@@ -181,28 +166,25 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/certificates"
-                    className="text-white hover:text-yellow-200 text-base"
+                    className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
                     Certificates
                   </Link>
                 </li>
               </ul>
-
-              {/* New Donation Links */}
-
-            </div>
+            </StaggerItem>
 
             {/* Contact Section */}
-            <div className="space-y-4">
+            <StaggerItem className="space-y-4">
               <h2 className="text-[#F4A261] text-xl font-bold">Contact Us</h2>
               <div className="space-y-2">
                 <div className="group flex items-start gap-3">
-                  <FaMapMarkerAlt size={16} className="mt-1 flex-shrink-0" />
+                  <motion.div whileHover={{ y: -2, color: "#F4A261" }}><FaMapMarkerAlt size={16} className="mt-1 flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="https://www.google.com/maps?q=Hare+Krishna+Golden+Temple,+MLA+Colony,+Banjara+Hills,+Hyderabad+-+500034"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group-hover:text-yellow-200 text-base leading-relaxed"
+                    className="group-hover:text-yellow-200 text-base leading-relaxed transition-colors"
                   >
                     Hare Krishna Golden Temple, Road No. 12, MLA Colony, Banjara
                     Hills, Hyderabad - 500034
@@ -210,39 +192,36 @@ export default function Footer() {
                 </div>
 
                 <div className="group flex items-center gap-3">
-                  <FaEnvelope size={14} className="flex-shrink-0" />
+                  <motion.div whileHover={{ x: 2, color: "#F4A261" }}><FaEnvelope size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="mailto:aikyavidya@hkmhyderabad.org"
-                    className="group-hover:text-yellow-200 text-base"
+                    className="group-hover:text-yellow-200 text-base transition-colors"
                   >
                     aikyavidya@hkmhyderabad.org
                   </a>
                 </div>
                 <div className="group flex items-center gap-3">
-                  <FaPhoneAlt size={14} className="flex-shrink-0" />
+                  <motion.div whileHover={{ scale: 1.1, rotate: 10, color: "#F4A261" }}><FaPhoneAlt size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="tel:8019397108"
-                    className="group-hover:text-yellow-200 text-base"
+                    className="group-hover:text-yellow-200 text-base transition-colors"
                   >
                     +91 8019397108
                   </a>
                 </div>
                 <div className="group flex items-center gap-3">
-                  <FaPhoneAlt size={14} className="flex-shrink-0" />
+                  <motion.div whileHover={{ scale: 1.1, rotate: 10, color: "#F4A261" }}><FaPhoneAlt size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="tel:91 83283 89862"
-                    className="group-hover:text-yellow-200 text-base"
+                    className="group-hover:text-yellow-200 text-base transition-colors"
                   >
                     +91 83283 89862
                   </a>
                 </div>
               </div>
-
-            </div>
+            </StaggerItem>
           </div>
-
-          {/* Footer Bottom */}
-        </div>
+        </StaggerContainer>
       </footer>
 
       {/* Bottom Section */}

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ScrollButton() {
   const [isAtTop, setIsAtTop] = useState(true);
@@ -48,13 +49,22 @@ export default function ScrollButton() {
 
   return (
     <div className="fixed right-4 bottom-10 z-50">
-      <button
-        onClick={handleClick}
-        className="bg-orange-400  text-white p-3 rounded-full shadow-lg transition-colors cursor-pointer"
-        aria-label={isAtTop ? "Scroll Down" : "Scroll Up"}
-      >
-        {isAtTop ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
-      </button>
+      <AnimatePresence>
+        <motion.button
+          key={isAtTop ? "down" : "up"}
+          initial={{ opacity: 0, scale: 0.5, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, y: 20 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          whileHover={{ y: -4, scale: 1.1, boxShadow: "0 10px 25px -5px rgba(249, 109, 47, 0.4)" }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleClick}
+          className="bg-orange-400 text-white p-3 rounded-full shadow-lg transition-colors cursor-pointer block"
+          aria-label={isAtTop ? "Scroll Down" : "Scroll Up"}
+        >
+          {isAtTop ? <ChevronDown size={24} className="animate-bounce-subtle" /> : <ChevronUp size={24} className="animate-bounce-subtle" />}
+        </motion.button>
+      </AnimatePresence>
     </div>
   );
 }
