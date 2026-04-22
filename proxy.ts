@@ -78,7 +78,7 @@ const EXCLUDED_ROUTES = [
   '/window.svg'
 ];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Handle special donation campaigns FIRST (before excluded routes check)
