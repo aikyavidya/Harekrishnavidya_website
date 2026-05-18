@@ -104,7 +104,7 @@ export default function TestimonialSection({
 
   // Auto scroll functionality
   useEffect(() => {
-    if (!isHovering && isMobile) {
+    if (isMobile) {
       const interval = setInterval(() => {
         if (!scrollContainerRef.current) return;
         
@@ -114,7 +114,7 @@ export default function TestimonialSection({
           // Reset to start
           scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
         }
-      }, 5000); // Scroll every 5 seconds
+      }, 4000); // Scroll every 5 seconds
       
       return () => clearInterval(interval);
     }
@@ -124,8 +124,8 @@ export default function TestimonialSection({
     <section className="relative bg-[#f0f2f8] py-10 lg:py-16 px-6 overflow-hidden max-w-6xl mx-auto">
       <div 
         className="relative" 
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseEnter={() => !isMobile && setIsHovering(true)}
+        onMouseLeave={() => !isMobile && setIsHovering(false)}
       >
         {/* Mobile scroll arrows */}
         {isMobile && (
@@ -166,6 +166,7 @@ export default function TestimonialSection({
 
         {/* Grid container */}
         <StaggerContainer
+        ref={scrollContainerRef}
           className={`
             ${isMobile 
               ? 'flex gap-4 overflow-x-auto scrollbar-hide pb-6 px-3 snap-x snap-mandatory' 

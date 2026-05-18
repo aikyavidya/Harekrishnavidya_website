@@ -90,39 +90,56 @@ interface StaggerContainerProps {
   once?: boolean;
 }
 
-export const StaggerContainer = ({
-  children,
-  delayChildren = 0.1,
-  staggerChildren = 0.15,
-  className = "",
-  once = true,
-}: StaggerContainerProps) => {
-  const ref = React.useRef(null);
-  const isInView = useInView(ref, { once, amount: 0.1 });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerChildren,
-        delayChildren: delayChildren,
-      },
+export const StaggerContainer = React.forwardRef<HTMLDivElement, StaggerContainerProps>(
+  (
+    {
+      children,
+      delayChildren = 0.1,
+      staggerChildren = 0.15,
+      className = "",
+      once = true,
     },
-  };
+    forwardedRef
+  ) => {
+    const localRef = React.useRef<HTMLDivElement | null>(null);
+    const isInView = useInView(localRef, { once, amount: 0.1 });
 
-  return (
-    <motion.div
-      ref={ref}
-      variants={containerVariants}
-      initial="hidden"
-      animate={isInView ? "show" : "hidden"}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
+    const setRefs = (node: HTMLDivElement | null) => {
+      localRef.current = node;
+
+      if (typeof forwardedRef === "function") {
+        forwardedRef(node);
+      } else if (forwardedRef) {
+        forwardedRef.current = node;
+      }
+    };
+
+    const containerVariants = {
+      hidden: { opacity: 0 },
+      show: {
+        opacity: 1,
+        transition: {
+          staggerChildren,
+          delayChildren,
+        },
+      },
+    };
+
+    return (
+      <motion.div
+        ref={setRefs}
+        variants={containerVariants}
+        initial="hidden"
+        animate={isInView ? "show" : "hidden"}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+);
+
+StaggerContainer.displayName = "StaggerContainer";
 
 // Stagger item (must be used inside StaggerContainer)
 export const StaggerItem = ({
