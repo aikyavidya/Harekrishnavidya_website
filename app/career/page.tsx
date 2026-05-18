@@ -14,6 +14,7 @@ type FormState = {
   heardFrom: string;
   message: string;
   cv: File | null;
+  website: string; // Honeypot field
 };
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
@@ -30,6 +31,7 @@ const initialState: FormState = {
   heardFrom: "",
   message: "",
   cv: null,
+  website: "",
 };
 
 export default function CareerPage() {
@@ -124,10 +126,12 @@ export default function CareerPage() {
         if (form.cv) {
           formData.append("cv", form.cv);
         }
+        formData.append("website", form.website);
 
         const res = await fetch(
-          process.env.NEXT_PUBLIC_CAREER_API_URL ||
-          "https://api.harekrishnavidya.org/api/career/apply",
+          // process.env.NEXT_PUBLIC_CAREER_API_URL ||
+          // "https://api.harekrishnavidya.org/api/career/apply",
+          "/api/career",
           {
             method: "POST",
             body: formData,
@@ -600,6 +604,18 @@ export default function CareerPage() {
                 >
                   {submitting ? "Submitting..." : "Submit Application"}
                 </button>
+
+                {/* Honeypot field - hidden from users */}
+                <div style={{ display: 'none' }} aria-hidden="true">
+                  <input
+                    type="text"
+                    name="website"
+                    value={form.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 {/* <p className="text-[11px] md:text-xs text-gray-500">
                 We will reach out to you on the contact details you have shared.
               </p> */}

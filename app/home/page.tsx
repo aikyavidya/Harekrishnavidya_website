@@ -95,10 +95,10 @@ const HomePage = () => {
   ];
 
   return (
-    <main className="bg-white max-w-7xl mx-auto text-gray-800">
+    <main className="bg-white w-full text-gray-800">
       <HeroSection />
 
-      <section className="py-1 px-4 md:px-10 lg:px-10">
+      <section className="py-1 px-4 md:px-10 lg:px-10 max-w-7xl mx-auto">
         {/* ---------------------------denation form-------------------  */}
         <section className="max-w-6xl mx-auto">
           <div className=" bg-blue-50 rounded-lg shadow-sm p-2 lg:p-16 relative overflow-hidden">
@@ -217,9 +217,9 @@ const HomePage = () => {
                     />
                     {/* Hover overlay with icon */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                       <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                       </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
                     </div>
                   </div>
                 </StaggerItem>
@@ -244,7 +244,7 @@ const HomePage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
-              
+
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
