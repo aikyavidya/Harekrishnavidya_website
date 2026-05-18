@@ -17,20 +17,14 @@ import info from "../../public/images/info.png";
 
 import { useState, useEffect, useRef } from "react";
 import useUTM from "../utils/useUTM";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ScaleIn, SlideIn } from "./AnimationProvider";
 
 export default function HeroSection() {
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const { appendUTMToUrl } = useUTM();
 
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   useEffect(() => {
     const fetchBanner = async () => {
@@ -48,34 +42,25 @@ export default function HeroSection() {
       }
     };
     fetchBanner();
-    // Function to check screen width
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // adjust breakpoint if needed
-    };
-
-    handleResize(); // initial check
-
-    window.addEventListener("resize", handleResize); // listener for resize
-
-    return () => window.removeEventListener("resize", handleResize); // cleanup
   }, []);
 
   return (
     <>
-      {/* Hero Section */}
-      {isMobile ? (
-        <div className="flex flex-col gap-2 relative overflow-hidden" ref={heroRef}>
-          {/* ✅ Mobile banner */}
-          <motion.div
-            className="bg-cover bg-center text-white w-full rounded-xl overflow-hidden h-[65vh] block sm:hidden"
-            style={{ backgroundImage: `url(${akshayaBanner.src})`, y }}
-          />
+      <div ref={heroRef}>
+        {/* Hero Section */}
+        {/* Mobile Layout */}
+        <div className="flex md:hidden flex-col gap-2 relative overflow-hidden">
+        {/* ✅ Mobile banner */}
+        <motion.div
+          className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[300px] block sm:hidden"
+          style={{ backgroundImage: `url(${akshayaBanner.src})` }}
+        />
 
-          {/* ✅ Tablet banner */}
-          <motion.div
-            className="bg-cover bg-center text-white w-full rounded-xl overflow-hidden h-[65vh] hidden sm:block md:hidden"
-            style={{ backgroundImage: `url(${akshayaBanner.src})`, y }}
-          />
+        {/* ✅ Tablet banner */}
+        <motion.div
+          className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[400px] hidden sm:block md:hidden"
+          style={{ backgroundImage: `url(${akshayaBanner.src})` }}
+        />
 
           {/* Container for cards */}
           <div className=" mb:bottom-10 left-0 right-0 flex flex-col-reverse  px-4  gap-4">
@@ -118,7 +103,7 @@ export default function HeroSection() {
                   {[k3, k1, k4, k5, k2].map((src, idx) => (
                     <motion.div
                       key={idx}
-                      className={`relative w-8 h-8 rounded-full border-2 border-white z-[${5-idx}] animate-float-delay-${idx % 3 + 1}`}
+                      className={`relative w-8 h-8 rounded-full border-2 border-white z-[${5 - idx}] animate-float-delay-${idx % 3 + 1}`}
                       whileHover={{ scale: 1.2, zIndex: 10 }}
                     >
                       <Image
@@ -177,17 +162,17 @@ export default function HeroSection() {
             </SlideIn>
           </div>
         </div>
-      ) : (
+
+        {/* Desktop Layout */}
         <section
-          ref={heroRef}
-          className="relative text-white max-w-7xl mx-auto rounded-xl overflow-hidden h-[140vh] "
+          className="hidden md:block relative text-white w-full overflow-hidden h-[600px] lg:h-[700px] xl:h-[800px]"
         >
-          <motion.div 
+          <motion.div
             className="absolute inset-0 bg-cover bg-top"
-            style={{ backgroundImage: `url(${akshayaBanner.src})`, y }}
+            style={{ backgroundImage: `url(${akshayaBanner.src})` }}
           />
           {/* Container for cards */}
-          <div className="absolute bottom-4 md:bottom-8 lg:mb-10 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-start md:gap-6 lg:gap-40 px-4 md:px-8 lg:px-4 z-10">
+          <div className="absolute bottom-12 md:bottom-20 lg:bottom-32 xl:bottom-40 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-start md:gap-6 lg:gap-40 px-4 md:px-8 lg:px-4 z-10">
             {/* Karma Insights Box */}
             <SlideIn direction="left" duration={0.8} className="text-black p-4 md:p-4 mb-0 shadow-xl w-full md:max-w-[500px] xl:w-[300px] flex flex-col gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
               <div className="flex items-center justify-center md:justify-center flex-wrap gap-2">
@@ -221,7 +206,7 @@ export default function HeroSection() {
                   {[k3, k1, k4, k5, k2].map((src, idx) => (
                     <motion.div
                       key={idx}
-                      className={`relative w-8 h-8 rounded-full border-2 border-white z-[${5-idx}] animate-float-delay-${idx % 3 + 1}`}
+                      className={`relative w-8 h-8 rounded-full border-2 border-white z-[${5 - idx}] animate-float-delay-${idx % 3 + 1}`}
                       whileHover={{ scale: 1.2, zIndex: 10 }}
                     >
                       <Image
@@ -281,7 +266,7 @@ export default function HeroSection() {
             </SlideIn>
           </div>
         </section>
-      )}
+      </div>
 
       {/* Section Below Hero */}
       <section className="flex flex-col justify-center items-center md:items-center w-full lg:mx-4 p-4 mt-8">

@@ -30,6 +30,17 @@ export default function ContactPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
+    
+    // Live validation/sanitization for phone input
+    if (name === "phone") {
+      const onlyDigits = value.replace(/\D/g, "").slice(0, 10);
+      setFormData((prev) => ({
+        ...prev,
+        phone: onlyDigits,
+      }));
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]:
@@ -39,6 +50,13 @@ export default function ContactPage() {
 
   const submitForm = async (formData: ContactFormData) => {
     try {
+      // Defensive payload: Send both flat fields and nested data block
+      // to ensure compatibility regardless of backend implementation (flat or nested Strapi-style)
+      const payload = {
+        ...formData,
+        data: formData
+      };
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL || "https://api.harekrishnavidya.org"}/api/contact`,
         {
@@ -46,7 +64,7 @@ export default function ContactPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: formData }),
+          body: JSON.stringify(payload),
         }
       );
 
@@ -74,6 +92,28 @@ export default function ContactPage() {
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+
+    // Client-side validations
+    if (formData.name.trim().length < 2) {
+      toast.error("❌ Name must be at least 2 characters.");
+      return;
+    }
+
+    if (formData.phone.length !== 10) {
+      toast.error("❌ Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("❌ Please enter a valid email address.");
+      return;
+    }
+
+    if (!formData.terms) {
+      toast.error("❌ You must agree to the Privacy Policy and Terms.");
+      return;
+    }
 
     try {
       await submitForm(formData);
@@ -136,8 +176,8 @@ export default function ContactPage() {
           <div className="space-y-8">
             <div className="bg-white rounded-2xl shadow-xs p-8 border border-gray-100">
               <div className="text-center mb-8">
-                <div className="flex justify-center items-center">
-                  <Image src={logo} alt="logo" className="w-20 h-20 text-center" />
+                <div className="flex justify-center items-center ">
+                  <Image src={logo} alt="logo" className="h-20 w-auto object-contain text-center m-4" />
 
                 </div>
 
