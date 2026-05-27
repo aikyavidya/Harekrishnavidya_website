@@ -208,11 +208,11 @@ export default function ContactPage() {
                   <div>
                     <p className="font-medium text-gray-800">Email</p>
                     <a
-                      href="mailto:connect2aikyavidya@gmail.com"
+                      href="mailto:connect@harekrishnavidya.org"
                       className="text-blue-600 hover:text-blue-800 transition-colors"
                     >
-                      {/* aikyavidya@hkmhyderabad.org */}
-                      aikyavidya@hkmhyderabad.org
+                      {/* connect@harekrishnavidya.org */}
+                       connect@harekrishnavidya.org
                     </a>
                   </div>
                 </div>
