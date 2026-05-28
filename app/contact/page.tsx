@@ -5,7 +5,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import Image from "next/image"
-import logo from "../../public/images/logo.png";
+// import logo from "../../public/images/logo.png";
+import logo from "../../public/images/HK Vidya Logo English contactpage.png";
 
 type ContactFormData = {
   name: string;
