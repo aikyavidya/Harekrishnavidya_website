@@ -33,10 +33,11 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/components/navbar.jsx",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "app/donation/backup.tsx",
+    "backend-banner-routes-UPDATED.js"
   ]
 }

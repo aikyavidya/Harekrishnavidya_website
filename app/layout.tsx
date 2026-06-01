@@ -41,8 +41,8 @@ export default function RootLayout({
               "@type": "NGO",
               "name": "ISKCON - HARE KRISHNA MOVEMENT  ",
               "alternateName": "Hare Krishna Golden Temple Hyderabad",
-              "url": "https://iskcon-website-mmwe.vercel.app/",
-              "logo": "https://iskcon-website-mmwe.vercel.app/logo.png",
+              "url": "https://harekrishnavidya.org/",
+              "logo": "https://harekrishnavidya.org/logo.png",
               "founder": {
                 "@type": "Person",
                 "name": "A.C. Bhaktivedanta Swami Srila Prabhupada"

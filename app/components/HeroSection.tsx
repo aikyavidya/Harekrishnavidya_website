@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import akshayaBanner from "../../public/images/akshaya_banner.jpg";
+import akshayaBanner from "../../public/images/updated_akshaya_banner.jpg";
 import homeImg from "../../public/images/img1.png";
 import homeImg2 from "../../public/images/home_banner.png";
 import tab_banner from "../../public/images/tab_home_banner.png";
@@ -15,34 +15,16 @@ import k2 from "../../public/images/Group_5.png";
 import Heart from "../../public/images/Heart.png";
 import info from "../../public/images/info.png";
 
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import useUTM from "../utils/useUTM";
 import { motion } from "framer-motion";
 import { ScaleIn, SlideIn } from "./AnimationProvider";
 
 export default function HeroSection() {
-  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const { appendUTMToUrl } = useUTM();
 
   const heroRef = useRef(null);
 
-  useEffect(() => {
-    const fetchBanner = async () => {
-      try {
-        const response = await fetch("https://api.harekrishnavidya.org/api/home-banner/get");
-        const data = await response.json();
-        if (data.url) {
-          const fullUrl = data.url.startsWith("http")
-            ? data.url
-            : `https://api.harekrishnavidya.org${data.url}`;
-          setBannerUrl(fullUrl);
-        }
-      } catch (error) {
-        console.error("Error fetching banner:", error);
-      }
-    };
-    fetchBanner();
-  }, []);
 
   return (
     <>
@@ -50,17 +32,17 @@ export default function HeroSection() {
         {/* Hero Section */}
         {/* Mobile Layout */}
         <div className="flex md:hidden flex-col gap-2 relative overflow-hidden">
-        {/* ✅ Mobile banner */}
-        <motion.div
-          className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[300px] block sm:hidden"
-          style={{ backgroundImage: `url(${akshayaBanner.src})` }}
-        />
+          {/* ✅ Mobile banner */}
+          <motion.div
+            className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[300px] block sm:hidden"
+            style={{ backgroundImage: `url(${akshayaBanner.src})` }}
+          />
 
-        {/* ✅ Tablet banner */}
-        <motion.div
-          className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[400px] hidden sm:block md:hidden"
-          style={{ backgroundImage: `url(${akshayaBanner.src})` }}
-        />
+          {/* ✅ Tablet banner */}
+          <motion.div
+            className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[400px] hidden sm:block md:hidden"
+            style={{ backgroundImage: `url(${akshayaBanner.src})` }}
+          />
 
           {/* Container for cards */}
           <div className=" mb:bottom-10 left-0 right-0 flex flex-col-reverse  px-4  gap-4">

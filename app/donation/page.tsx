@@ -6,10 +6,7 @@ import Image from "next/image";
 
 import { useMediaQuery } from "react-responsive";
 import useUTM from "../utils/useUTM";
-import mobileImg from "@/public/images/enrichBanner.jpg";
-import tabletImg from "@/public/images/enrichBanner.jpg";
-import desktopImg from "@/public/images/enrichBanner.jpg";
-import akshayaBanner from "@/public/images/akshaya_banner.jpg";
+import akshayaBanner from "@/public/images/updated_akshaya_banner.jpg";
 
 // import k3 from "../../public/images/k3.png";
 // import k1 from "../../public/images/k1.png";
@@ -31,8 +28,6 @@ import fest2 from "@/public/galleryection/foodDonation.jpg";
 import cul1 from "@/public/galleryection/cul1.jpg";
 import edu3 from "@/public/galleryection/education3.jpg";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
 
 const galleryImages = [
   { src: fest1, alt: "Gallery 1" },
@@ -136,7 +131,6 @@ const extractChildrenCount = (text: string): number | null => {
   return match ? parseInt(match[1], 10) : null;
 };
 
-
 // Helper function to format numbers in Indian style
 const formatIndianCurrency = (amount: number) => {
   return amount.toLocaleString("en-IN");
@@ -153,13 +147,13 @@ function AnnadanCard({
 }) {
   const { appendUTMToUrl } = useUTM();
   const heading =
-    title ?? (childrenCount !== undefined ? `Feed ${childrenCount} Children` : "Donate");
-  const purpose =
-    title
-      ? `${title} - Annadan Seva`
-      : childrenCount !== undefined
-        ? `Serve ${childrenCount} Children - Annadan Seva`
-        : "Annadan Seva";
+    title ??
+    (childrenCount !== undefined ? `Feed ${childrenCount} Children` : "Donate");
+  const purpose = title
+    ? `${title} - Annadan Seva`
+    : childrenCount !== undefined
+      ? `Serve ${childrenCount} Children - Annadan Seva`
+      : "Annadan Seva";
 
   return (
     <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-blue-900 hover:border-blue-900">
@@ -175,9 +169,7 @@ function AnnadanCard({
         </div>
         <Link
           href={appendUTMToUrl(
-            `/donate?purpose=${encodeURIComponent(
-              purpose
-            )}&amount=${amount}`
+            `/donate?purpose=${encodeURIComponent(purpose)}&amount=${amount}`,
           )}
         >
           <button className="bg-gradient-to-r from-blue-900 to-blue-900 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer">
@@ -212,7 +204,7 @@ function AnnadanSpecialCard({
         </div>
         <Link
           href={appendUTMToUrl(
-            `/donate?purpose=${encodeURIComponent(title)}&amount=${amount}`
+            `/donate?purpose=${encodeURIComponent(title)}&amount=${amount}`,
           )}
         >
           <button className="bg-gradient-to-r from-blue-900 to-blue-900 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer">
@@ -241,7 +233,7 @@ function AnnadanAnyAmountCard() {
         </div>
         <Link
           href={appendUTMToUrl(
-            `/donate?purpose=${encodeURIComponent("Annadan Seva - Any Amount")}`
+            `/donate?purpose=${encodeURIComponent("Annadan Seva - Any Amount")}`,
           )}
         >
           <button className="bg-gradient-to-r from-blue-900 to-blue-900 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer">
@@ -263,23 +255,27 @@ export default function DonationPage() {
       key: `default-food-${children}`,
       children,
       amount,
-    }))
+    })),
   );
-  const [sponsorshipOptions, setSponsorshipOptions] = useState<GiftFutureOption[]>(
+  const [sponsorshipOptions, setSponsorshipOptions] = useState<
+    GiftFutureOption[]
+  >(
     defaultSponsorshipOptions.map(({ children, amount }) => ({
       key: `default-giftFuture-${children}`,
       children,
       amount,
       yearText: "Food and Education for 1 Year",
-    }))
+    })),
   );
-  const [academicYearOptions, setAcademicYearOptions] = useState<GiftLearningOption[]>(
+  const [academicYearOptions, setAcademicYearOptions] = useState<
+    GiftLearningOption[]
+  >(
     defaultAcademicYearOptions.map(({ children, amount }) => ({
       key: `default-giftLearning-year-${children}`,
       children,
       amount,
       yearText: "for 1 Academic Year",
-    }))
+    })),
   );
   const [monthlyOptions, setMonthlyOptions] = useState<GiftLearningOption[]>(
     defaultMonthlyOptions.map(({ children, amount }) => ({
@@ -287,20 +283,19 @@ export default function DonationPage() {
       children,
       amount,
       yearText: "for 1 Month",
-    }))
+    })),
   );
-  const [specialOptions, setSpecialOptions] = useState<GiftLearningSpecialOption[]>(
+  const [specialOptions, setSpecialOptions] = useState<
+    GiftLearningSpecialOption[]
+  >(
     defaultSpecialOptions.map(({ title, amount }) => ({
       key: `default-giftLearning-special-${title}`,
       title,
       amount,
-    }))
+    })),
   );
-  const [, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(false);
   const [, setError] = useState<string | null>(null);
-
-  // State for banner
-  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
 
   // Fetch donation amounts from API
   // useEffect(() => {
@@ -439,9 +434,10 @@ export default function DonationPage() {
         setIsLoading(true);
         setError(null);
 
-        const apiUrl = 'https://api.harekrishnavidya.org/api/donation-amounts/grouped/by-category';
+        const apiUrl =
+          "https://api.harekrishnavidya.org/api/donation-amounts/grouped/by-category";
 
-        console.log('Fetching donation amounts from:', apiUrl);
+        console.log("Fetching donation amounts from:", apiUrl);
 
         const response = await fetch(apiUrl, {
           cache: "no-store",
@@ -508,13 +504,17 @@ export default function DonationPage() {
           const monthly: GiftLearningOption[] = [];
           const special: GiftLearningSpecialOption[] = [];
 
-          result.data.giftLearning.forEach(card => {
+          result.data.giftLearning.forEach((card) => {
             const children = extractChildrenCount(card.text);
             const text = card.text.toLowerCase();
             const yearText = (card.yearText || "").toLowerCase();
 
             if (text.includes("village") || text.includes("entire")) {
-              special.push({ key: card._id, title: card.text, amount: card.amount });
+              special.push({
+                key: card._id,
+                title: card.text,
+                amount: card.amount,
+              });
             } else if (text.includes("academic") || yearText.includes("year")) {
               if (children !== null) {
                 academicYear.push({
@@ -550,11 +550,15 @@ export default function DonationPage() {
             }
           });
 
-          if (academicYear.length) setAcademicYearOptions(academicYear.sort((a, b) => a.amount - b.amount));
-          if (monthly.length) setMonthlyOptions(monthly.sort((a, b) => a.amount - b.amount));
-          if (special.length) setSpecialOptions(special.sort((a, b) => a.amount - b.amount));
+          if (academicYear.length)
+            setAcademicYearOptions(
+              academicYear.sort((a, b) => a.amount - b.amount),
+            );
+          if (monthly.length)
+            setMonthlyOptions(monthly.sort((a, b) => a.amount - b.amount));
+          if (special.length)
+            setSpecialOptions(special.sort((a, b) => a.amount - b.amount));
         }
-
       } catch (err) {
         console.error("Error fetching donation amounts:", err);
         setError("Failed to load donation amounts");
@@ -566,27 +570,7 @@ export default function DonationPage() {
     fetchDonationAmounts();
   }, []);
 
-  // Fetch banner
-  useEffect(() => {
-    const fetchBanner = async () => {
-      try {
-        const response = await fetch("https://api.harekrishnavidya.org/api/banner/get", {
-          cache: "no-store",
-        });
-        const data = await response.json();
-        if (data.url) {
-          // Prepend backend URL if the banner URL is relative
-          const fullUrl = data.url.startsWith("http")
-            ? data.url
-            : `https://api.harekrishnavidya.org${data.url}`;
-          setBannerUrl(fullUrl);
-        }
-      } catch (err) {
-        console.error("Error fetching banner:", err);
-      }
-    };
-    fetchBanner();
-  }, []);
+
 
   // const vidyaDaanHandleClick = () => {
   //   const url = `/donate?purpose=${encodeURIComponent(
@@ -698,8 +682,12 @@ export default function DonationPage() {
                 amount={opt.amount}
               />
             ) : (
-              <AnnadanCard key={opt.key} title={opt.title} amount={opt.amount} />
-            )
+              <AnnadanCard
+                key={opt.key}
+                title={opt.title}
+                amount={opt.amount}
+              />
+            ),
           )}
         </div>
 
@@ -769,8 +757,8 @@ export default function DonationPage() {
                       `/donate?purpose=${encodeURIComponent(
                         "children" in opt
                           ? `Sponsor ${opt.children} Child${opt.children > 1 ? "ren" : ""} Education for 1 Academic Year`
-                          : opt.title
-                      )}&amount=${opt.amount}`
+                          : opt.title,
+                      )}&amount=${opt.amount}`,
                     )}
                   >
                     <button className="bg-gradient-to-r from-orange-500 to-orange-500 text-white font-semibold px-6 py-3 rounded-xl  transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -807,8 +795,8 @@ export default function DonationPage() {
                         `/donate?purpose=${encodeURIComponent(
                           "children" in opt
                             ? `Sponsor ${opt.children} Child${opt.children > 1 ? "ren" : ""} Education for 1 Academic Year`
-                            : opt.title
-                        )}&amount=${opt.amount}`
+                            : opt.title,
+                        )}&amount=${opt.amount}`,
                       )}
                     >
                       <button className="bg-gradient-to-r from-orange-500 to-orange-500 text-white font-semibold px-6 py-3 rounded-xl  transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -835,7 +823,9 @@ export default function DonationPage() {
                     ? `Sponsor ${opt.children} Child${opt.children > 1 ? "ren" : ""} Education`
                     : opt.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-4">{opt.yearText || "for 1 Month"}</p>
+                <p className="text-sm text-gray-600 mb-4">
+                  {opt.yearText || "for 1 Month"}
+                </p>
                 <p className="text-3xl font-extrabold text-black mb-6">
                   ₹ {formatIndianCurrency(opt.amount)}
                 </p>
@@ -844,8 +834,8 @@ export default function DonationPage() {
                     `/donate?purpose=${encodeURIComponent(
                       "children" in opt
                         ? `Sponsor ${opt.children} Child${opt.children > 1 ? "ren" : ""} Education for 1 Month`
-                        : opt.title
-                    )}&amount=${opt.amount}`
+                        : opt.title,
+                    )}&amount=${opt.amount}`,
                   )}
                 >
                   <button className="bg-gradient-to-r from-orange-500 to-orange-500 text-white font-semibold px-6 py-3 rounded-xl  transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -874,8 +864,8 @@ export default function DonationPage() {
                 <Link
                   href={appendUTMToUrl(
                     `/donate?purpose=${encodeURIComponent(
-                      title
-                    )}&amount=${amount}`
+                      title,
+                    )}&amount=${amount}`,
                   )}
                 >
                   <button className="bg-gradient-to-r from-orange-500 to-orange-500 text-white font-semibold px-6 py-3 rounded-xl  transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -928,8 +918,8 @@ export default function DonationPage() {
                       `/donate?purpose=${encodeURIComponent(
                         "children" in opt
                           ? `Sponsor ${opt.children} Child${opt.children > 1 ? "ren" : ""} - Food and Education`
-                          : opt.title
-                      )}&amount=${opt.amount}`
+                          : opt.title,
+                      )}&amount=${opt.amount}`,
                     )}
                   >
                     <button className="bg-gradient-to-r from-blue-900 to-blue-900 text-white font-semibold px-6 py-3 rounded-xl hover:[#002A42]/20 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -967,8 +957,8 @@ export default function DonationPage() {
                         `/donate?purpose=${encodeURIComponent(
                           "children" in opt
                             ? `Sponsor ${opt.children} Child${opt.children > 1 ? "ren" : ""} - Food and Education`
-                            : opt.title
-                        )}&amount=${opt.amount}`
+                            : opt.title,
+                        )}&amount=${opt.amount}`,
                       )}
                     >
                       <button className="bg-gradient-to-r from-blue-900 to-blue-900 text-white font-semibold px-6 py-3 rounded-xl  transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -993,8 +983,8 @@ export default function DonationPage() {
               <Link
                 href={appendUTMToUrl(
                   `/donate?purpose=${encodeURIComponent(
-                    "Sponsor a Child - Any Amount"
-                  )}`
+                    "Sponsor a Child - Any Amount",
+                  )}`,
                 )}
               >
                 <button className="bg-gradient-to-r from-blue-900 to-blue-900 text-white font-semibold px-6 py-3 rounded-xl  transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 w-fit cursor-pointer">
@@ -1104,5 +1094,3 @@ export default function DonationPage() {
     </>
   );
 }
-
-

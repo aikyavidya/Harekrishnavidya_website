@@ -212,7 +212,7 @@ export default function Footer() {
                 <div className="group flex items-center gap-3">
                   <motion.div whileHover={{ scale: 1.1, rotate: 10, color: "#F4A261" }}><FaPhoneAlt size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
-                    href="tel:91 83283 89862"
+                    href="tel:+918328389862"
                     className="group-hover:text-yellow-200 text-base transition-colors"
                   >
                     +91 83283 89862
