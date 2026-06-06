@@ -41,11 +41,11 @@ interface FormErrors {
   panNumber?: string;
 }
 
-import { 
-  DONATION_CONFIG, 
-  getApiUrl, 
-  validateDonationAmount, 
-  getSevaType as getSevaTypeConfig 
+import {
+  DONATION_CONFIG,
+  getApiUrl,
+  validateDonationAmount,
+  getSevaType as getSevaTypeConfig
 } from '../config/donation';
 import { formatPhoneNumber, validatePhoneNumber } from '../utils/phoneUtils';
 import DonationSuccess from '../components/DonationSuccess';
@@ -142,7 +142,7 @@ function DonatePageContent() {
     phoneNumber: 0,
     isPhoneValid: false,
     citizenType: "",
-    customAmount: "",
+    customAmount: "0",
     wantsMahaPrasadam: false,
     wants80G: false,
     address: "",
@@ -237,7 +237,7 @@ function DonatePageContent() {
   const verifyPayUPayment = async (donationId: string, txnid?: string) => {
     try {
       console.log('Verifying PayU payment...', { donationId, txnid });
-      
+
       const response = await fetch(getApiUrl('/verify-payu-payment'), {
         method: 'POST',
         headers: {
@@ -250,11 +250,11 @@ function DonatePageContent() {
       });
 
       const result = await response.json();
-      
+
       if (result.success) {
         console.log('PayU payment verified successfully:', result);
         console.log('Email status:', { sent: result.emailSent, message: result.emailMessage });
-        
+
         // ✅ PART 1: Set donation details (same structure as Razorpay)
         // This populates the data shown in the success modal
         setDonationDetails({
@@ -264,7 +264,7 @@ function DonatePageContent() {
           paymentId: result.donation.paymentId,
           donorEmail: result.donation.donorEmail
         });
-        
+
         // ✅ PART 2: Set email status if provided by backend (same as Razorpay)
         // This shows email receipt status in the success modal
         if (result.emailSent !== undefined && result.emailMessage) {
@@ -273,7 +273,7 @@ function DonatePageContent() {
             message: result.emailMessage
           });
         }
-        
+
         // ✅ PART 3: SHOW SUCCESS UI - This triggers the DonationSuccess component to appear!
         // Same as Razorpay: setShowSuccess(true) displays the modal overlay
         setShowSuccess(true);
@@ -306,38 +306,38 @@ function DonatePageContent() {
       // If PayU payment was successful, verify it
       if (paymentStatus === 'success' && paymentMethod === 'payu' && donationId) {
         console.log('PayU payment success detected, verifying...');
-        
+
         // Show loading state immediately (matching Razorpay UX)
         setIsSubmitting(true);
         setShowError(false);
-        
+
         // Clean up URL params immediately to hide them
         window.history.replaceState({}, '', window.location.pathname);
-        
+
         // ✅ PART 5: This calls verifyPayUPayment() which sets showSuccess=true
         // Then verify payment and show success popup (same as Razorpay)
         await verifyPayUPayment(donationId, txnid || undefined);
       }
-      
+
       // Also handle payment failed/error cases
       if (paymentStatus === 'failed' || (paymentStatus === 'error' && paymentMethod === 'payu')) {
         const errorReason = searchParams.get('reason') || 'Payment failed';
-        setErrorMessage(errorReason === 'verification_failed' 
+        setErrorMessage(errorReason === 'verification_failed'
           ? 'Payment verification failed. Please contact support if the amount was deducted.'
           : errorReason === 'processing_error'
-          ? 'There was an error processing your payment. Please contact support.'
-          : 'Payment could not be processed. Please try again.');
+            ? 'There was an error processing your payment. Please contact support.'
+            : 'Payment could not be processed. Please try again.');
         setShowError(true);
         setShowSuccess(false);
         setIsSubmitting(false);
-        
+
         // Clean up URL params
         window.history.replaceState({}, '', window.location.pathname);
       }
     };
 
     checkPaymentStatus();
-   
+
   }, [searchParams]);
 
   // Check if Razorpay is loaded
@@ -422,8 +422,8 @@ function DonatePageContent() {
     if (!formData.phoneNumber || formData.phoneNumber === 0) {
       newErrors.phoneNumber = "Phone number is required";
     } else if (!validatePhoneNumber(formData.phoneNumber, formData.citizenType as 'indian' | 'foreign')) {
-      newErrors.phoneNumber = formData.citizenType === 'indian' 
-        ? "Please enter a valid 10-digit Indian phone number" 
+      newErrors.phoneNumber = formData.citizenType === 'indian'
+        ? "Please enter a valid 10-digit Indian phone number"
         : "Please enter a valid phone number";
     }
 
@@ -497,7 +497,7 @@ function DonatePageContent() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    
+
     if (name === "phoneNumber") {
       // Only allow valid phone numbers
       const numericValue = value.replace(/\D/g, "").slice(0, 10);
@@ -528,7 +528,7 @@ function DonatePageContent() {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
-    
+
     // Clear error for this field
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
@@ -550,16 +550,16 @@ function DonatePageContent() {
   // Function to handle payment gateway selection
   const handlePaymentGatewaySelection = async (gateway: 'razorpay' | 'payu') => {
     if (!pendingDonationData) return;
-    
+
     // Prevent multiple simultaneous requests
     if (isSubmitting) {
       console.warn('Payment already in progress');
       return;
     }
-    
+
     setShowPaymentDialog(false);
     setIsSubmitting(true);
-    
+
     try {
       if (gateway === 'payu') {
         await processPayUPayment(pendingDonationData.donationData);
@@ -569,14 +569,14 @@ function DonatePageContent() {
     } catch (error) {
       console.error('Payment processing error:', error);
       const errorMsg = error instanceof Error ? error.message : 'Payment failed. Please try again.';
-      
+
       // Check if it's a rate limiting error
       if (errorMsg.includes('Too many requests') || errorMsg.includes('rate limit')) {
         setErrorMessage('Too many payment requests. Please wait 60 seconds and try again.');
       } else {
         setErrorMessage(errorMsg);
       }
-      
+
       setShowError(true);
       setIsSubmitting(false);
     }
@@ -628,7 +628,7 @@ function DonatePageContent() {
         color: DONATION_CONFIG.ORGANIZATION.THEME_COLOR
       },
       modal: {
-        ondismiss: function() {
+        ondismiss: function () {
           setIsSubmitting(false);
         }
       }
@@ -694,7 +694,7 @@ function DonatePageContent() {
       }
 
       const result = await response.json();
-      
+
       if (result.success) {
         // Create and submit PayU form
         const form = document.createElement('form');
@@ -714,10 +714,10 @@ function DonatePageContent() {
         // Open PayU in same window instead of new tab
         // This allows proper redirect back to the page
         form.target = '_self';
-        
+
         document.body.appendChild(form);
         form.submit();
-        
+
         // Remove form after a short delay
         setTimeout(() => {
           if (form.parentNode) {
@@ -729,12 +729,12 @@ function DonatePageContent() {
       }
     } catch (error) {
       console.error('PayU payment error:', error);
-      
+
       let errorMessage = 'PayU payment failed. Please try again.';
-      
+
       if (error instanceof Error) {
         errorMessage = error.message;
-        
+
         // Check for specific errors
         if (error.message.includes('Too many requests') || error.message.includes('rate limit')) {
           errorMessage = 'Too many payment requests. Please wait 60 seconds before trying again.';
@@ -744,7 +744,7 @@ function DonatePageContent() {
           errorMessage = 'Network error. Please check your connection and try again.';
         }
       }
-      
+
       setErrorMessage(errorMessage);
       setShowError(true);
       setIsSubmitting(false);
@@ -759,7 +759,7 @@ function DonatePageContent() {
   }, donationId: string) => {
     try {
       console.log('Verifying payment...');
-      
+
       const response = await fetch(getApiUrl('/verify-payment-form'), {
         method: 'POST',
         headers: {
@@ -774,7 +774,7 @@ function DonatePageContent() {
       });
 
       const result = await response.json();
-      
+
       if (result.success) {
         console.log('Payment verified successfully:', result);
         console.log('Email status:', { sent: result.emailSent, message: result.emailMessage });
@@ -785,7 +785,7 @@ function DonatePageContent() {
           paymentId: result.donation.paymentId,
           donorEmail: result.donation.donorEmail
         });
-        
+
         // Set email status if provided by backend
         if (result.emailSent !== undefined && result.emailMessage) {
           setEmailStatus({
@@ -793,14 +793,14 @@ function DonatePageContent() {
             message: result.emailMessage
           });
         }
-        
+
         setShowSuccess(true);
         setShowError(false);
-        
+
       } else {
         throw new Error(result.message || DONATION_CONFIG.ERRORS.VERIFICATION_FAILED);
       }
-      
+
     } catch (error) {
       console.error('Error verifying payment:', error);
       setErrorMessage(DONATION_CONFIG.ERRORS.VERIFICATION_FAILED);
@@ -817,6 +817,36 @@ function DonatePageContent() {
 
     if (!validateForm()) {
       setIsSubmitting(false);
+
+      // React equivalent of Vue's $nextTick — double requestAnimationFrame pattern.
+      // 1st rAF: waits for React to commit the new error state to the DOM.
+      // 2nd rAF: waits for the browser to PAINT the committed DOM (layout is now stable).
+      // Only after both frames do we read getBoundingClientRect() — so positions are final.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const errorFieldIds = [
+            'customAmount', 'fullName', 'phoneNumber', 'email',
+            'citizenType', 'houseApartment', 'village', 'district',
+            'state', 'pinCode', 'panNumber'
+          ];
+          for (const fieldId of errorFieldIds) {
+            const el = document.getElementById(fieldId);
+            if (el) {
+              // Pixel-precise scroll: avoids scrollIntoView's layout recalculations.
+              // headerOffset accounts for the sticky navbar so the field isn't hidden behind it.
+              const headerOffset = 80;
+              const elementPosition = el.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'instant' // 'instant' fires the header scroll-listener once, not 60× per second
+              });
+              break;
+            }
+          }
+        });
+      });
+
       return;
     }
 
@@ -856,7 +886,7 @@ function DonatePageContent() {
       };
 
       console.log('Submitting donation form:', donationData);
-      
+
       // Submit form to backend
       const response = await fetch(getApiUrl('/submit-form'), {
         method: 'POST',
@@ -867,27 +897,27 @@ function DonatePageContent() {
       });
 
       const result = await response.json();
-      
+
       if (result.success) {
         console.log('Form submitted successfully:', result);
-        
+
         // Store donation data and show payment gateway selection popup
         setPendingDonationData({ donationData, result });
         setShowPaymentDialog(true);
         setIsSubmitting(false);
-        
-              } else {
-          throw new Error(result.message || DONATION_CONFIG.ERRORS.FORM_VALIDATION);
-        }
-        
-      } catch (error: unknown) {
-        console.error('Error submitting form:', error);
-        setErrorMessage(DONATION_CONFIG.ERRORS.NETWORK_ERROR + ' ' + (error instanceof Error ? error.message : 'Unknown error'));
-        setShowError(true);
-      } finally {
-        setIsSubmitting(false);
+
+      } else {
+        throw new Error(result.message || DONATION_CONFIG.ERRORS.FORM_VALIDATION);
       }
-    };
+
+    } catch (error: unknown) {
+      console.error('Error submitting form:', error);
+      setErrorMessage(DONATION_CONFIG.ERRORS.NETWORK_ERROR + ' ' + (error instanceof Error ? error.message : 'Unknown error'));
+      setShowError(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const sevaType = getSevaTypeConfig(purpose);
 
@@ -907,18 +937,18 @@ function DonatePageContent() {
           setShowError(true);
         }}
       />
-      
+
       <div className="min-h-screen bg-white flex items-center justify-center pt-4 pb-9 px-4">
         <div
-          className={`bg-[#FF6800] max-w-xl w-full rounded-lg px-6 py-10 shadow-xl text-center`}
+          className={`bg-[#FFCF70] max-w-xl w-full rounded-lg px-6 py-10 shadow-xl text-center`}
         >
           {/* Seva Tags */}
           <div className="flex flex-col items-center justify-center mb-1">
             {/* SEVA NAME */}
             <div className="mb-4 text-center">
               <div className="bg-blue-900 text-white text-sm font-semibold px-4 py-2 rounded-lg inline-block">
-                SEVA NAME 
-              </div> 
+                SEVA NAME
+              </div>
               <h2 className="text-lg font-semibold text-black mt-2">
                 {purpose || "General Donation"}
               </h2>
@@ -937,23 +967,12 @@ function DonatePageContent() {
             <div className="bg-blue-900 text-white text-sm font-semibold px-4 py-2 rounded-lg inline-block mb-2">
               SEVA AMOUNT
             </div>
-            <p className="text-xl font-bold text-white">
-              {isAnyAmountDonation ? (
-                <input
-                  type="text"
-                  name="customAmount"
-                  value={formData.customAmount}
-                  onChange={handleInputChange}
-                  placeholder="Enter amount"
-                  className="w-32 text-center bg-transparent border-b border-white focus:outline-none text-white placeholder-white"
-                />
-              ) : (
-                `₹ ${amount ? formatAmount(amount) : "0"}`
-              )}
+            <p className="text-xl font-bold text-black">
+              {isAnyAmountDonation
+                ? `₹ ${formatAmount(formData.customAmount)}`
+                : `₹ ${amount ? formatAmount(amount) : "0"}`
+              }
             </p>
-            {errors.customAmount && (
-              <p className="text-red-600 text-sm mt-1">{errors.customAmount}</p>
-            )}
           </div>
 
           {/* ==================================================================== */}
@@ -963,7 +982,7 @@ function DonatePageContent() {
           {/* This is the SAME component used by Razorpay - ensuring identical UI/UX */}
           {/* Success Message */}
           {showSuccess && (
-            <DonationSuccess 
+            <DonationSuccess
               donationDetails={donationDetails}
               emailSent={emailStatus?.sent}
               emailMessage={emailStatus?.message}
@@ -978,7 +997,7 @@ function DonatePageContent() {
                   phoneNumber: 0,
                   isPhoneValid: false,
                   citizenType: "",
-                  customAmount: "",
+                  customAmount: "0",
                   wantsMahaPrasadam: false,
                   wants80G: false,
                   address: "",
@@ -1004,20 +1023,52 @@ function DonatePageContent() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4 text-left">
+
+            {/* Seva Amount — only shown for 'any amount' donations */}
+            {isAnyAmountDonation && (
+              <div>
+                <label className="block text-sm font-bold text-black mb-1">
+                  Seva Amount (₹)<span className="text-red-600">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="customAmount"
+                    type="text"
+                    name="customAmount"
+                    value={formData.customAmount}
+                    onChange={handleInputChange}
+                    placeholder="Enter donation amount"
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.customAmount ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                  />
+                  {errors.customAmount && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  )}
+                </div>
+                {errors.customAmount && (
+                  <p className="text-red-600 text-sm mt-1">{errors.customAmount}</p>
+                )}
+              </div>
+            )}
+
             {/* Donor Name */}
             <div>
               <label className="block text-sm font-bold text-black mb-1">
                 Donor Name<span className="text-red-600">*</span>
               </label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                placeholder="Your Name"
-                required={true}
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  placeholder="Your Name"
+                  required={true}
+                  className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.fullName ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                />
+                {errors.fullName && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                )}
+              </div>
               {errors.fullName && (
                 <p className="text-red-600 text-sm mt-1">{errors.fullName}</p>
               )}
@@ -1028,17 +1079,22 @@ function DonatePageContent() {
               <label className="block text-sm font-bold text-black mb-1">
                 Mobile Number<span className="text-red-600">*</span>
               </label>
-              <input
-                type="number"
-                name="phoneNumber"
-                value={formData.phoneNumber === 0 ? "" : formData.phoneNumber}
-                onChange={handleInputChange}
-                placeholder="Your Phone Number"
-                min={1000000000}
-                max={9999999999}
-                required={true}
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              />
+              <div className="relative">
+                <input
+                  type="number"
+                  name="phoneNumber"
+                  value={formData.phoneNumber === 0 ? "" : formData.phoneNumber}
+                  onChange={handleInputChange}
+                  placeholder="Your Phone Number"
+                  min={1000000000}
+                  max={9999999999}
+                  required={true}
+                  className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${errors.phoneNumber ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                />
+                {errors.phoneNumber && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                )}
+              </div>
               {errors.phoneNumber && (
                 <p className="text-red-600 text-sm mt-1">{errors.phoneNumber}</p>
               )}
@@ -1049,15 +1105,20 @@ function DonatePageContent() {
               <label className="block text-sm font-bold text-black mb-1">
                 E-Mail ID<span className="text-red-600">*</span>
               </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required={true}
-                placeholder="Your Email"
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
-              />
+              <div className="relative">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required={true}
+                  placeholder="Your Email"
+                  className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.email ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                />
+                {errors.email && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                )}
+              </div>
               {errors.email && (
                 <p className="text-red-600 text-sm mt-1">{errors.email}</p>
               )}
@@ -1101,24 +1162,24 @@ function DonatePageContent() {
             <div className="text-sm space-y-2">
               {formData.citizenType === "indian" && (
                 <label className="flex items-center gap-2">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     name="wantsMahaPrasadam"
                     checked={formData.wantsMahaPrasadam}
                     onChange={handleInputChange}
-                    className="accent-blue-700" 
+                    className="accent-blue-700"
                   />
                   I would like to receive Maha Prasadam (Only within India)
                 </label>
               )}
               <label className={`flex items-start gap-2 ${is80GDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   name="wants80G"
                   checked={formData.wants80G}
                   onChange={handleInputChange}
                   disabled={is80GDisabled}
-                  className="accent-blue-700 mt-1 disabled:cursor-not-allowed" 
+                  className="accent-blue-700 mt-1 disabled:cursor-not-allowed"
                 />
                 <span>
                   I wish to receive 80G Tax Exemption
@@ -1175,7 +1236,7 @@ function DonatePageContent() {
                         onChange={handleInputChange}
                         placeholder="House/Apartment number"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.houseApartment ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
                       />
                       {errors.houseApartment && (
                         <p className="text-red-600 text-sm mt-1">{errors.houseApartment}</p>
@@ -1192,7 +1253,7 @@ function DonatePageContent() {
                         onChange={handleInputChange}
                         placeholder="Village or City"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.village ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
                       />
                       {errors.village && (
                         <p className="text-red-600 text-sm mt-1">{errors.village}</p>
@@ -1213,7 +1274,7 @@ function DonatePageContent() {
                         onChange={handleInputChange}
                         placeholder="District"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.district ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
                       />
                       {errors.district && (
                         <p className="text-red-600 text-sm mt-1">{errors.district}</p>
@@ -1230,7 +1291,7 @@ function DonatePageContent() {
                         onChange={handleInputChange}
                         placeholder="State"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.state ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
                       />
                       {errors.state && (
                         <p className="text-red-600 text-sm mt-1">{errors.state}</p>
@@ -1251,7 +1312,7 @@ function DonatePageContent() {
                       placeholder="6-digit PIN code"
                       maxLength={6}
                       required={formData.wantsMahaPrasadam || formData.wants80G}
-                      className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
+                      className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.pinCode ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
                     />
                     {errors.pinCode && (
                       <p className="text-red-600 text-sm mt-1">{errors.pinCode}</p>
@@ -1297,7 +1358,7 @@ function DonatePageContent() {
                     placeholder="Enter your PAN number (e.g., ABCDE1234F)"
                     maxLength={10}
                     required={formData.wants80G}
-                    className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white uppercase"
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white uppercase ${errors.panNumber ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
                   />
                   {errors.panNumber && (
                     <p className="text-red-600 text-sm mt-1">{errors.panNumber}</p>
@@ -1313,9 +1374,8 @@ function DonatePageContent() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full cursor-pointer ${
-                isSubmitting ? "bg-gray-400" : "bg-[#0B3954] hover:bg-[#0B3954]/90"
-              } text-white font-bold py-2 rounded-md transition-colors`}
+              className={`w-full cursor-pointer ${isSubmitting ? "bg-gray-400" : "bg-[#0B3954] hover:bg-[#0B3954]/90"
+                } text-white font-bold py-2 rounded-md transition-colors`}
             >
               {isSubmitting ? "Processing..." : "DONATE NOW"}
             </button>
@@ -1333,7 +1393,7 @@ function DonatePageContent() {
             <p className="text-gray-600 text-center mb-6">
               Select your preferred payment gateway to complete the donation
             </p>
-            
+
             <div className="space-y-4">
               {/* Razorpay Option */}
               <button
@@ -1344,17 +1404,15 @@ function DonatePageContent() {
                   }
                 }}
                 disabled={!pendingDonationData?.result?.order}
-                className={`w-full p-4 border-2 rounded-lg transition-all text-left ${
-                  !pendingDonationData?.result?.order 
-                    ? "border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed" 
-                    : "border-blue-300 hover:border-blue-500 hover:bg-blue-50 cursor-pointer"
-                }`}
+                className={`w-full p-4 border-2 rounded-lg transition-all text-left ${!pendingDonationData?.result?.order
+                  ? "border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed"
+                  : "border-blue-300 hover:border-blue-500 hover:bg-blue-50 cursor-pointer"
+                  }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className={`w-4 h-4 border-2 rounded-full flex items-center justify-center ${
-                      !pendingDonationData?.result?.order ? "border-gray-400" : "border-blue-500"
-                    }`}>
+                    <div className={`w-4 h-4 border-2 rounded-full flex items-center justify-center ${!pendingDonationData?.result?.order ? "border-gray-400" : "border-blue-500"
+                      }`}>
                       {pendingDonationData?.result?.order && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
                     </div>
                     <div>
@@ -1369,7 +1427,7 @@ function DonatePageContent() {
                   )}
                 </div>
               </button>
-              
+
               {/* PayU Option - Always visible */}
               <button
                 onClick={() => {
@@ -1390,7 +1448,7 @@ function DonatePageContent() {
                 </div>
               </button>
             </div>
-            
+
             <div className="mt-6 text-center ">
               <button
                 onClick={() => {
