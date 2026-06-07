@@ -448,16 +448,27 @@ function DonatePageContent() {
     // Validate address fields if Maha Prasadam OR 80G is selected
     if (formData.wantsMahaPrasadam || formData.wants80G) {
       if (!formData.houseApartment.trim()) {
-        newErrors.houseApartment = "House/Apartment number is required";
+        newErrors.houseApartment = "Address Line 1 is required";
+      } else if (formData.houseApartment.trim().length < 5) {
+        newErrors.houseApartment = "Address Line 1 must be at least 5 characters";
+      }
+      if (!formData.address.trim()) {
+        newErrors.address = "Address Line 2 is required";
+      } else if (formData.address.trim().length < 5) {
+        newErrors.address = "Address Line 2 must be at least 5 characters";
       }
       if (!formData.village.trim()) {
-        newErrors.village = "Village/City is required";
+        newErrors.village = "City/Village is required";
+      } else if (formData.village.trim().length < 2) {
+        newErrors.village = "City/Village must be at least 2 characters";
       }
       if (!formData.district.trim()) {
         newErrors.district = "District is required";
+      } else if (formData.district.trim().length < 2) {
+        newErrors.district = "District must be at least 2 characters";
       }
       if (!formData.state.trim()) {
-        newErrors.state = "State is required";
+        newErrors.state = "Please select a State / UT";
       }
       if (!formData.pinCode.trim()) {
         newErrors.pinCode = "PIN code is required";
@@ -969,7 +980,7 @@ function DonatePageContent() {
             </div>
             <p className="text-xl font-bold text-black">
               {isAnyAmountDonation
-                ? `₹ ${formatAmount(formData.customAmount)}`
+                ? `₹ ${formatAmount(formData.customAmount ?? '0')}`
                 : `₹ ${amount ? formatAmount(amount) : "0"}`
               }
             </p>
@@ -1205,98 +1216,163 @@ function DonatePageContent() {
                   📍 Address
                 </h3>
                 <div className="space-y-4">
-                  {/* Address */}
-                  {/* <div>
-                    <label className="block text-sm font-bold text-black mb-1">
-                      Address<span className="text-red-600">*</span>
-                    </label>
-                    <textarea
-                      name="address"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      placeholder="Enter your complete address"
-                      required={formData.wantsMahaPrasadam || formData.wants80G}
-                      className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white h-20 resize-none"
-                    />
-                    {errors.address && (
-                      <p className="text-red-600 text-sm mt-1">{errors.address}</p>
-                    )}
-                  </div> */}
 
-                  {/* House/Apartment and Village in one row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-black mb-1">
-                        House/Apartment No.<span className="text-red-600">*</span>
-                      </label>
+                  {/* Address Line 1 */}
+                  <div>
+                    <label className="block text-sm font-bold text-black mb-1">
+                      Address Line 1<span className="text-red-600">*</span>
+                    </label>
+                    <div className="relative">
                       <input
+                        id="houseApartment"
                         type="text"
                         name="houseApartment"
                         value={formData.houseApartment}
                         onChange={handleInputChange}
-                        placeholder="House/Apartment number"
+                        placeholder="House / Apartment / Building No."
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.houseApartment ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.houseApartment ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                       />
                       {errors.houseApartment && (
-                        <p className="text-red-600 text-sm mt-1">{errors.houseApartment}</p>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
                       )}
                     </div>
-                    <div>
-                      <label className="block text-sm font-bold text-black mb-1">
-                        Village/City<span className="text-red-600">*</span>
-                      </label>
+                    {errors.houseApartment && (
+                      <p className="text-red-600 text-sm mt-1">{errors.houseApartment}</p>
+                    )}
+                  </div>
+
+                  {/* Address Line 2 */}
+                  <div>
+                    <label className="block text-sm font-bold text-black mb-1">
+                      Address Line 2<span className="text-red-600">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                        placeholder="Street / Area / Locality"
+                        required={formData.wantsMahaPrasadam || formData.wants80G}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.address ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                      />
+                      {errors.address && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                      )}
+                    </div>
+                    {errors.address && (
+                      <p className="text-red-600 text-sm mt-1">{errors.address}</p>
+                    )}
+                  </div>
+
+                  {/* City/Village */}
+                  <div>
+                    <label className="block text-sm font-bold text-black mb-1">
+                      City/Village<span className="text-red-600">*</span>
+                    </label>
+                    <div className="relative">
                       <input
                         type="text"
                         name="village"
                         value={formData.village}
                         onChange={handleInputChange}
-                        placeholder="Village or City"
+                        placeholder="City or Village name"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.village ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.village ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                       />
                       {errors.village && (
-                        <p className="text-red-600 text-sm mt-1">{errors.village}</p>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
                       )}
                     </div>
+                    {errors.village && (
+                      <p className="text-red-600 text-sm mt-1">{errors.village}</p>
+                    )}
                   </div>
 
-                  {/* District and State in one row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-black mb-1">
-                        District<span className="text-red-600">*</span>
-                      </label>
+                  {/* District */}
+                  <div>
+                    <label className="block text-sm font-bold text-black mb-1">
+                      District<span className="text-red-600">*</span>
+                    </label>
+                    <div className="relative">
                       <input
                         type="text"
                         name="district"
                         value={formData.district}
                         onChange={handleInputChange}
-                        placeholder="District"
+                        placeholder="District name"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.district ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.district ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                       />
                       {errors.district && (
-                        <p className="text-red-600 text-sm mt-1">{errors.district}</p>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
                       )}
                     </div>
-                    <div>
-                      <label className="block text-sm font-bold text-black mb-1">
-                        State<span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        placeholder="State"
-                        required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.state ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
-                      />
-                      {errors.state && (
-                        <p className="text-red-600 text-sm mt-1">{errors.state}</p>
-                      )}
+                    {errors.district && (
+                      <p className="text-red-600 text-sm mt-1">{errors.district}</p>
+                    )}
+                  </div>
+
+                  {/* State — dropdown with all 28 States + 8 UTs alphabetically */}
+                  <div>
+                    <label className="block text-sm font-bold text-black mb-1">
+                      State<span className="text-red-600">*</span>
+                    </label>
+                    <div className="relative">
+                    <select
+                      id="state"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      required={formData.wantsMahaPrasadam || formData.wants80G}
+                      className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.state ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
+                    >
+                      <option value="">Select State / UT</option>
+                      <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Ladakh">Ladakh</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Puducherry">Puducherry</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                    </select>
+                    {errors.state && (
+                      <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                    )}
                     </div>
+                    {errors.state && (
+                      <p className="text-red-600 text-sm mt-1">{errors.state}</p>
+                    )}
                   </div>
 
                   {/* PIN Code */}
@@ -1304,38 +1380,28 @@ function DonatePageContent() {
                     <label className="block text-sm font-bold text-black mb-1">
                       PIN Code<span className="text-red-600">*</span>
                     </label>
-                    <input
-                      type="text"
-                      name="pinCode"
-                      value={formData.pinCode}
-                      onChange={handleInputChange}
-                      placeholder="6-digit PIN code"
-                      maxLength={6}
-                      required={formData.wantsMahaPrasadam || formData.wants80G}
-                      className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.pinCode ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
-                    />
+                    <div className="relative">
+                      <input
+                        id="pinCode"
+                        type="text"
+                        inputMode="numeric"
+                        name="pinCode"
+                        value={formData.pinCode}
+                        onChange={handleInputChange}
+                        placeholder="6-digit PIN code"
+                        maxLength={6}
+                        required={formData.wantsMahaPrasadam || formData.wants80G}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.pinCode ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                      />
+                      {errors.pinCode && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                      )}
+                    </div>
                     {errors.pinCode && (
                       <p className="text-red-600 text-sm mt-1">{errors.pinCode}</p>
                     )}
                   </div>
 
-                  {/* Landmark */}
-                  <div>
-                    <label className="block text-sm font-bold text-black mb-1">
-                      Landmark
-                    </label>
-                    <input
-                      type="text"
-                      name="landmark"
-                      value={formData.landmark}
-                      onChange={handleInputChange}
-                      placeholder="Nearby landmark (optional)"
-                      className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white"
-                    />
-                    {errors.landmark && (
-                      <p className="text-red-600 text-sm mt-1">{errors.landmark}</p>
-                    )}
-                  </div>
                 </div>
               </div>
             )}
