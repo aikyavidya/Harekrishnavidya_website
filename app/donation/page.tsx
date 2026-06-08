@@ -596,7 +596,7 @@ export default function DonationPage() {
 
   return (
     <>
-      <div className="relative w-full  md:aspect-[16/8]   aspect-[10/5]   overflow-hidden">
+      <div className="relative w-full h-[40vh] md:h-[75vh] overflow-hidden">
         {/* <Image
           src="/home/home_img.jpeg"
           alt="Donation Banner"
@@ -609,7 +609,7 @@ export default function DonationPage() {
           src={akshayaBanner}
           alt="Akshaya Tritiya Donation Banner"
           fill
-          className="object-cover lg:px-3"
+          className="w-full h-full object-fill"
           priority
         />
         {/* <div className="absolute inset-0 z-10 flex items-center justify-center">

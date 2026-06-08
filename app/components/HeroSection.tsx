@@ -15,6 +15,11 @@ import k2 from "../../public/images/Group_5.png";
 import Heart from "../../public/images/Heart.png";
 import info from "../../public/images/info.png";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { useRef } from "react";
 import useUTM from "../utils/useUTM";
 import { motion } from "framer-motion";
@@ -25,6 +30,54 @@ export default function HeroSection() {
 
   const heroRef = useRef(null);
 
+  const CustomPrevArrow = (props: any) => {
+    const { onClick } = props;
+    return (
+      <button 
+        onClick={onClick} 
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500/90 hover:bg-orange-600 text-white p-1.5 md:p-2.5 rounded-full transition-all cursor-pointer block xl:hidden shadow-lg"
+      >
+        <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
+      </button>
+    );
+  };
+
+  const CustomNextArrow = (props: any) => {
+    const { onClick } = props;
+    return (
+      <button 
+        onClick={onClick} 
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500/90 hover:bg-orange-600 text-white p-1.5 md:p-2.5 rounded-full transition-all cursor-pointer block xl:hidden shadow-lg"
+      >
+        <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
+      </button>
+    );
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4500,
+    fade: false,
+    arrows: true,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
+    pauseOnHover: false,
+    appendDots: (dots: any) => (
+      <div style={{ position: "absolute", bottom: "30px", width: "100%" }}>
+        <ul style={{ margin: "0px", display: "flex", justifyContent: "center", gap: "10px" }}> {dots} </ul>
+      </div>
+    ),
+    customPaging: () => (
+      <div className="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-colors duration-300 slick-custom-dot cursor-pointer" />
+    )
+  };
+
+  const carouselSlides = [akshayaBanner.src, akshayaBanner.src, akshayaBanner.src];
 
   return (
     <>
@@ -32,17 +85,18 @@ export default function HeroSection() {
         {/* Hero Section */}
         {/* Mobile Layout */}
         <div className="flex md:hidden flex-col gap-2 relative overflow-hidden">
-          {/* ✅ Mobile banner */}
-          <motion.div
-            className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[300px] block sm:hidden"
-            style={{ backgroundImage: `url(${akshayaBanner.src})` }}
-          />
-
-          {/* ✅ Tablet banner */}
-          <motion.div
-            className="bg-cover bg-top text-white w-full rounded-xl overflow-hidden h-[400px] hidden sm:block md:hidden"
-            style={{ backgroundImage: `url(${akshayaBanner.src})` }}
-          />
+          <div className="w-full relative rounded-xl overflow-hidden mb-2">
+            <Slider {...sliderSettings} className="w-full">
+              {carouselSlides.map((slide, index) => (
+                <div key={index} className="w-full outline-none">
+                  <div 
+                    className="w-full h-[300px] sm:h-[400px] bg-[length:100%_100%] bg-no-repeat bg-center"
+                    style={{ backgroundImage: `url(${slide})` }}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
 
           {/* Container for cards */}
           <div className=" mb:bottom-10 left-0 right-0 flex flex-col-reverse  px-4  gap-4">
@@ -147,12 +201,26 @@ export default function HeroSection() {
 
         {/* Desktop Layout */}
         <section
-          className="hidden md:block relative text-white w-full overflow-hidden h-[600px] lg:h-[700px] xl:h-[800px]"
+          className="hidden md:block relative text-white w-full overflow-hidden h-[75vh]"
         >
-          <motion.div
-            className="absolute inset-0 bg-cover bg-top"
-            style={{ backgroundImage: `url(${akshayaBanner.src})` }}
-          />
+          <div className="absolute inset-0 z-0 bg-black">
+            <Slider {...sliderSettings} className="w-full h-full">
+              {carouselSlides.map((slide, index) => (
+                <div key={index} className="w-full outline-none">
+                  <div 
+                    className="w-full h-[75vh] bg-[length:100%_100%] bg-no-repeat bg-center"
+                    style={{ backgroundImage: `url(${slide})` }}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <style dangerouslySetInnerHTML={{__html: `
+            .slick-dots li.slick-active .slick-custom-dot {
+              background-color: #f97316 !important;
+              transform: scale(1.25);
+            }
+          `}} />
           {/* Container for cards */}
           <div className="absolute bottom-12 md:bottom-20 lg:bottom-32 xl:bottom-40 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-start md:gap-6 lg:gap-40 px-4 md:px-8 lg:px-4 z-10">
             {/* Karma Insights Box */}

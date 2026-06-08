@@ -201,29 +201,40 @@ const HomePage = () => {
         </section>
         <section className="px-4 py-6 bg-white flex justify-center pb-20">
           <div className="max-w-6xl w-full text-center">
-            {/* Grid */}
-            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {galleryImages.map((item, index) => (
-                <StaggerItem
-                  key={index}
-                  className="relative group overflow-hidden rounded-md cursor-pointer aspect-square"
-                >
-                  <div className="w-full h-full relative" onClick={() => setSelectedImage(item.src.src)}>
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    {/* Hover overlay with icon */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                      </svg>
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:auto-rows-[120px] lg:auto-rows-[160px]">
+              {galleryImages.map((item, index) => {
+                const bentoClasses = [
+                  "md:col-span-2 md:row-span-2",
+                  "md:col-span-1 md:row-span-1",
+                  "md:col-span-1 md:row-span-1",
+                  "md:col-span-2 md:row-span-1",
+                  "md:col-span-1 md:row-span-1",
+                  "md:col-span-1 md:row-span-1",
+                  "md:col-span-2 md:row-span-2",
+                  "md:col-span-2 md:row-span-1",
+                ];
+                return (
+                  <StaggerItem
+                    key={index}
+                    className={`relative group overflow-hidden rounded-md cursor-pointer aspect-square md:aspect-auto h-full w-full ${bentoClasses[index % bentoClasses.length]}`}
+                  >
+                    <div className="w-full h-full relative" onClick={() => setSelectedImage(item.src.src)}>
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      {/* Hover overlay with icon */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
-                </StaggerItem>
-              ))}
+                  </StaggerItem>
+                );
+              })}
             </StaggerContainer>
           </div>
         </section>
