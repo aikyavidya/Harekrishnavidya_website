@@ -84,14 +84,19 @@ const HomePage = () => {
   }, []);
 
   const galleryImages = [
-    { src: fest1, alt: "Gallery 1" },
-    { src: edu1, alt: "Gallery 3" },
-    { src: fest2, alt: "Gallery 2" },
-    { src: edu3, alt: "Gallery 3" },
-    { src: value, alt: "Gallery 3" },
-    { src: yoga1, alt: "Gallery 3" },
-    { src: edu2, alt: "Gallery 3" },
-    { src: cul1, alt: "Gallery 3" },
+    // Block 1: Feature Row
+    { src: cul1, alt: "Teacher with Mask", focalPoint: "50% 25%" }, // Massive Hero
+    { src: edu3, alt: "Reading Session", focalPoint: "50% 40%" }, // Tall Portrait
+    
+    // Block 2: The Service & Nourishment Row
+    { src: fest2, alt: "Volunteer Serving", focalPoint: "50% 40%" }, // Large Landscape Top
+    { src: yoga1, alt: "Food Serving Activity", focalPoint: "50% 50%" }, // Epic Skyscraper Right
+    { src: fest1, alt: "Children Eating Together", focalPoint: "50% 40%" }, // Large Landscape Bottom
+    
+    // Block 3: Faces & Community
+    { src: edu2, alt: "Girl Student Portrait", focalPoint: "50% 30%" }, // Narrow Portrait
+    { src: value, alt: "Boy with Plate", focalPoint: "50% 40%" }, // Narrow Portrait
+    { src: edu1, alt: "Night Gathering", focalPoint: "50% 50%" }, // Landscape
   ];
 
   return (
@@ -152,7 +157,7 @@ const HomePage = () => {
         </section>
         {/* ------------------------impact------------------ */}
 
-        <section className="py-6 px-4 md:px-10 lg:px-20">
+        {/* <section className="py-6 px-4 md:px-10 lg:px-20">
           <div className="flex items-center justify-center bg-white py-6">
             <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
               <p className="bg-[#F7F7F8] rounded-full px-2 py-1 text-2xl lg:text-[36px] font-semibold border-none hover-lift cursor-default inline-block">
@@ -169,7 +174,7 @@ const HomePage = () => {
               </p>
             </ScaleIn>
           </div>
-        </section>
+        </section> */}
 
         {/* ------------------------------------------------------- */}
         {/* <div className="block xl:hidden">
@@ -177,7 +182,7 @@ const HomePage = () => {
         </div> */}
 
         {/* {desktop testimonials} */}
-        {testimonialsLoading ? (
+        {/* {testimonialsLoading ? (
           <section className="relative bg-[#f0f2f8] py-10 lg:py-16 px-6 overflow-hidden max-w-6xl mx-auto">
             <div className="flex justify-center items-center min-h-[200px]">
               <div className="w-12 h-12 border-t-2 border-b-2 border-[#1C398E] rounded-full animate-spin" />
@@ -185,7 +190,7 @@ const HomePage = () => {
           </section>
         ) : (
           <CardCarousel cardData={cardData} />
-        )}
+        )} */}
 
         {/* -------------------gallery------------------------ */}
         <section className="mt-5 px-4 md:px-10 lg:px-20">
@@ -201,35 +206,45 @@ const HomePage = () => {
         </section>
         <section className="px-4 py-6 bg-white flex justify-center pb-20">
           <div className="max-w-6xl w-full text-center">
-            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:auto-rows-[120px] lg:auto-rows-[160px]">
+            {/* Creative Editorial Gallery Grid */}
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-12 gap-4">
               {galleryImages.map((item, index) => {
-                const bentoClasses = [
-                  "md:col-span-2 md:row-span-2",
-                  "md:col-span-1 md:row-span-1",
-                  "md:col-span-1 md:row-span-1",
-                  "md:col-span-2 md:row-span-1",
-                  "md:col-span-1 md:row-span-1",
-                  "md:col-span-1 md:row-span-1",
-                  "md:col-span-2 md:row-span-2",
-                  "md:col-span-2 md:row-span-1",
+                const creativeClasses = [
+                  // Block 1: Massive Hero Feature + Tall Portrait
+                  "md:col-span-8 h-[400px] md:h-[650px]", 
+                  "md:col-span-4 h-[400px] md:h-[650px]", 
+                  
+                  // Block 2: Large Landscape Left Top, Epic Tall Portrait Right, Large Landscape Left Bottom
+                  "md:col-span-7 h-[300px] md:h-[400px]", 
+                  "md:col-span-5 md:row-span-2 h-[450px] md:h-[816px]", 
+                  "md:col-span-7 h-[300px] md:h-[400px]", 
+
+                  // Block 3: Two Narrow Portraits + One Landscape
+                  "md:col-span-3 h-[300px] md:h-[400px]", 
+                  "md:col-span-3 h-[300px] md:h-[400px]", 
+                  "md:col-span-6 h-[300px] md:h-[400px]", 
                 ];
+                
                 return (
                   <StaggerItem
                     key={index}
-                    className={`relative group overflow-hidden rounded-md cursor-pointer aspect-square md:aspect-auto h-full w-full ${bentoClasses[index % bentoClasses.length]}`}
+                    className={`relative group overflow-hidden rounded-xl cursor-pointer w-full shadow-sm hover:shadow-xl transition-all duration-300 ${creativeClasses[index]}`}
                   >
                     <div className="w-full h-full relative" onClick={() => setSelectedImage(item.src.src)}>
                       <Image
                         src={item.src}
                         alt={item.alt}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                        style={{ objectPosition: item.focalPoint || "center" }}
                       />
-                      {/* Hover overlay with icon */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                        </svg>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </StaggerItem>

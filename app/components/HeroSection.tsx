@@ -33,8 +33,8 @@ export default function HeroSection() {
   const CustomPrevArrow = (props: any) => {
     const { onClick } = props;
     return (
-      <button 
-        onClick={onClick} 
+      <button
+        onClick={onClick}
         className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500/90 hover:bg-orange-600 text-white p-1.5 md:p-2.5 rounded-full transition-all cursor-pointer block xl:hidden shadow-lg"
       >
         <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
@@ -45,8 +45,8 @@ export default function HeroSection() {
   const CustomNextArrow = (props: any) => {
     const { onClick } = props;
     return (
-      <button 
-        onClick={onClick} 
+      <button
+        onClick={onClick}
         className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500/90 hover:bg-orange-600 text-white p-1.5 md:p-2.5 rounded-full transition-all cursor-pointer block xl:hidden shadow-lg"
       >
         <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
@@ -86,7 +86,7 @@ export default function HeroSection() {
         {/* Mobile Layout */}
         <div className="flex md:hidden flex-col gap-2 relative overflow-hidden">
           <div className="w-full relative rounded-xl overflow-hidden mb-2">
-            <Slider {...sliderSettings} className="w-full">
+            {/* <Slider {...sliderSettings} className="w-full">
               {carouselSlides.map((slide, index) => (
                 <div key={index} className="w-full outline-none">
                   <div 
@@ -95,7 +95,15 @@ export default function HeroSection() {
                   />
                 </div>
               ))}
-            </Slider>
+            </Slider> */}
+            <div className="w-full outline-none">
+              <img
+                src={carouselSlides[0]}
+                alt="Hero Banner"
+                className="w-full h-auto block"
+              // className="w-full max-h-[80vh] object-contain mx-auto"
+              />
+            </div>
           </div>
 
           {/* Container for cards */}
@@ -199,30 +207,27 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Desktop Layout */}
         <section
-          className="hidden md:block relative text-white w-full overflow-hidden h-[75vh]"
+          className="hidden md:block relative text-white w-full overflow-hidden"
         >
-          <div className="absolute inset-0 z-0 bg-black">
-            <Slider {...sliderSettings} className="w-full h-full">
-              {carouselSlides.map((slide, index) => (
-                <div key={index} className="w-full outline-none">
-                  <div 
-                    className="w-full h-[75vh] bg-[length:100%_100%] bg-no-repeat bg-center"
-                    style={{ backgroundImage: `url(${slide})` }}
-                  />
-                </div>
-              ))}
-            </Slider>
+          <div
+            className="w-full h-[100vh]"
+          >
+            <img
+              src={carouselSlides[0]}
+              alt="Hero Banner"
+              className="w-full h-full object-fill block"
+            />
           </div>
-          <style dangerouslySetInnerHTML={{__html: `
+          <style dangerouslySetInnerHTML={{
+            __html: `
             .slick-dots li.slick-active .slick-custom-dot {
               background-color: #f97316 !important;
               transform: scale(1.25);
             }
           `}} />
           {/* Container for cards */}
-          <div className="absolute bottom-12 md:bottom-20 lg:bottom-32 xl:bottom-40 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-start md:gap-6 lg:gap-40 px-4 md:px-8 lg:px-4 z-10">
+          <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-start md:gap-6 lg:gap-40 px-4 md:px-8 lg:px-4 z-10">
             {/* Karma Insights Box */}
             <SlideIn direction="left" duration={0.8} className="text-black p-4 md:p-4 mb-0 shadow-xl w-full md:max-w-[500px] xl:w-[300px] flex flex-col gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
               <div className="flex items-center justify-center md:justify-center flex-wrap gap-2">
@@ -319,7 +324,7 @@ export default function HeroSection() {
       </div>
 
       {/* Section Below Hero */}
-      <section className="flex flex-col justify-center items-center md:items-center w-full lg:mx-4 p-4 mt-8">
+      <section className="flex flex-col justify-center items-center md:items-center w-full lg:mx-4">
         <ScaleIn duration={0.7} className="text-center">
           <h2 className="mb-1 text-[36px] sm:text-[42px] lg:text-[48px] italic font-extrabold leading-[120%] font-['Urbanist'] text-[#2C2C2C] drop-shadow-sm">
             Give Nourishment, <br className="sm:hidden" />
