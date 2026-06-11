@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/mainheader";
+import TopBar from "./components/TopBar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/Whatsapp";
 import ScrollButtons from "./components/ScrollButtons";
@@ -135,6 +136,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
+        <TopBar />
         <Header />
         <ScrollButtons />
         <WhatsAppButton />

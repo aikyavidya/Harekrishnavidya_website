@@ -203,9 +203,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-import logo from "../../public/images/logo.png";
+import logo from "../../public/images/Updated-Logo.png";
 import useUTM from "../utils/useUTM";
 import { IoChevronDown } from "react-icons/io5";
+import { FaHeart } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Header() {
@@ -220,9 +221,9 @@ export default function Header() {
   // Handle scroll detection for glassmorphism effect
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 50);
     };
-    
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -231,35 +232,32 @@ export default function Header() {
     `nav-link-animated ${pathname === href ? "text-orange-600 font-semibold active" : ""}`;
 
   return (
-    <header 
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass-header py-2" : "bg-white py-4 shadow-sm"
+    <header
+      className={`z-50 transition-all duration-300 ${
+        scrolled 
+          ? "fixed top-3 left-0 right-0 mx-4 lg:mx-16 xl:mx-24 rounded-2xl border border-gray-200 shadow-md bg-white/70 backdrop-blur-md" 
+          : "sticky top-0 w-full bg-white"
       }`}
     >
-      <div className="flex items-center justify-between px-6 lg:px-6">
-        {/* Logo + Title */}
-        <motion.div 
-          className="text-xl lg:text-2xl font-bold text-black flex items-center gap-2"
+      <div className="flex items-center justify-between px-4 lg:px-8 max-w-7xl mx-auto w-full">
+        {/* Left: Logo */}
+        <motion.div
+          className="flex items-center"
           whileHover={{ scale: 1.02 }}
         >
           <Link href="/home">
             <Image
               src={logo}
               alt="Hare Krishna Movement Logo"
-              width={100}
-              height={80}
-              className="hidden lg:block object-contain"
+              width={105}
+              height={95}
+              className="object-contain"
             />
-          </Link>
-
-          <Link href="/home">
-            <span className="text-blue-900">HARE KRISHNA</span>{" "}
-            <span className="text-orange-400">VIDYA</span>
           </Link>
         </motion.div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8 text-black font-medium">
+        {/* Center: Desktop Navigation Links */}
+        <nav className="hidden md:flex justify-center items-center space-x-8 text-[14px] text-gray-800 font-semibold">
           <Link href="/home" className={linkClass("/home")}>
             Home
           </Link>
@@ -383,28 +381,31 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Donate Now Button */}
-          <Link href={appendUTMToUrl("/donation#donate")}>
-            <button className="btn-interactive px-5 py-2.5 bg-[#0B3954] text-white rounded-lg hover:bg-orange-500 transition font-medium animate-pulse-glow shadow-md">
-              Donate Now
-            </button>
-          </Link>
         </nav>
 
-        {/* Mobile Hamburger */}
-        <button
-          className="md:hidden text-3xl text-black"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Menu"
-        >
-          {isOpen ? <HiOutlineX /> : <HiOutlineMenu />}
-        </button>
+        {/* Right: Donate Now Button & Mobile Toggle */}
+        <div className="flex items-center justify-end gap-4">
+          <Link href={appendUTMToUrl("/donation#donate")} className="hidden md:block">
+            <button className="flex items-center gap-2 px-5 py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium">
+              <FaHeart size={14} /> Donate Now
+            </button>
+          </Link>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="md:hidden text-3xl text-black"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? <HiOutlineX /> : <HiOutlineMenu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -433,7 +434,7 @@ export default function Header() {
             ))}
 
             {/* Mobile Media Dropdown */}
-            <motion.div 
+            <motion.div
               className="flex flex-col py-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -451,7 +452,7 @@ export default function Header() {
 
               <AnimatePresence>
                 {showMedia && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
@@ -492,7 +493,7 @@ export default function Header() {
             </motion.div>
 
             {/* Mobile New Donation Dropdown */}
-            <motion.div 
+            <motion.div
               className="flex flex-col py-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -510,7 +511,7 @@ export default function Header() {
 
               <AnimatePresence>
                 {showDonation && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
@@ -547,8 +548,8 @@ export default function Header() {
                 href={appendUTMToUrl("/donation#donate")}
                 onClick={() => setIsOpen(false)}
               >
-                <button className="btn-interactive w-full px-4 py-3 bg-[#0B3954] text-white rounded-lg hover:bg-orange-500 transition shadow-md font-medium">
-                  Donate Now
+                <button className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium">
+                  <FaHeart size={14} /> Donate Now
                 </button>
               </Link>
             </motion.div>

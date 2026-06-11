@@ -35,12 +35,12 @@ const galleryImages = [
   // Block 1: Feature Row
   { src: cul1, alt: "Teacher with Mask", focalPoint: "50% 25%" }, // Massive Hero
   { src: edu3, alt: "Reading Session", focalPoint: "50% 40%" }, // Tall Portrait
-  
+
   // Block 2: The Service & Nourishment Row
   { src: fest2, alt: "Volunteer Serving", focalPoint: "50% 40%" }, // Large Landscape Top
   { src: yoga1, alt: "Food Serving Activity", focalPoint: "50% 50%" }, // Epic Skyscraper Right
   { src: fest1, alt: "Children Eating Together", focalPoint: "50% 40%" }, // Large Landscape Bottom
-  
+
   // Block 3: Faces & Community
   { src: edu2, alt: "Girl Student Portrait", focalPoint: "50% 30%" }, // Narrow Portrait
   { src: value, alt: "Boy with Plate", focalPoint: "50% 40%" }, // Narrow Portrait
@@ -629,15 +629,15 @@ export default function DonationPage() {
         <span className="text-orange-500"> Rural Areas of India</span>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-center gap-10 max-w-6xl mx-auto">
-        <div className="flex-1">
+      <div className="flex flex-col md:flex-row justify-center gap-10 max-w-6xl mx-auto mb-6">
+        <div className="flex-1 rounded-3xl overflow-hidden">
           <Image
             src={dig1}
             alt="idji1"
             className="object-contain w-full h-auto"
           />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 rounded-3xl overflow-hidden">
           <Image
             src={dig3}
             alt="idji2"
@@ -646,8 +646,8 @@ export default function DonationPage() {
         </div>
       </div>
 
-      {/* Text Section */}
-      <div className="mt-4 md:mt-0 bg-orange-500 text-white text-center py-3 rounded-md  max-w-6xl mx-auto">
+      {/* Text Section for background color keep #f1f8e9 as optional   */}
+      <div className="mt-4 md:mt-0 bg-[#e0f7fa] text-gray-900 text-center py-3 rounded-2xl  max-w-6xl mx-auto">
         <h3 className="text-2xl font-bold">
           Our Trustee Shri Madhu Pandit Dasa
         </h3>
@@ -1075,20 +1075,20 @@ export default function DonationPage() {
               {galleryImages.map((item, index) => {
                 const creativeClasses = [
                   // Block 1: Massive Hero Feature + Tall Portrait
-                  "md:col-span-8 h-[400px] md:h-[650px]", 
-                  "md:col-span-4 h-[400px] md:h-[650px]", 
-                  
+                  "md:col-span-8 h-[400px] md:h-[650px]",
+                  "md:col-span-4 h-[400px] md:h-[650px]",
+
                   // Block 2: Large Landscape Left Top, Epic Tall Portrait Right, Large Landscape Left Bottom
-                  "md:col-span-7 h-[300px] md:h-[400px]", 
-                  "md:col-span-5 md:row-span-2 h-[450px] md:h-[816px]", 
-                  "md:col-span-7 h-[300px] md:h-[400px]", 
+                  "md:col-span-7 h-[300px] md:h-[400px]",
+                  "md:col-span-5 md:row-span-2 h-[450px] md:h-[816px]",
+                  "md:col-span-7 h-[300px] md:h-[400px]",
 
                   // Block 3: Two Narrow Portraits + One Landscape
-                  "md:col-span-3 h-[300px] md:h-[400px]", 
-                  "md:col-span-3 h-[300px] md:h-[400px]", 
-                  "md:col-span-6 h-[300px] md:h-[400px]", 
+                  "md:col-span-3 h-[300px] md:h-[400px]",
+                  "md:col-span-3 h-[300px] md:h-[400px]",
+                  "md:col-span-6 h-[300px] md:h-[400px]",
                 ];
-                
+
                 return (
                   <StaggerItem
                     key={index}
