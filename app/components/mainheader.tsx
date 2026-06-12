@@ -251,13 +251,13 @@ export default function Header() {
               alt="Hare Krishna Movement Logo"
               width={105}
               height={95}
-              className="object-contain"
+              className="object-contain w-[105px] md:w-[80px] min-[1025px]:w-[105px]"
             />
           </Link>
         </motion.div>
 
         {/* Center: Desktop Navigation Links */}
-        <nav className="hidden md:flex justify-center items-center space-x-8 text-[14px] text-gray-800 font-semibold">
+        <nav className="hidden md:flex justify-center items-center md:space-x-4 min-[1025px]:space-x-8 md:text-xs min-[1025px]:text-[14px] text-gray-800 font-semibold">
           <Link href="/home" className={linkClass("/home")}>
             Home
           </Link>
@@ -384,9 +384,9 @@ export default function Header() {
         </nav>
 
         {/* Right: Donate Now Button & Mobile Toggle */}
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex items-center justify-end gap-4 md:gap-2 min-[1025px]:gap-4">
           <Link href={appendUTMToUrl("/donation#donate")} className="hidden md:block">
-            <button className="flex items-center gap-2 px-5 py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium">
+            <button className="flex items-center gap-2 md:px-3 md:py-1.5 min-[1025px]:px-5 min-[1025px]:py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium md:text-xs min-[1025px]:text-base">
               <FaHeart size={14} /> Donate Now
             </button>
           </Link>

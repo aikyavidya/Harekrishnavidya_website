@@ -604,12 +604,11 @@ export default function DonationPage() {
 
   return (
     <>
-      <div className="relative w-full h-[60vh] md:h-[100vh] flex items-center justify-center bg-white overflow-hidden">
+      <div className="relative w-full rounded-xl md:rounded-none md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto flex items-center justify-center bg-white overflow-hidden">
         <Image
           src={akshayaBanner}
           alt="Akshaya Tritiya Donation Banner"
-          fill
-          className="object-fill"
+          className="w-full h-auto block rounded-xl md:rounded-none md:h-full md:object-cover md:object-center min-[1025px]:object-fill"
           priority
         />
         {/* <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -629,15 +628,15 @@ export default function DonationPage() {
         <span className="text-orange-500"> Rural Areas of India</span>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-center gap-10 max-w-6xl mx-auto mb-6">
-        <div className="flex-1 rounded-3xl overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-center gap-10 md:gap-4 min-[1025px]:gap-10 max-w-6xl mx-4 md:mx-auto md:px-4 min-[1025px]:px-0 mb-6 rounded-2xl md:rounded-none overflow-hidden md:overflow-visible">
+        <div className="flex-1 md:flex-none md:w-[48%] min-[1025px]:flex-1 rounded-3xl overflow-hidden">
           <Image
             src={dig1}
             alt="idji1"
             className="object-contain w-full h-auto"
           />
         </div>
-        <div className="flex-1 rounded-3xl overflow-hidden">
+        <div className="flex-1 md:flex-none md:w-[48%] min-[1025px]:flex-1 rounded-3xl overflow-hidden">
           <Image
             src={dig3}
             alt="idji2"

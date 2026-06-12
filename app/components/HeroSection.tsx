@@ -211,12 +211,12 @@ export default function HeroSection() {
           className="hidden md:block relative text-white w-full overflow-hidden"
         >
           <div
-            className="w-full h-[100vh]"
+            className="w-full md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto"
           >
             <img
               src={carouselSlides[0]}
               alt="Hero Banner"
-              className="w-full h-full object-fill block"
+              className="w-full h-full md:object-cover md:object-center min-[1025px]:object-fill block"
             />
           </div>
           <style dangerouslySetInnerHTML={{
