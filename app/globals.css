@@ -19,10 +19,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* FONT-STYLE-REVERT: delete this block to revert the global font to previous state */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply font-sans;
   overflow-x: hidden;
 }
 
@@ -375,3 +376,12 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* Swiper Coverflow Fixes */
+.swiper {
+  width: 100% !important;
+}
+.swiper-wrapper {
+  align-items: center !important;
+}
+

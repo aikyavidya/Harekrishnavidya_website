@@ -6,7 +6,7 @@ export default function SponsorshipsPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-6 font-['Urbanist']">
+        <h1 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold text-[#2C2C2C] drop-shadow-sm mb-6">
           Sponsorships
         </h1>
         <p className="text-xl text-gray-600 mb-8 leading-relaxed">

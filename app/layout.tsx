@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="facebook-domain-verification" content="rcwjc3ukylcext6a4w0pdz2m4wa30p" />
         <script

@@ -88,9 +88,9 @@ export default function Page() {
 
             {/* Initiative Section */}
             <div className="text-center mb-8">
-              <h3 className="text-xl font-semibold mb-3">
-                <span className="text-orange-500">An Initiative of </span>
-                <span className="text-blue-900">HARE KRISHNA MOVEMENT INDIA</span>
+              <h3 className="text-xl font-extrabold mb-3">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">An Initiative of </span>
+                <span className="text-[#2C2C2C] drop-shadow-sm">HARE KRISHNA MOVEMENT INDIA</span>
               </h3>
               <p className="text-gray-700  leading-relaxed">
                 At Hare krishna Vidya, we believe that change begins with
@@ -182,9 +182,9 @@ export default function Page() {
 
             {/* Bottom Section - Initiative */}
             <div className="md:col-span-2 text-center mt-2">
-              <h3 className="text-2xl md:text-4xl font-semibold">
-                <span className="text-orange-500">An Initiative of </span>
-                <span className="text-blue-900">HARE KRISHNA MOVEMENT INDIA</span>
+              <h3 className="text-[28px] sm:text-[36px] lg:text-[48px] font-extrabold">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">An Initiative of </span>
+                <span className="text-[#2C2C2C] drop-shadow-sm">HARE KRISHNA MOVEMENT INDIA</span>
               </h3>
               <p className="mt-4 text-gray-700 max-w-2xl mx-auto">
                 At Hare krishna Vidya, we believe that change begins with
@@ -200,7 +200,7 @@ export default function Page() {
 
 
             <div className="md:col-span-2 text-center mt-2">
-              <h2 className="text-3xl md:text-4xl font-semibold leading-tight text-blue-900">
+              <h2 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight text-[#2C2C2C] drop-shadow-sm">
                 Curriculum
               </h2>
             </div>

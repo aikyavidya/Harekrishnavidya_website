@@ -66,6 +66,9 @@ module.exports = {
         foreground: "#1F2937",
         muted: "#64748B",
       },
+      fontFamily: {
+        sans: ["Arial", "Helvetica", "sans-serif"],
+      },
       keyframes: {
         shimmer: {
           "0%": { backgroundPosition: "0% 50%" },

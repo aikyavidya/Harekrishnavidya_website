@@ -667,12 +667,12 @@ export default function Page() {
       {/* Gallery Section Header - Shared */}
       <div className="h-[10vh] flex items-center justify-center my-10">
         <section className="px-2">
-          <div className="flex items-center justify-center bg-white mt-2 md:mt-8">
-            <div className="flex flex-col items-center gap-4 w-[510px] md:w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
-              <h1 className="text-[25px] md:text-2xl lg:text-[40px] font-bold md:font-extrabold leading-[120%]">
-                A glimpse into the lives you&apos;ve <br />
-                touched with your{" "}
-                <span className="text-[#FF9C5A] italic">kindness</span>
+          <div className="flex items-center justify-center bg-white mt-8 mb-4">
+            <div className="flex flex-col items-center gap-4 w-full max-w-4xl px-4 text-center text-[--text-dark-charcoal]">
+              <h1 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
+                A glimpse into the lives <br className="hidden md:block" />
+                you&apos;ve touched with your{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
               </h1>
             </div>
           </div>

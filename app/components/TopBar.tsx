@@ -9,7 +9,10 @@ export default function TopBar() {
   return (
     <div
       className="py-3 text-[15px] font-medium text-gray-900 border-b border-orange-100 w-full z-[60] relative"
-      style={{ backgroundColor: '#fff3e0' }}
+      // style={{ backgroundColor: '#fff3e0' }}
+      // style={{ backgroundColor: '#eff6f9ff' }}
+      // style={{ backgroundColor: '#dcebf2ff' }}
+      style={{ backgroundColor: '#f1fbffff' }}
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between">
         {/* Left side: Contact Info */}

@@ -24,6 +24,8 @@ import edu3 from "../../public/galleryection/edu3.jpg";
 
 import CardCarousel from "../components/CardCarousel";
 import CausesSection from "../components/CauseSection";
+import DesktopDonateSection from "../components/DesktopDonateSection";
+import MobileDonateCarousel from "../components/MobileDonateCarousel";
 import useUTM from "../utils/useUTM";
 
 const TESTIMONIALS_API = "https://api.harekrishnavidya.org/api/testimonials/";
@@ -104,36 +106,12 @@ const HomePage = () => {
       <HeroSection />
 
       <section className="py-1 px-4 md:px-10 lg:px-10 max-w-7xl mx-auto">
-        {/* ---------------------------denation form-------------------  */}
+        {/* ---------------------------donation form-------------------  */}
         <section className="max-w-6xl mx-auto">
-          <div className=" bg-blue-50 rounded-lg shadow-sm p-2 lg:p-16 relative overflow-hidden">
-            {/* Decorative small star / scribble at top center */}
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:items-center item-start sm:item-center  px-4 sm:px-6 md:px-8">
-              {/* Left content */}
-              <SlideIn direction="left" duration={0.8} className="lg:pr-10 text-center lg:text-left">
-                <h2 className="text-3xl sm:text-5xl md:text-5xl font-extrabold text-[#07133a] leading-tight mb-4 sm:mb-6">
-                  Donate for cause
-                </h2>
-                <p className="text-gray-600 mb-6 sm:mb-8 text-sm md:text-start w-[300px] sm:w-[500px] sm:text-base">
-                  Support our mission to provide food, education, and care to
-                  those  <br />in need. Your contribution brings hope and changes lives
-                </p>
-
-                <Link href={appendUTMToUrl("/donation")}>
-                  <button
-                    aria-label="View More"
-                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg text-white font-medium shadow-md bg-[#1C398E] hover:bg-[#fb923c] hover:scale-[1.01] transition-transform cursor-pointer"
-                  >
-                    Donate now
-                  </button>
-                </Link>
-              </SlideIn>
-
-              {/* Right testimonial stack */}
-              <CausesSection className="my-4 sm:my-1 px-2 sm:px-4" />
-            </div>
-          </div>
+          <DesktopDonateSection />
+          
+          {/* Mobile Carousel (Hidden on Desktop) */}
+          <MobileDonateCarousel />
         </section>
         {/* ---------------------------phn -------------------  */}
         <section
@@ -159,7 +137,7 @@ const HomePage = () => {
 
         {/* <section className="py-6 px-4 md:px-10 lg:px-20">
           <div className="flex items-center justify-center bg-white py-6">
-            <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
+            <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal]">
               <p className="bg-[#F7F7F8] rounded-full px-2 py-1 text-2xl lg:text-[36px] font-semibold border-none hover-lift cursor-default inline-block">
                 ✦ Testimonials
               </p>
@@ -195,10 +173,10 @@ const HomePage = () => {
         {/* -------------------gallery------------------------ */}
         <section className="mt-5 px-4 md:px-10 lg:px-20">
           <div className="flex items-center justify-center bg-white mt-2">
-            <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
-              <h1 className="text-2xl lg:text-[40px] font-extrabold leading-[120%]">
-                A glimpse into the lives you&#39;ve <br />
-                touched with your{" "}
+            <ScaleIn className="flex flex-col items-center gap-4 w-full max-w-4xl px-4 text-center text-[--text-dark-charcoal]">
+              <h1 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
+                A glimpse into the lives <br className="hidden md:block" />
+                you&#39;ve touched with your{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
               </h1>
             </ScaleIn>

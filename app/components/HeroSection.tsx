@@ -324,13 +324,13 @@ export default function HeroSection() {
       </div>
 
       {/* Section Below Hero */}
-      <section className="flex flex-col justify-center items-center md:items-center w-full lg:mx-4">
+      <section className="flex flex-col justify-center items-center md:items-center w-full lg:mx-4 my-10 lg:my-16">
         <ScaleIn duration={0.7} className="text-center">
-          <h2 className="mb-1 text-[36px] sm:text-[42px] lg:text-[48px] italic font-extrabold leading-[120%] font-['Urbanist'] text-[#2C2C2C] drop-shadow-sm">
+          <h2 className="mb-1 text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
             Give Nourishment, <br className="sm:hidden" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Give Knowledge</span>, Give Hope
           </h2>
-          <p className="text-[16px] sm:text-[18px] lg:text-[20px] italic font-medium leading-[160%] text-gray-600 font-['Urbanist'] mt-4 drop-shadow-sm max-w-2xl mx-auto">
+          <p className="text-[16px] sm:text-[18px] lg:text-[20px] italic font-medium leading-[160%] text-gray-600 mt-4 drop-shadow-sm max-w-2xl mx-auto">
             <span className="text-orange-500 font-bold px-1 py-0.5 rounded-md bg-orange-50 inline-block mr-1">
               Decide the path
             </span>

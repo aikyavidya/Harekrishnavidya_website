@@ -646,11 +646,11 @@ export default function DonationPage() {
       </div>
 
       {/* Text Section for background color keep #f1f8e9 as optional   */}
-      <div className="mt-4 md:mt-0 bg-[#e0f7fa] text-gray-900 text-center py-3 rounded-2xl  max-w-6xl mx-auto">
-        <h3 className="text-2xl font-bold">
+      <div className="mt-4 md:mt-0 bg-[#e0f7fa] text-gray-900 text-center py-3 px-3 md:px-0 rounded-2xl overflow-hidden max-w-6xl mx-4 min-[1025px]:mx-auto">
+        <h3 className="text-lg md:text-2xl font-bold">
           Our Trustee Shri Madhu Pandit Dasa
         </h3>
-        <p className="text-md mt-1">
+        <p className="text-sm md:text-base mt-1">
           Striving to please spiritual Master Srila Prabhupada, a true visionary
           who wanted to see a hunger free world.
         </p>
@@ -1058,11 +1058,11 @@ export default function DonationPage() {
       <div className="bg-[#EDF2F7]">
         <section className="mt-5 px-4 md:px-10 lg:px-20">
           <div className="flex items-center justify-center mt-2">
-            <ScaleIn className="flex flex-col items-center gap-4 w-[523px] text-center text-[--text-dark-charcoal] font-['Urbanist']">
-              <h1 className="text-2xl mt-2 lg:text-[40px] font-extrabold leading-[120%]">
-                A glimpse into the lives you&#39;ve <br />
-                touched with your{" "}
-                <span className="text-[#FF9C5A] italic">kindness</span>
+            <ScaleIn className="flex flex-col items-center gap-4 w-full max-w-4xl px-4 text-center text-[--text-dark-charcoal]">
+              <h1 className="mt-2 text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
+                A glimpse into the lives <br className="hidden md:block" />
+                you&#39;ve touched with your{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
               </h1>
             </ScaleIn>
           </div>
