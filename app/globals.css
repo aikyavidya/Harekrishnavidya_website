@@ -383,5 +383,43 @@ body {
 }
 .swiper-wrapper {
   align-items: center !important;
+  border-radius: 1.5rem;
 }
 
+/* COVERFLOW CARDS - Keep rounded corners during transition */
+.swiper-slide {
+  border-radius: 1.5rem !important;
+  overflow: hidden !important;
+}
+
+.swiper-slide * {
+  border-radius: inherit;
+}
+
+/* COVERFLOW-ARROWS-REVERT: delete this entire block to revert */
+/* Desktop only */
+@media (min-width: 1024px) {
+  .coverflow-carousel .swiper-pagination { display: none !important; }
+  .desktop-pagination-container { display: flex !important; justify-content: center; align-items: center; gap: 8px; }
+
+  /* Style the dots themselves */
+  .desktop-pagination-container .swiper-pagination-bullet {
+    height: 0.375rem !important;
+    width: 0.375rem !important;
+    background-color: #d1d5db !important;
+    border-radius: 9999px !important;
+    transition-property: all !important;
+    transition-duration: 300ms !important;
+    opacity: 1 !important;
+    margin: 0 !important;
+  }
+  
+  .desktop-pagination-container .swiper-pagination-bullet-active {
+    width: 1rem !important;
+    background-color: #1f2937 !important;
+  }
+}
+/* Mobile/Tablet only */
+@media (max-width: 1023px) {
+  .desktop-pagination-container { display: none !important; }
+}

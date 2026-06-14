@@ -664,78 +664,7 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Gallery Section Header - Shared */}
-      <div className="h-[10vh] flex items-center justify-center my-10">
-        <section className="px-2">
-          <div className="flex items-center justify-center bg-white mt-8 mb-4">
-            <div className="flex flex-col items-center gap-4 w-full max-w-4xl px-4 text-center text-[--text-dark-charcoal]">
-              <h1 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
-                A glimpse into the lives <br className="hidden md:block" />
-                you&apos;ve touched with your{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
-              </h1>
-            </div>
-          </div>
-        </section>
-      </div>
 
-      {/* Gallery Section - Different layouts for mobile/desktop */}
-      {isMobile ? (
-        <section className="flex flex-col justify-center mx-10 mt-10 bg-white">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {galleryImages.slice(2).map((image, index) => (
-              <div key={index + 2}>
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  className=" object-cover rounded-2xl hover:scale-105 transition duration-300 ease-in-out shadow-xl cursor-pointer"
-                  onClick={() => setZoomed(index + 2)}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Zoomed Overlay for mobile */}
-          {zoomed !== null && (
-            <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center transition-all duration-300">
-              <button
-                className="absolute top-8 right-8 text-white text-4xl bg-black/60 rounded-full p-2 hover:bg-black/80 transition"
-                onClick={() => setZoomed(null)}
-                aria-label="Close"
-              >
-                &times;
-              </button>
-              <Image
-                src={galleryImages[zoomed].src}
-                alt={galleryImages[zoomed].alt}
-                className="rounded-2xl shadow-2xl object-contain  transition-transform duration-300 scale-100"
-              />
-            </div>
-          )}
-        </section>
-      ) : (
-        <section className="px-4 py-6 bg-white flex justify-center">
-          <div className="max-w-6xl w-full text-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {galleryImages.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative group overflow-hidden rounded-md"
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    // width={400}
-                    // height={400}
-                    className=" object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/10 bg-opacity-60 group-hover:bg-opacity-0 transition-all duration-300"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
     </>
   );
 }

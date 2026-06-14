@@ -657,7 +657,7 @@ export default function DonationPage() {
       </div>
       {/* Quick Access Navigation */}
 
-      <div id="donate" className="bg-white text-center py-8 px-4">
+      <div id="annadan-seva" className="bg-white text-center py-8 px-4">
         <button className="bg-gray-200 text-black font-semibold px-4 py-2 rounded-full mb-4 text-[36px]">
           ✧ Annadan Seva
         </button>

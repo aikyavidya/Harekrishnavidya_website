@@ -96,14 +96,14 @@ export default function HeroSection() {
                 </div>
               ))}
             </Slider> */}
-            <div className="w-full outline-none">
+            <Link href="/donation#annadan-seva" className="cursor-pointer block w-full outline-none">
               <img
                 src={carouselSlides[0]}
                 alt="Hero Banner"
                 className="w-full h-auto block"
               // className="w-full max-h-[80vh] object-contain mx-auto"
               />
-            </div>
+            </Link>
           </div>
 
           {/* Container for cards */}
@@ -210,15 +210,13 @@ export default function HeroSection() {
         <section
           className="hidden md:block relative text-white w-full overflow-hidden"
         >
-          <div
-            className="w-full md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto"
-          >
+          <Link href="/donation#annadan-seva" className="cursor-pointer block w-full md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto">
             <img
               src={carouselSlides[0]}
               alt="Hero Banner"
               className="w-full h-full md:object-cover md:object-center min-[1025px]:object-fill block"
             />
-          </div>
+          </Link>
           <style dangerouslySetInnerHTML={{
             __html: `
             .slick-dots li.slick-active .slick-custom-dot {
@@ -330,7 +328,7 @@ export default function HeroSection() {
             Give Nourishment, <br className="sm:hidden" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Give Knowledge</span>, Give Hope
           </h2>
-          <p className="text-[16px] sm:text-[18px] lg:text-[20px] italic font-medium leading-[160%] text-gray-600 mt-4 drop-shadow-sm max-w-2xl mx-auto">
+          <p className="text-[16px] sm:text-[18px] lg:text-[20px] font-medium leading-[160%] text-gray-600 mt-4 drop-shadow-sm max-w-2xl mx-auto">
             <span className="text-orange-500 font-bold px-1 py-0.5 rounded-md bg-orange-50 inline-block mr-1">
               Decide the path
             </span>
