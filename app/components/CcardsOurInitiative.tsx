@@ -48,7 +48,7 @@ export default function ServicesSection() {
       id: 4,
       title: "Health & Hygiene",
       icon: Heart,
-      image: "/GalleryImages/Yoga & Wellness/4181f04c-91d0-4f60-953d-40a728b9aede.jpg",
+      image: "/images/4181f04c-91d0-4f60-953d-40a728b9aede.jpg",
       objectPosition: "center center",
       items: ["Healthcare", "Basic Hygiene", "Cleanliness"]
     },
