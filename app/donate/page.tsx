@@ -168,15 +168,15 @@ function DonatePageContent() {
     }
   };
 
-  // Check if 80G should be disabled (amount < 1)
-  const is80GDisabled = getCurrentDonationAmount() < 1;
+  // Check if 80G should be disabled (amount < 500)
+  const is80GDisabled = getCurrentDonationAmount() < 500;
 
   // Effect to uncheck 80G if amount becomes less than 500
   useEffect(() => {
     const currentAmount = isAnyAmountDonation
       ? parseFloat(formData.customAmount?.replace(/[^\d.]/g, "") || "0")
       : parseFloat(amount || "0");
-    if (!isNaN(currentAmount) && currentAmount < 1 && formData.wants80G) {
+    if (!isNaN(currentAmount) && currentAmount < 500 && formData.wants80G) {
       setFormData((prev) => ({
         ...prev,
         wants80G: false,
@@ -477,13 +477,13 @@ function DonatePageContent() {
       }
     }
 
-    // Validate 80G eligibility (amount must be >= 1)
+    // Validate 80G eligibility (amount must be >= 500)
     if (formData.wants80G) {
       const currentAmount = getCurrentDonationAmount();
-      if (currentAmount < 1) {
+      if (currentAmount < 500) {
         // Show error on customAmount if it's a custom amount donation, otherwise show general error
         if (isAnyAmountDonation) {
-          newErrors.customAmount = "80G Tax Exemption is available only for donations of ₹1 or more";
+          newErrors.customAmount = "80G Tax Exemption is available only for donations of ₹500 or more";
         }
         // Uncheck 80G if amount is less than 500
         setFormData((prev) => ({
@@ -1196,7 +1196,7 @@ function DonatePageContent() {
                   I wish to receive 80G Tax Exemption
                   {is80GDisabled && (
                     <p className="text-[11px] text-red-600 font-semibold mt-1">
-                      ⚠️ 80G Tax Exemption is available only for donations of ₹1 or more.
+                      ⚠️ 80G Tax Exemption is available only for donations of ₹500 or more.
                     </p>
                   )}
                   <p className="text-[11px] text-black font-semibold mt-1">
