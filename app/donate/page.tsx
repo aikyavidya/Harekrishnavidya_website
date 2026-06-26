@@ -179,10 +179,10 @@ function DonatePageContent() {
   };
 
   // Check if 80G should be disabled (amount < 500)
-  const is80GDisabled = getCurrentDonationAmount() < 500;
+  const is80GDisabled = getCurrentDonationAmount() < 1;
 
   // Check if Maha Prasadam should be disabled (amount < 300)
-  const isMahaPrasadamDisabled = getCurrentDonationAmount() < 300;
+  const isMahaPrasadamDisabled = getCurrentDonationAmount() < 1;
 
   // Effect to uncheck 80G or Maha Prasadam if amount becomes less than their respective thresholds
   useEffect(() => {
@@ -191,7 +191,7 @@ function DonatePageContent() {
       : parseFloat(amount || "0");
       
     if (!isNaN(currentAmount)) {
-      if (currentAmount < 500 && formData.wants80G) {
+      if (currentAmount < 1 && formData.wants80G) {
         setFormData((prev) => ({
           ...prev,
           wants80G: false,
@@ -199,7 +199,7 @@ function DonatePageContent() {
         }));
       }
       
-      if (currentAmount < 300 && formData.wantsMahaPrasadam) {
+      if (currentAmount < 1 && formData.wantsMahaPrasadam) {
         setFormData((prev) => ({
           ...prev,
           wantsMahaPrasadam: false,
@@ -509,15 +509,15 @@ function DonatePageContent() {
       }
     }
 
-    // Validate 80G eligibility (amount must be >= 500)
+    // Validate 80G eligibility (amount must be >= 1)
     if (formData.wants80G) {
       const currentAmount = getCurrentDonationAmount();
-      if (currentAmount < 500) {
+      if (currentAmount < 1) {
         // Show error on customAmount if it's a custom amount donation, otherwise show general error
         if (isAnyAmountDonation) {
-          newErrors.customAmount = "80G Tax Exemption is available only for donations of ₹500 or more";
+          newErrors.customAmount = "80G Tax Exemption is available only for donations of ₹1 or more";
         }
-        // Uncheck 80G if amount is less than 500
+        // Uncheck 80G if amount is less than 1
         setFormData((prev) => ({
           ...prev,
           wants80G: false,
@@ -1280,7 +1280,7 @@ function DonatePageContent() {
                     I would like to receive Maha Prasadam (Only within India)
                     {isMahaPrasadamDisabled && (
                       <p className="text-[11px] text-red-600 font-semibold mt-1">
-                        ⚠️ Maha Prasadam is available only for donations of ₹300 or more.
+                        ⚠️ Maha Prasadam is available only for donations of ₹1 or more.
                       </p>
                     )}
                   </span>
@@ -1299,7 +1299,7 @@ function DonatePageContent() {
                   I wish to receive 80G Tax Exemption
                   {is80GDisabled && (
                     <p className="text-[11px] text-red-600 font-semibold mt-1">
-                      ⚠️ 80G Tax Exemption is available only for donations of ₹500 or more.
+                      ⚠️ 80G Tax Exemption is available only for donations of ₹1 or more.
                     </p>
                   )}
                   <p className="text-[11px] text-black font-semibold mt-1">
