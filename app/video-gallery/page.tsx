@@ -285,7 +285,7 @@ const VideoGallery = () => {
                                     className="bg-white text-[#FF7F2A] hover:bg-white/90 shadow-2xl shadow-orange-950/20 text-lg h-14 px-6 rounded-2xl font-bold group"
                                     asChild
                                 >
-                                    <Link href={"/donation#donate"}>
+                                    <Link href={"/donation#annadan-seva"}>
                                         <Heart className="w-3 h-3 mr-2 fill-[#FF7F2A] group-hover:scale-110 transition-transform" />
                                         Donate
                                     </Link>
@@ -743,7 +743,7 @@ const VideoGallery = () => {
                             whileTap={{ scale: 0.95 }}
                         >
                             <Link
-                                href="/donation#donate"
+                                href="/donation#annadan-seva"
                                 className="
     h-11 sm:h-12
     px-4 sm:px-5

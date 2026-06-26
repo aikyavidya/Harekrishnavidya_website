@@ -36,7 +36,7 @@ const tabs: TabData[] = [
     bgColor: "#fed7aa", // orange-200
     containerBgColor: "bg-orange-100/50",
     mainBgClass: "lg:bg-orange-50",
-    link: "/donation#donate",
+    link: "/donation#annadan-seva",
     themeClass: "text-orange-500"
   },
   {
@@ -49,7 +49,7 @@ const tabs: TabData[] = [
     bgColor: "#bfdbfe", // blue-200
     containerBgColor: "bg-blue-100/50",
     mainBgClass: "lg:bg-blue-50",
-    link: "/donation#donate",
+    link: "/donation#annadan-seva",
     themeClass: "text-blue-500"
   },
   {
@@ -62,7 +62,7 @@ const tabs: TabData[] = [
     bgColor: "#bbf7d0", // green-200
     containerBgColor: "bg-green-100/50",
     mainBgClass: "lg:bg-green-50",
-    link: "/donation#donate",
+    link: "/donation#annadan-seva",
     themeClass: "text-green-500"
   }
 ];

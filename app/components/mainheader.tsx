@@ -385,7 +385,7 @@ export default function Header() {
 
         {/* Right: Donate Now Button */}
         <div className="flex items-center justify-end gap-2 min-[1025px]:gap-4">
-          <Link href={appendUTMToUrl("/donation#donate")} className="hidden md:block">
+          <Link href={appendUTMToUrl("/donation#annadan-seva")} className="hidden md:block">
             <button className="flex items-center gap-2 md:px-3 md:py-1.5 min-[1025px]:px-5 min-[1025px]:py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium md:text-xs min-[1025px]:text-base">
               <FaHeart size={14} /> Donate Now
             </button>
@@ -545,7 +545,7 @@ export default function Header() {
               className="mt-4 pb-2"
             >
               <Link
-                href={appendUTMToUrl("/donation#donate")}
+                href={appendUTMToUrl("/donation#annadan-seva")}
                 onClick={() => setIsOpen(false)}
               >
                 <button className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium">

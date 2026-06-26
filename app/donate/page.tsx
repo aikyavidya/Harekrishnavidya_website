@@ -15,6 +15,7 @@ interface FormData {
   customAmount?: string;
   wantsMahaPrasadam: boolean;
   wants80G: boolean;
+  areaOfStay: string;
   address: string;
   houseApartment: string;
   village: string;
@@ -23,6 +24,8 @@ interface FormData {
   pinCode: string;
   landmark: string;
   panNumber: string;
+  locality: string;
+  country: string;
 }
 
 interface FormErrors {
@@ -31,6 +34,7 @@ interface FormErrors {
   phoneNumber?: string;
   citizenType?: string;
   customAmount?: string;
+  areaOfStay?: string;
   address?: string;
   houseApartment?: string;
   village?: string;
@@ -39,6 +43,8 @@ interface FormErrors {
   pinCode?: string;
   landmark?: string;
   panNumber?: string;
+  locality?: string;
+  country?: string;
 }
 
 import {
@@ -136,6 +142,7 @@ function DonatePageContent() {
   const isAnyAmountDonation =
     !amount && purpose && purpose.includes("Any Amount");
 
+  const [localityOptions, setLocalityOptions] = useState<string[]>([]);
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
@@ -145,6 +152,7 @@ function DonatePageContent() {
     customAmount: "0",
     wantsMahaPrasadam: false,
     wants80G: false,
+    areaOfStay: "",
     address: "",
     houseApartment: "",
     village: "",
@@ -153,6 +161,8 @@ function DonatePageContent() {
     pinCode: "",
     landmark: "",
     panNumber: "",
+    locality: "",
+    country: "",
   });
 
   // Calculate current donation amount
@@ -171,19 +181,32 @@ function DonatePageContent() {
   // Check if 80G should be disabled (amount < 500)
   const is80GDisabled = getCurrentDonationAmount() < 500;
 
-  // Effect to uncheck 80G if amount becomes less than 500
+  // Check if Maha Prasadam should be disabled (amount < 300)
+  const isMahaPrasadamDisabled = getCurrentDonationAmount() < 300;
+
+  // Effect to uncheck 80G or Maha Prasadam if amount becomes less than their respective thresholds
   useEffect(() => {
     const currentAmount = isAnyAmountDonation
       ? parseFloat(formData.customAmount?.replace(/[^\d.]/g, "") || "0")
       : parseFloat(amount || "0");
-    if (!isNaN(currentAmount) && currentAmount < 500 && formData.wants80G) {
-      setFormData((prev) => ({
-        ...prev,
-        wants80G: false,
-        panNumber: "", // Clear PAN number when 80G is unchecked
-      }));
+      
+    if (!isNaN(currentAmount)) {
+      if (currentAmount < 500 && formData.wants80G) {
+        setFormData((prev) => ({
+          ...prev,
+          wants80G: false,
+          panNumber: "", // Clear PAN number when 80G is unchecked
+        }));
+      }
+      
+      if (currentAmount < 300 && formData.wantsMahaPrasadam) {
+        setFormData((prev) => ({
+          ...prev,
+          wantsMahaPrasadam: false,
+        }));
+      }
     }
-  }, [formData.customAmount, amount, formData.wants80G, isAnyAmountDonation]);
+  }, [formData.customAmount, amount, formData.wants80G, formData.wantsMahaPrasadam, isAnyAmountDonation]);
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -418,6 +441,9 @@ function DonatePageContent() {
     } else if (!validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
+    if (!formData.areaOfStay.trim()) {
+      newErrors.areaOfStay = "Area of Stay is required";
+    }
 
     if (!formData.phoneNumber || formData.phoneNumber === 0) {
       newErrors.phoneNumber = "Phone number is required";
@@ -475,6 +501,12 @@ function DonatePageContent() {
       } else if (!/^\d{6}$/.test(formData.pinCode)) {
         newErrors.pinCode = "PIN code must be 6 digits";
       }
+      if (!formData.locality.trim()) {
+        newErrors.locality = "Locality/Area is required";
+      }
+      if (!formData.country.trim()) {
+        newErrors.country = "Country is required";
+      }
     }
 
     // Validate 80G eligibility (amount must be >= 500)
@@ -502,6 +534,37 @@ function DonatePageContent() {
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const fetchPincodeDetails = async (pincode: string) => {
+    try {
+      const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+      const data = await response.json();
+
+      if (data && data[0] && data[0].Status === "Success") {
+        const postOffices = data[0].PostOffice;
+        if (postOffices && postOffices.length > 0) {
+          const firstPO = postOffices[0];
+          
+          handleInputChange({ target: { name: 'village', value: firstPO.Block || firstPO.District || firstPO.Region } } as any);
+          handleInputChange({ target: { name: 'district', value: firstPO.District } } as any);
+          handleInputChange({ target: { name: 'state', value: firstPO.State } } as any);
+          handleInputChange({ target: { name: 'country', value: firstPO.Country } } as any);
+
+          const areaNames = postOffices.map((po: any) => po.Name);
+          setLocalityOptions(areaNames);
+
+          if (areaNames.length > 0) {
+            handleInputChange({ target: { name: 'locality', value: areaNames[0] } } as any);
+          }
+        }
+      } else {
+        setLocalityOptions([]);
+      }
+    } catch (error) {
+      console.error("Error fetching pincode details:", error);
+      setLocalityOptions([]);
+    }
   };
 
   const handleInputChange = (
@@ -532,6 +595,12 @@ function DonatePageContent() {
       // Only allow 6 digits for PIN code
       const numericValue = value.replace(/\D/g, "").slice(0, 6);
       setFormData((prev) => ({ ...prev, [name]: numericValue }));
+      
+      if (numericValue.length === 6) {
+        fetchPincodeDetails(numericValue);
+      } else if (numericValue.length < 6) {
+        setLocalityOptions([]);
+      }
     } else if (name === "panNumber") {
       // Format PAN number (uppercase, alphanumeric only)
       const formattedValue = value.replace(/[^A-Za-z0-9]/g, "").toUpperCase().slice(0, 10);
@@ -836,9 +905,9 @@ function DonatePageContent() {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const errorFieldIds = [
-            'customAmount', 'fullName', 'phoneNumber', 'email',
+            'customAmount', 'fullName', 'phoneNumber', 'email', 'areaOfStay',
             'citizenType', 'houseApartment', 'village', 'district',
-            'state', 'pinCode', 'panNumber'
+            'state', 'pinCode', 'panNumber', 'locality', 'country'
           ];
           for (const fieldId of errorFieldIds) {
             const el = document.getElementById(fieldId);
@@ -886,6 +955,7 @@ function DonatePageContent() {
         // Address fields for Maha Prasadam and 80G
         wantsMahaPrasadam: formData.wantsMahaPrasadam,
         wants80G: formData.wants80G,
+        areaOfStay: formData.areaOfStay,
         address: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.address : null,
         houseApartment: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.houseApartment : null,
         village: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.village : null,
@@ -893,7 +963,9 @@ function DonatePageContent() {
         state: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.state : null,
         pinCode: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.pinCode : null,
         landmark: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.landmark : null,
-        panNumber: formData.wants80G ? formData.panNumber : null
+        panNumber: formData.wants80G ? formData.panNumber : null,
+        locality: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.locality : null,
+        country: (formData.wantsMahaPrasadam || formData.wants80G) ? formData.country : null
       };
 
       console.log('Submitting donation form:', donationData);
@@ -951,39 +1023,32 @@ function DonatePageContent() {
 
       <div className="min-h-screen bg-white flex items-center justify-center pt-4 pb-9 px-4">
         <div
-          className={`bg-[#FFCF70] max-w-xl w-full rounded-lg px-6 py-10 shadow-xl text-center`}
+          className={`max-w-4xl w-full rounded-lg px-6 py-10 text-center`}
         >
-          {/* Seva Tags */}
-          <div className="flex flex-col items-center justify-center mb-1">
-            {/* SEVA NAME */}
-            <div className="mb-4 text-center">
-              <div className="bg-blue-900 text-white text-sm font-semibold px-4 py-2 rounded-lg inline-block">
-                SEVA NAME
+          {/* Summary Box */}
+          <div className="bg-gray-100 rounded-xl shadow-md border border-gray-100 p-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
+              {/* SEVA NAME */}
+              <div className="py-2 md:py-0">
+                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">SEVA NAME</p>
+                <p className="font-bold text-gray-900">{purpose || "General Donation"}</p>
               </div>
-              <h2 className="text-lg font-semibold text-black mt-2">
-                {purpose || "General Donation"}
-              </h2>
-            </div>
-
-            {/* SEVA TYPE */}
-            <div className="mb-4 text-center">
-              <div className="bg-blue-900 text-white text-sm font-semibold px-4 py-2 rounded-lg inline-block mb-2">
-                SEVA TYPE
+              {/* SEVA TYPE */}
+              <div className="py-2 md:py-0">
+                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">SEVA TYPE</p>
+                <p className="font-bold text-gray-900">{sevaType}</p>
               </div>
-              <p className="text-lg font-bold text-black">{sevaType}</p>
+              {/* SEVA AMOUNT */}
+              <div className="py-2 md:py-0">
+                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">SEVA AMOUNT</p>
+                <p className="font-bold text-[#D32F2F] text-xl">
+                  {isAnyAmountDonation
+                    ? `₹ ${formatAmount(formData.customAmount ?? '0')}`
+                    : `₹ ${amount ? formatAmount(amount) : "0"}`
+                  }
+                </p>
+              </div>
             </div>
-          </div>
-
-          <div className="mb-6">
-            <div className="bg-blue-900 text-white text-sm font-semibold px-4 py-2 rounded-lg inline-block mb-2">
-              SEVA AMOUNT
-            </div>
-            <p className="text-xl font-bold text-black">
-              {isAnyAmountDonation
-                ? `₹ ${formatAmount(formData.customAmount ?? '0')}`
-                : `₹ ${amount ? formatAmount(amount) : "0"}`
-              }
-            </p>
           </div>
 
           {/* ==================================================================== */}
@@ -1011,6 +1076,7 @@ function DonatePageContent() {
                   customAmount: "0",
                   wantsMahaPrasadam: false,
                   wants80G: false,
+                  areaOfStay: "",
                   address: "",
                   houseApartment: "",
                   village: "",
@@ -1019,6 +1085,8 @@ function DonatePageContent() {
                   pinCode: "",
                   landmark: "",
                   panNumber: "",
+                  locality: "",
+                  country: "",
                 });
               }}
             />
@@ -1061,78 +1129,105 @@ function DonatePageContent() {
               </div>
             )}
 
-            {/* Donor Name */}
-            <div>
-              <label className="block text-sm font-bold text-black mb-1">
-                Donor Name<span className="text-red-600">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  placeholder="Your Name"
-                  required={true}
-                  className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.fullName ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
-                />
+            {/* Normal Details Grid */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Donor Name */}
+              <div>
+                <label className="block text-sm font-bold text-black mb-1">
+                  Donor Name<span className="text-red-600">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="Your Name"
+                    required={true}
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.fullName ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                  />
+                  {errors.fullName && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  )}
+                </div>
                 {errors.fullName && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  <p className="text-red-600 text-sm mt-1">{errors.fullName}</p>
                 )}
               </div>
-              {errors.fullName && (
-                <p className="text-red-600 text-sm mt-1">{errors.fullName}</p>
-              )}
-            </div>
 
-            {/* Mobile Number */}
-            <div>
-              <label className="block text-sm font-bold text-black mb-1">
-                Mobile Number<span className="text-red-600">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="phoneNumber"
-                  value={formData.phoneNumber === 0 ? "" : formData.phoneNumber}
-                  onChange={handleInputChange}
-                  placeholder="Your Phone Number"
-                  min={1000000000}
-                  max={9999999999}
-                  required={true}
-                  className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${errors.phoneNumber ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
-                />
+              {/* Mobile Number */}
+              <div>
+                <label className="block text-sm font-bold text-black mb-1">
+                  Mobile Number<span className="text-red-600">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber === 0 ? "" : formData.phoneNumber}
+                    onChange={handleInputChange}
+                    placeholder="Your Phone Number"
+                    min={1000000000}
+                    max={9999999999}
+                    required={true}
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${errors.phoneNumber ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                  />
+                  {errors.phoneNumber && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  )}
+                </div>
                 {errors.phoneNumber && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  <p className="text-red-600 text-sm mt-1">{errors.phoneNumber}</p>
                 )}
               </div>
-              {errors.phoneNumber && (
-                <p className="text-red-600 text-sm mt-1">{errors.phoneNumber}</p>
-              )}
-            </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-bold text-black mb-1">
-                E-Mail ID<span className="text-red-600">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required={true}
-                  placeholder="Your Email"
-                  className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.email ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
-                />
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-bold text-black mb-1">
+                  E-Mail ID<span className="text-red-600">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required={true}
+                    placeholder="Your Email"
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.email ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                  />
+                  {errors.email && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  )}
+                </div>
                 {errors.email && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  <p className="text-red-600 text-sm mt-1">{errors.email}</p>
                 )}
               </div>
-              {errors.email && (
-                <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-              )}
+
+              {/* Area of Stay */}
+              <div>
+                <label className="block text-sm font-bold text-black mb-1">
+                  Area of Stay<span className="text-red-600">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="areaOfStay"
+                    value={formData.areaOfStay}
+                    onChange={handleInputChange}
+                    required={true}
+                    placeholder="Your city or area"
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.areaOfStay ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                  />
+                  {errors.areaOfStay && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                  )}
+                </div>
+                {errors.areaOfStay && (
+                  <p className="text-red-600 text-sm mt-1">{errors.areaOfStay}</p>
+                )}
+              </div>
             </div>
 
             {/* Payment Option */}
@@ -1172,15 +1267,23 @@ function DonatePageContent() {
             {/* Checkboxes */}
             <div className="text-sm space-y-2">
               {formData.citizenType === "indian" && (
-                <label className="flex items-center gap-2">
+                <label className={`flex items-start gap-2 ${isMahaPrasadamDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}>
                   <input
                     type="checkbox"
                     name="wantsMahaPrasadam"
                     checked={formData.wantsMahaPrasadam}
                     onChange={handleInputChange}
-                    className="accent-blue-700"
+                    disabled={isMahaPrasadamDisabled}
+                    className="accent-blue-700 mt-1 disabled:cursor-not-allowed"
                   />
-                  I would like to receive Maha Prasadam (Only within India)
+                  <span>
+                    I would like to receive Maha Prasadam (Only within India)
+                    {isMahaPrasadamDisabled && (
+                      <p className="text-[11px] text-red-600 font-semibold mt-1">
+                        ⚠️ Maha Prasadam is available only for donations of ₹300 or more.
+                      </p>
+                    )}
+                  </span>
                 </label>
               )}
               <label className={`flex items-start gap-2 ${is80GDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}>
@@ -1211,11 +1314,36 @@ function DonatePageContent() {
 
             {/* Address Fields - Show when Maha Prasadam OR 80G is selected */}
             {((formData.wantsMahaPrasadam && formData.citizenType === "indian") || formData.wants80G) && (
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="mt-6 p-4 rounded-lg">
                 <h3 className="text-lg font-semibold text-blue-900 mb-4 text-center">
                   📍 Address
                 </h3>
-                <div className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+
+                  {/* PAN Number Field - Show only when 80G is selected */}
+                  {(formData.wantsMahaPrasadam || formData.wants80G) && (
+                    <div>
+                      <label className="block text-sm font-bold text-black mb-1">
+                        PAN Number<span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="panNumber"
+                        value={formData.panNumber}
+                        onChange={handleInputChange}
+                        placeholder="Enter your PAN number (e.g., ABCDE1234F)"
+                        maxLength={10}
+                        required={formData.wants80G}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white uppercase ${errors.panNumber ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
+                      />
+                      {errors.panNumber && (
+                        <p className="text-red-600 text-sm mt-1">{errors.panNumber}</p>
+                      )}
+                      <p className="text-xs text-gray-600 mt-1">
+                        Format: 5 letters + 4 numbers + 1 letter (e.g., ABCDE1234F)
+                      </p>
+                    </div>
+                  )}
 
                   {/* Address Line 1 */}
                   <div>
@@ -1266,27 +1394,63 @@ function DonatePageContent() {
                     )}
                   </div>
 
-                  {/* City/Village */}
+                  {/* PIN Code */}
                   <div>
                     <label className="block text-sm font-bold text-black mb-1">
-                      City/Village<span className="text-red-600">*</span>
+                      PIN Code<span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
                       <input
+                        id="pinCode"
                         type="text"
-                        name="village"
-                        value={formData.village}
+                        inputMode="numeric"
+                        name="pinCode"
+                        value={formData.pinCode}
                         onChange={handleInputChange}
-                        placeholder="City or Village name"
+                        placeholder="6-digit PIN code"
+                        maxLength={6}
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.village ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.pinCode ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                       />
-                      {errors.village && (
+                      {errors.pinCode && (
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
                       )}
                     </div>
-                    {errors.village && (
-                      <p className="text-red-600 text-sm mt-1">{errors.village}</p>
+                    {errors.pinCode && (
+                      <p className="text-red-600 text-sm mt-1">{errors.pinCode}</p>
+                    )}
+                  </div>
+
+                  {/* Locality/Area */}
+                  <div>
+                    <label className="block text-sm font-bold text-black mb-1">
+                      Locality/Area<span className="text-red-600">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        name="locality"
+                        value={formData.locality}
+                        onChange={handleInputChange}
+                        required={formData.wantsMahaPrasadam || formData.wants80G}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.locality ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
+                      >
+                        {localityOptions.length === 0 ? (
+                          <option value="">Enter PIN code first</option>
+                        ) : (
+                          <>
+                            <option value="">Select Locality/Area</option>
+                            {localityOptions.map((area, index) => (
+                              <option key={index} value={area}>{area}</option>
+                            ))}
+                          </>
+                        )}
+                      </select>
+                      {errors.locality && (
+                        <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                      )}
+                    </div>
+                    {errors.locality && (
+                      <p className="text-red-600 text-sm mt-1">{errors.locality}</p>
                     )}
                   </div>
 
@@ -1375,63 +1539,30 @@ function DonatePageContent() {
                     )}
                   </div>
 
-                  {/* PIN Code */}
+                  {/* Country */}
                   <div>
                     <label className="block text-sm font-bold text-black mb-1">
-                      PIN Code<span className="text-red-600">*</span>
+                      Country<span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
                       <input
-                        id="pinCode"
                         type="text"
-                        inputMode="numeric"
-                        name="pinCode"
-                        value={formData.pinCode}
+                        name="country"
+                        value={formData.country}
                         onChange={handleInputChange}
-                        placeholder="6-digit PIN code"
-                        maxLength={6}
+                        placeholder="Country"
                         required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.pinCode ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.country ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                       />
-                      {errors.pinCode && (
+                      {errors.country && (
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
                       )}
                     </div>
-                    {errors.pinCode && (
-                      <p className="text-red-600 text-sm mt-1">{errors.pinCode}</p>
+                    {errors.country && (
+                      <p className="text-red-600 text-sm mt-1">{errors.country}</p>
                     )}
                   </div>
 
-                </div>
-              </div>
-            )}
-
-            {/* PAN Number Field - Show only when 80G is selected */}
-            {formData.wants80G && (
-              <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                <h3 className="text-lg font-semibold text-green-900 mb-4 text-center">
-                  🆔 PAN Details for 80G Tax Exemption
-                </h3>
-                <div>
-                  <label className="block text-sm font-bold text-black mb-1">
-                    PAN Number<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="panNumber"
-                    value={formData.panNumber}
-                    onChange={handleInputChange}
-                    placeholder="Enter your PAN number (e.g., ABCDE1234F)"
-                    maxLength={10}
-                    required={formData.wants80G}
-                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white uppercase ${errors.panNumber ? 'border-2 border-[#D32F2F]' : 'border-gray-300'}`}
-                  />
-                  {errors.panNumber && (
-                    <p className="text-red-600 text-sm mt-1">{errors.panNumber}</p>
-                  )}
-                  <p className="text-xs text-gray-600 mt-1">
-                    Format: 5 letters + 4 numbers + 1 letter (e.g., ABCDE1234F)
-                  </p>
                 </div>
               </div>
             )}

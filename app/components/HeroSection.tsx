@@ -17,7 +17,7 @@ import info from "../../public/images/info.png";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+// import Slider from "react-slick";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useRef } from "react";
@@ -177,7 +177,7 @@ export default function HeroSection() {
                   hope to those who need it most.
                 </p>
                 <div className="flex justify-evenly    gap-2 mt-4">
-                  <Link href={appendUTMToUrl("/donation")}>
+                  <Link href={appendUTMToUrl("/donation#annadan-seva")}>
                     <button className="btn-interactive flex flex-1 items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md animate-pulse-glow">
                       <Image
                         src={Heart}
@@ -289,7 +289,7 @@ export default function HeroSection() {
                   hope to those who need it most.
                 </p>
                 <div className="flex flex-col sm:flex-row sm:justify-center md:justify-start md:space-x-4 gap-2 mt-4">
-                  <Link href={appendUTMToUrl("/donation")}>
+                  <Link href={appendUTMToUrl("/donation#annadan-seva")}>
                     <button className="btn-interactive w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md animate-pulse-glow">
                       <Image
                         src={Heart}
