@@ -153,11 +153,9 @@ const Campaigns = () => {
                 className="group hover:shadow-lg transition-all duration-500 hover:-translate-y-2 border-2 border-primary/30 overflow-hidden"
               >
                 <div className="relative h-72 overflow-hidden">
-                  <Image
+                  <img
                     src={campaign.image}
                     alt={campaign.title}
-                    width={400}
-                    height={288}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
