@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import Image from "next/image";
+
 import {
   Heart,
   TrendingUp,
@@ -268,11 +268,9 @@ const Campaigns = () => {
                   >
                     {/* IMAGE + PROGRESS */}
                     <div className="relative h-56 overflow-hidden">
-                      <Image
+                      <img
                         src={campaign.image}
                         alt={campaign.title}
-                        width={400}
-                        height={224}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
 

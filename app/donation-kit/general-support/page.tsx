@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import { Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Shield, CheckCircle } from "lucide-react";
@@ -351,11 +351,9 @@ export default function Page() {
                 <div className="relative overflow-hidden shadow-xl bg-primary-200">
 
                     {/* Background Image */}
-                    <Image
+                    <img
                         src={data.hero.backgroundImage}
                         alt={data.hero.title}
-                        width={1200}
-                        height={420}
                         className="w-full h-[260px] sm:h-[330px] md:h-[420px] object-cover"
                     />
 
@@ -408,10 +406,8 @@ export default function Page() {
 
                     {/* LEFT IMAGE CARD */}
                     <div className="relative rounded-xl overflow-hidden min-h-[300px]">
-                        <Image
+                        <img
                             src={data.details.image}
-                            width={700}
-                            height={500}
                             alt="Donation Card"
                             className="w-full h-full object-cover"
                         />

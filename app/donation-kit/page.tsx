@@ -587,7 +587,7 @@ const Donationkit = () => {
                   >
                     {/* Image */}
                     <div className="relative h-52 w-full">
-                      <Image src={pack.img} width={400} height={208} className="w-full h-full object-cover" alt="pack" />
+                      <img src={pack.img} className="w-full h-full object-cover" alt="pack" />
                       <span className="absolute top-4 left-4 bg-primary text-white font-extrabold text-sm px-8 py-4 rounded-full shadow">
                         ₹{pack.price}
                       </span>

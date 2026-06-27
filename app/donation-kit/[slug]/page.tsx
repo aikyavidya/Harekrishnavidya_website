@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import { Heart, Shield, CheckCircle } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -366,11 +366,10 @@ function DonationKitDetailPageContent() {
       <section className="mx-auto">
         <div className="relative overflow-hidden shadow-xl py-14 sm:py-20">
           {/* Background Image */}
-          <Image
+          <img
             src={kit.img}
             alt={kit.title}
-            fill
-            className="object-cover"
+            className="object-cover absolute inset-0 w-full h-full"
           />
 
           {/* Overlay */}
@@ -423,13 +422,10 @@ function DonationKitDetailPageContent() {
                   min-h-[260px] sm:min-h-[300px]
                   w-full md:w-[85%]">
 
-            <Image
+            <img
               src={kit.img}
-              width={500}
-              height={300}
               alt={kit.title}
-              className="w-full h-full object-cover"
-              priority
+              className="w-full h-full object-cover rounded-xl"
             />
 
             {/* Donation Amount Badge */}
