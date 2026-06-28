@@ -83,6 +83,11 @@ We offer scholarships on merit to economically backward  underprivileged student
 
 You can subscribe to our WhatsApp Broadcast Group to receive daily messages such as daily Deity darshan, festival announcements, Ekadashi reminders, inspirational quotes, etc. This service is absolutely free and you are free to unsubscribe at any time. When you subscribe to our WhatsApp Broadcast Group, we collect your name and save it in our contacts list along with your WhatsApp number to send you the messages.</p> 
 
+  <h2 className="text-lg font-semibold mt-6">Communication Consent</h2>
+  <p>
+    The User expressly agrees to receive communications regarding information, schemes, notifications, offers, events, and rewards on their registered mobile number by way of WhatsApp, SMS, RCS, calls and/or e-mails from Hare Krishna Vidya and other third parties relating to the Platform. The User can unsubscribe/opt-out from receiving communications through SMS, RCS, WhatsApp and e-mail anytime by e-mailing to <a href="mailto:connect@harekrishnavidya.org" className="text-[#0F3D64] underline font-bold">connect@harekrishnavidya.org</a>.
+  </p>
+
   <h2 className="text-lg font-semibold mt-6"> 
 Enquiries (Contact Us) </h2>
  <p>

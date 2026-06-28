@@ -8,7 +8,7 @@ import useUTM from "../utils/useUTM";
 
 import edu1 from "../../public/galleryection/edu1.jpg";
 import fest1 from "../../public/galleryection/fest1.jpg";
-import value from "../../public/galleryection/val1.jpg";
+import value from "../../public/GalleryImages/Values/value15.jpg";
 
 type TabData = {
   id: string;
@@ -17,6 +17,7 @@ type TabData = {
   detail: string;
   icon: React.ReactNode;
   image: StaticImageData;
+  imagePosition?: string;
   bgColor: string;         // Used for Card Container
   containerBgColor: string; // Paragraph box background
   mainBgClass: string;      // Faded background for the whole section
@@ -69,7 +70,7 @@ const tabs: TabData[] = [
 
 export default function DesktopDonateSection() {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
-  const { appendUTMToUrl } = useUTM();
+  const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   const currentTab = tabs.find(t => t.id === activeTab) || tabs[0];
 
@@ -161,7 +162,7 @@ export default function DesktopDonateSection() {
               </p>
 
               {/* Action Button */}
-              <Link href={appendUTMToUrl(currentTab.link)} className="self-end">
+              <Link href={appendUTMToUrl(currentTab.link)} onClick={handleDonateClick} className="self-end">
                 <button className="flex items-center gap-2 px-6 py-3 bg-[#0279BC] text-white rounded-lg font-medium hover:bg-[#026299] transition-colors shadow-sm">
                   <span>Donate Now</span>
                   <ArrowUpRight size={18} />

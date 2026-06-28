@@ -26,7 +26,7 @@ import { motion } from "framer-motion";
 import { ScaleIn, SlideIn } from "./AnimationProvider";
 
 export default function HeroSection() {
-  const { appendUTMToUrl } = useUTM();
+  const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   const heroRef = useRef(null);
 
@@ -96,7 +96,7 @@ export default function HeroSection() {
                 </div>
               ))}
             </Slider> */}
-            <Link href="/donation#annadan-seva" className="cursor-pointer block w-full outline-none">
+            <Link href="/donation#annadan-seva" onClick={handleDonateClick} className="cursor-pointer block w-full outline-none">
               <img
                 src={carouselSlides[0]}
                 alt="Hero Banner"
@@ -166,19 +166,19 @@ export default function HeroSection() {
             </div>
 
             {/* CTA Box */}
-            <SlideIn direction="up" delay={0.2} className="text-white shadow-xl flex w-full md:w-[400px] lg:w-[515px] px-4 md:px-[35px] py-4 md:py-[26px] justify-center items-center rounded-3xl border border-orange-600 bg-gray-400 backdrop-blur-md">
+            <SlideIn direction="up" delay={0.2} className="text-[#2C2C2C] shadow-xl flex w-full md:w-[400px] lg:w-[515px] px-4 md:px-[35px] py-4 md:py-[26px] justify-center items-center rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md">
               <div className="w-full text-center md:text-left">
                 <h3 className="text-lg  font-semibold mb-2">
                   Nourish a Life. Uplift a Soul.
                 </h3>
-                <p className="text-sm text-white/80 mb-4">
+                <p className="text-sm text-[#2C2C2C]/80 mb-4">
                   Your support delivers food, education, and
                   <br className="hidden md:block" />
                   hope to those who need it most.
                 </p>
                 <div className="flex justify-evenly    gap-2 mt-4">
-                  <Link href={appendUTMToUrl("/donation#annadan-seva")}>
-                    <button className="btn-interactive flex flex-1 items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md animate-pulse-glow">
+                  <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick}>
+                    <button className="btn-interactive flex flex-1 items-center justify-center gap-2 bg-blue-900 hover:bg-blue-800 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md">
                       <Image
                         src={Heart}
                         alt="Donate Icon"
@@ -210,7 +210,7 @@ export default function HeroSection() {
         <section
           className="hidden md:block relative text-white w-full overflow-hidden"
         >
-          <Link href="/donation#annadan-seva" className="cursor-pointer block w-full md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto">
+          <Link href="/donation#annadan-seva" onClick={handleDonateClick} className="cursor-pointer block w-full md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto">
             <img
               src={carouselSlides[0]}
               alt="Hero Banner"
@@ -225,9 +225,9 @@ export default function HeroSection() {
             }
           `}} />
           {/* Container for cards */}
-          <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-start md:gap-6 lg:gap-40 px-4 md:px-8 lg:px-4 z-10">
+          <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-stretch lg:justify-between md:gap-6 px-4 md:px-8 lg:px-4 z-10">
             {/* Karma Insights Box */}
-            <SlideIn direction="left" duration={0.8} className="text-black p-4 md:p-4 mb-0 shadow-xl w-full md:max-w-[500px] xl:w-[300px] flex flex-col gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
+            <SlideIn direction="left" duration={0.8} className="text-black p-4 md:p-4 mb-0 shadow-xl w-full md:max-w-[500px] xl:w-[300px] lg:h-full flex flex-col gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
               <div className="flex items-center justify-center md:justify-center flex-wrap gap-2">
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#F9F9F9] rounded-full shadow-md text-black font-semibold text-base md:text-lg">
                   <Image src={img9} alt="Star Icon" width={20} height={20} />
@@ -278,19 +278,19 @@ export default function HeroSection() {
             </SlideIn>
 
             {/* CTA Box */}
-            <SlideIn direction="right" duration={0.8} delay={0.2} className="absolute xl:right-6 text-white shadow-xl flex w-full md:max-w-[500px] lg:w-[380px] px-4 md:px-6 py-4 md:py-6 lg:py-8 xl:py-10 justify-center items-center rounded-3xl border border-black bg-black/10 backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
+            <SlideIn direction="right" duration={0.8} delay={0.2} className="absolute lg:static text-[#2C2C2C] shadow-xl flex w-full md:max-w-[500px] lg:w-[380px] lg:h-full px-4 md:px-6 py-4 md:py-6 lg:py-8 xl:py-10 justify-center items-center rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
               <div className="w-full text-center md:text-left">
                 <h3 className="text-lg md:text-xl font-semibold mb-2">
                   Nourish a Life. Uplift a Soul.
                 </h3>
-                <p className="text-md text-white/80 mb-4">
+                <p className="text-md text-[#2C2C2C]/80 mb-4">
                   Your support delivers food, education, and
                   <br className="hidden md:block" />
                   hope to those who need it most.
                 </p>
                 <div className="flex flex-col sm:flex-row sm:justify-center md:justify-start md:space-x-4 gap-2 mt-4">
-                  <Link href={appendUTMToUrl("/donation#annadan-seva")}>
-                    <button className="btn-interactive w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md animate-pulse-glow">
+                  <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick}>
+                    <button className="btn-interactive w-full flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-800 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md">
                       <Image
                         src={Heart}
                         alt="Donate Icon"

@@ -15,7 +15,7 @@ import "swiper/css/pagination";
 
 import edu1 from "../../public/galleryection/edu1.jpg";
 import fest1 from "../../public/galleryection/fest1.jpg";
-import value from "../../public/galleryection/val1.jpg";
+import value from "../../public/GalleryImages/Values/value15.jpg";
 
 type TabData = {
   id: string;
@@ -24,6 +24,7 @@ type TabData = {
   detail: string;
   icon: React.ReactNode;
   image: StaticImageData;
+  imagePosition?: string;
   bgColor: string;         // Main section background
   containerBgColor: string; // Right column container background
   link: string;
@@ -71,7 +72,7 @@ const tabs: TabData[] = [
 ];
 
 export default function MobileDonateCarousel() {
-  const { appendUTMToUrl } = useUTM();
+  const { appendUTMToUrl, handleDonateClick } = useUTM();
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -139,7 +140,7 @@ export default function MobileDonateCarousel() {
                     </div>
                   </div>
 
-                  <Link href={appendUTMToUrl(tab.link)} className="self-end shrink-0 mb-1">
+                  <Link href={appendUTMToUrl(tab.link)} onClick={handleDonateClick} className="self-end shrink-0 mb-1">
                     <button className="flex items-center gap-2 px-5 py-2.5 bg-[#0279BC] text-white rounded-lg text-sm font-medium hover:bg-[#026299] shadow-sm">
                       <span>Donate Now</span>
                       <ArrowUpRight size={16} />

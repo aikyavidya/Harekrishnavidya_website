@@ -273,11 +273,17 @@ export default function termsConditionsPage() {
         liability for any comments posted by you or any third-party.
       </p>
 
-      <h2 className="text-lg font-semibold mt-6">PERSONAL INFORMATION</h2>
+       <h2 className="text-lg font-semibold mt-6">PERSONAL INFORMATION</h2>
 
       <p className="text-base text-justify ">
         Your submission of personal information through the store is governed by
         our Privacy Policy.
+      </p>
+
+      <h2 className="text-lg font-semibold mt-6">COMMUNICATION CONSENT</h2>
+      <p className="text-base text-justify ">
+        The User expressly agrees to receive communications regarding information, schemes, notifications, offers, events, and rewards on their registered mobile number by way of WhatsApp, SMS, RCS, calls and/or e-mails from Hare Krishna Vidya and other third parties relating to the Platform. The User can unsubscribe/opt-out from receiving communications through SMS, RCS, WhatsApp and e-mail anytime by e-mailing to{" "}
+        <a href="mailto:connect@harekrishnavidya.org" className="text-[#0F3D64] underline font-bold">connect@harekrishnavidya.org</a>.
       </p>
 
       <h2 className="text-lg font-semibold mt-6">

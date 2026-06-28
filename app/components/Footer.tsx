@@ -225,20 +225,9 @@ export default function Footer() {
       </footer>
 
       {/* Bottom Section */}
-      <div className="bg-[#002A42] border-t border-white pt-4 pb-3 px-10 flex flex-col sm:flex-row items-start justify-between text-sm text-white">
-        <p className="mb-2 md:mb-0 pb-3 lg:px-2 ">
+      <div className="bg-[#002A42] border-t border-white pt-4 pb-3 px-10 flex items-center justify-center text-sm text-white">
+        <p className="pb-3 text-center">
           Copyright © 2025 Hare Krishna Vidya
-        </p>
-        <p>
-          Carefully Crafted by{" "}
-          <a
-            href="https://digitalizetheglobe.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-yellow-400"
-          >
-            Digitalize The Globe.
-          </a>
         </p>
       </div>
     </>

@@ -1427,24 +1427,29 @@ function DonatePageContent() {
                       Locality/Area<span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
-                      <select
-                        name="locality"
-                        value={formData.locality}
-                        onChange={handleInputChange}
-                        required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.locality ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
-                      >
-                        {localityOptions.length === 0 ? (
-                          <option value="">Enter PIN code first</option>
-                        ) : (
-                          <>
-                            <option value="">Select Locality/Area</option>
-                            {localityOptions.map((area, index) => (
-                              <option key={index} value={area}>{area}</option>
-                            ))}
-                          </>
-                        )}
-                      </select>
+                      {localityOptions.length === 0 ? (
+                        <input
+                          type="text"
+                          value=""
+                          disabled
+                          readOnly
+                          placeholder="Enter PIN code first"
+                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white text-gray-400 cursor-not-allowed"
+                        />
+                      ) : (
+                        <select
+                          name="locality"
+                          value={formData.locality}
+                          onChange={handleInputChange}
+                          required={formData.wantsMahaPrasadam || formData.wants80G}
+                          className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.locality ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
+                        >
+                          <option value="">Select Locality/Area</option>
+                          {localityOptions.map((area, index) => (
+                            <option key={index} value={area}>{area}</option>
+                          ))}
+                        </select>
+                      )}
                       {errors.locality && (
                         <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
                       )}

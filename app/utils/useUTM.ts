@@ -15,6 +15,7 @@ export interface UseUTMReturn {
   appendUTMToUrl: (url: string) => string;
   clearUTM: () => void;
   hasUTM: boolean;
+  handleDonateClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 // LocalStorage key for UTM parameters
@@ -180,6 +181,13 @@ export const useUTM = (): UseUTMReturn => {
     return appendUTMToURL(url, utm);
   }, [utm]);
 
+  const handleDonateClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof window !== 'undefined' && window.location.pathname === "/donation") {
+      e.preventDefault();
+      document.getElementById("annadan-seva")?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   // Function to clear UTM parameters
   const clearUTM = useCallback((): void => {
     clearUTMFromStorage();
@@ -194,6 +202,7 @@ export const useUTM = (): UseUTMReturn => {
     appendUTMToUrl,
     clearUTM,
     hasUTM,
+    handleDonateClick,
   };
 };
 
