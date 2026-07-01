@@ -10,6 +10,8 @@ import { SlideIn, ScaleIn, StaggerContainer, StaggerItem } from "../components/A
 import useUTM from "../utils/useUTM";
 import akshayaBanner from "@/public/images/updated_akshaya_banner.jpg";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.harekrishnavidya.org";
+
 // import k3 from "../../public/images/k3.png";
 // import k1 from "../../public/images/k1.png";
 // import k4 from "../../public/images/k4.png";
@@ -254,6 +256,26 @@ function AnnadanAnyAmountCard() {
 
 export default function DonationPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHomeBanner = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/home-banner/get`);
+        const data = await response.json();
+        if (data && data.url) {
+          const resolvedUrl = data.url.startsWith("http")
+            ? data.url
+            : `${API_BASE_URL}${data.url}`;
+          setBannerUrl(resolvedUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching home banner:", error);
+      }
+    };
+    fetchHomeBanner();
+  }, []);
+
   // const router = useRouter();
   const { appendUTMToUrl } = useUTM();
 
@@ -605,12 +627,20 @@ export default function DonationPage() {
   return (
     <>
       <div className="relative w-full rounded-xl md:rounded-none md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto flex items-center justify-center bg-white overflow-hidden">
-        <Image
-          src={akshayaBanner}
-          alt="Akshaya Tritiya Donation Banner"
-          className="w-full h-auto block rounded-xl md:rounded-none md:h-full md:object-cover md:object-center min-[1025px]:object-fill"
-          priority
-        />
+        {bannerUrl ? (
+          <img
+            src={bannerUrl}
+            alt="Akshaya Tritiya Donation Banner"
+            className="w-full h-auto block rounded-xl md:rounded-none md:h-full md:object-cover md:object-center min-[1025px]:object-fill"
+          />
+        ) : (
+          <Image
+            src={akshayaBanner}
+            alt="Akshaya Tritiya Donation Banner"
+            className="w-full h-auto block rounded-xl md:rounded-none md:h-full md:object-cover md:object-center min-[1025px]:object-fill"
+            priority
+          />
+        )}
         {/* <div className="absolute inset-0 z-10 flex items-center justify-center">
           <Button size="lg" className="bg-white text-primary hover:bg-white/90 shadow-lg text-lg h-14 px-8" asChild>
             <Link href="#donate">

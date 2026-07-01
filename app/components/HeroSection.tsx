@@ -20,15 +20,37 @@ import "slick-carousel/slick/slick-theme.css";
 // import Slider from "react-slick";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import useUTM from "../utils/useUTM";
 import { motion } from "framer-motion";
 import { ScaleIn, SlideIn } from "./AnimationProvider";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.harekrishnavidya.org";
 
 export default function HeroSection() {
   const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   const heroRef = useRef(null);
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHomeBanner = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/home-banner/get`);
+        const data = await response.json();
+        if (data && data.url) {
+          const resolvedUrl = data.url.startsWith("http")
+            ? data.url
+            : `${API_BASE_URL}${data.url}`;
+          setBannerUrl(resolvedUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching home banner:", error);
+      }
+    };
+
+    fetchHomeBanner();
+  }, []);
 
   const CustomPrevArrow = (props: any) => {
     const { onClick } = props;
@@ -77,7 +99,8 @@ export default function HeroSection() {
     )
   };
 
-  const carouselSlides = [akshayaBanner.src, akshayaBanner.src, akshayaBanner.src];
+  const bannerSrc = bannerUrl || akshayaBanner.src;
+  const carouselSlides = [bannerSrc, bannerSrc, bannerSrc];
 
   return (
     <>
