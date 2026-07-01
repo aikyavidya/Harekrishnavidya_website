@@ -20,7 +20,7 @@ import "slick-carousel/slick/slick-theme.css";
 // import Slider from "react-slick";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import useUTM from "../utils/useUTM";
 import { motion } from "framer-motion";
 import { ScaleIn, SlideIn } from "./AnimationProvider";
@@ -31,12 +31,14 @@ export default function HeroSection() {
   const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   const heroRef = useRef(null);
-  const [bannerUrl, setBannerUrl] = useState<string | null>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("hkv_home_banner_url");
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+
+  useLayoutEffect(() => {
+    const cached = localStorage.getItem("hkv_home_banner_url");
+    if (cached) {
+      setBannerUrl(cached);
     }
-    return null;
-  });
+  }, []);
 
   useEffect(() => {
     const fetchHomeBanner = async () => {

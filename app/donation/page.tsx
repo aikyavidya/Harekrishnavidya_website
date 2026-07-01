@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import Image from "next/image";
 // import { useRouter } from "next/navigation";
@@ -256,12 +256,14 @@ function AnnadanAnyAmountCard() {
 
 export default function DonationPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [bannerUrl, setBannerUrl] = useState<string | null>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("hkv_home_banner_url");
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+
+  useLayoutEffect(() => {
+    const cached = localStorage.getItem("hkv_home_banner_url");
+    if (cached) {
+      setBannerUrl(cached);
     }
-    return null;
-  });
+  }, []);
 
   useEffect(() => {
     const fetchHomeBanner = async () => {
