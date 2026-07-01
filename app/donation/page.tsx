@@ -256,7 +256,12 @@ function AnnadanAnyAmountCard() {
 
 export default function DonationPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+  const [bannerUrl, setBannerUrl] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("hkv_home_banner_url");
+    }
+    return null;
+  });
 
   useEffect(() => {
     const fetchHomeBanner = async () => {
@@ -268,6 +273,9 @@ export default function DonationPage() {
             ? data.url
             : `${API_BASE_URL}${data.url}`;
           setBannerUrl(resolvedUrl);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("hkv_home_banner_url", resolvedUrl);
+          }
         }
       } catch (error) {
         console.error("Error fetching home banner:", error);
