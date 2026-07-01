@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ScrollButton() {
   const [isAtTop, setIsAtTop] = useState(true);
+  const scrollRequestIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,31 +20,52 @@ export default function ScrollButton() {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollRequestIdRef.current !== null) {
+        cancelAnimationFrame(scrollRequestIdRef.current);
+      }
+    };
   }, []);
 
   // Custom smooth scroll with speed control
   const customScroll = (target: number, speed = 800) => {
+    // Cancel any active animation frame
+    if (scrollRequestIdRef.current !== null) {
+      cancelAnimationFrame(scrollRequestIdRef.current);
+    }
+
+    // Temporarily disable CSS smooth scrolling to avoid conflict
+    const originalScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+
     const start = window.scrollY;
     const distance = target - start;
     const startTime = performance.now();
-
+ 
     const step = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / speed, 1); // speed = duration in ms
-      window.scrollTo(0, start + distance * progress);
-
-      if (progress < 1) requestAnimationFrame(step);
+      const easedProgress = progress * (2 - progress); // quadratic ease-out
+      window.scrollTo(0, start + distance * easedProgress);
+ 
+      if (progress < 1) {
+        scrollRequestIdRef.current = requestAnimationFrame(step);
+      } else {
+        // Restore original scroll behavior once complete
+        document.documentElement.style.scrollBehavior = originalScrollBehavior;
+        scrollRequestIdRef.current = null;
+      }
     };
-
-    requestAnimationFrame(step);
+ 
+    scrollRequestIdRef.current = requestAnimationFrame(step);
   };
-
+ 
   const handleClick = () => {
     if (isAtTop) {
-      customScroll(document.documentElement.scrollHeight, 2600); // slower
+      customScroll(document.documentElement.scrollHeight, 800); // snappier scroll
     } else {
-      customScroll(0, 2600); // faster
+      customScroll(0, 800); // snappier scroll
     }
   };
 

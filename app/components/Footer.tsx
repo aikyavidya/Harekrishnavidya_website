@@ -20,9 +20,9 @@ export default function Footer() {
       <footer className="bg-[#002A42] text-white px-2 lg:px-4 py-5 overflow-hidden">
         <StaggerContainer className="max-w-7xl mx-auto">
           {/* Main Footer Content */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 ">
             {/* Logo and About Section */}
-            <StaggerItem className="col-span-1 md:col-span-2 lg:col-span-1 ">
+            <StaggerItem className="col-span-2 lg:col-span-1 ">
               <motion.div whileHover={{ scale: 1.05 }} className="inline-block transform origin-left">
                 <Image
                   src={logo}
@@ -86,11 +86,11 @@ export default function Footer() {
                 </div>
               </div>
             </StaggerItem>
-
+ 
             {/* Quick Links */}
-            <StaggerItem className="space-y-4">
+            <StaggerItem className="space-y-4 col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <h2 className="text-[#F4A261] text-xl font-bold">Quick Links</h2>
-              <ul className="space-y-2">
+              <ul className="space-y-2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <li>
                   <Link
                     href="/about-us"
@@ -115,7 +115,7 @@ export default function Footer() {
                     Blogs
                   </Link>
                 </li>
-
+ 
                 <li>
                   <Link
                     href="/events"
@@ -134,11 +134,11 @@ export default function Footer() {
                 </li>
               </ul>
             </StaggerItem>
-
+ 
             {/* Useful Links */}
-            <StaggerItem className="space-y-4">
+            <StaggerItem className="space-y-4 col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <h2 className="text-[#F4A261] text-xl font-bold">Useful Links</h2>
-              <ul className="space-y-2">
+              <ul className="space-y-2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <li>
                   <Link
                     href="/policies"
@@ -173,25 +173,26 @@ export default function Footer() {
                 </li>
               </ul>
             </StaggerItem>
-
+ 
             {/* Contact Section */}
-            <StaggerItem className="space-y-4">
+            <StaggerItem className="space-y-4 col-span-2 lg:col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <h2 className="text-[#F4A261] text-xl font-bold">Contact Us</h2>
-              <div className="space-y-2">
-                <div className="group flex items-start gap-3">
-                  <motion.div whileHover={{ y: -2, color: "#F4A261" }}><FaMapMarkerAlt size={16} className="mt-1 flex-shrink-0 transition-colors" /></motion.div>
+              <div className="space-y-2 flex flex-col items-center lg:items-start text-center lg:text-left">
+                <div className="group flex items-start gap-3 justify-center lg:justify-start text-center lg:text-left max-w-[280px] lg:max-w-none">
+                  <motion.div whileHover={{ y: -2, color: "#F4A261" }} className="hidden lg:block"><FaMapMarkerAlt size={16} className="mt-1 flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="https://www.google.com/maps?q=Hare+Krishna+Golden+Temple,+MLA+Colony,+Banjara+Hills,+Hyderabad+-+500034"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group-hover:text-yellow-200 text-base leading-relaxed transition-colors"
+                    className="group-hover:text-yellow-200 text-base leading-relaxed transition-colors text-center lg:text-left"
                   >
+                    <FaMapMarkerAlt size={16} className="inline-block mr-1.5 mb-1 lg:hidden text-[#F4A261]" />
                     Hare Krishna Golden Temple, Road No. 12, MLA Colony, Banjara
                     Hills, Hyderabad - 500034
                   </a>
                 </div>
-
-                <div className="group flex items-center gap-3">
+ 
+                <div className="group flex items-center gap-3 justify-center lg:justify-start text-center lg:text-left">
                   <motion.div whileHover={{ x: 2, color: "#F4A261" }}><FaEnvelope size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="mailto:aikyavidya@hkmhyderabad.org"
@@ -200,7 +201,7 @@ export default function Footer() {
                     aikyavidya@hkmhyderabad.org
                   </a>
                 </div>
-                <div className="group flex items-center gap-3">
+                <div className="group flex items-center gap-3 justify-center lg:justify-start text-center lg:text-left">
                   <motion.div whileHover={{ scale: 1.1, rotate: 10, color: "#F4A261" }}><FaPhoneAlt size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="tel:8019397108"
@@ -209,7 +210,7 @@ export default function Footer() {
                     +91 8019397108
                   </a>
                 </div>
-                <div className="group flex items-center gap-3">
+                <div className="group flex items-center gap-3 justify-center lg:justify-start text-center lg:text-left">
                   <motion.div whileHover={{ scale: 1.1, rotate: 10, color: "#F4A261" }}><FaPhoneAlt size={14} className="flex-shrink-0 transition-colors" /></motion.div>
                   <a
                     href="tel:+918328389862"

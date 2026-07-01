@@ -109,7 +109,7 @@ export default function HeroSection() {
           {/* Container for cards */}
           <div className=" mb:bottom-10 left-0 right-0 flex flex-col-reverse  px-4  gap-4">
             {/* Karma Insights Box */}
-            <div className="text-black p-4 md:p-6 shadow-xl w-full md:w-[400px] lg:w-[420px] flex flex-col justify-center items-center gap-4 border border-orange-500 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md">
+            <div className="text-black p-4 md:p-6 shadow-xl w-full md:w-[400px] lg:w-[420px] flex flex-col justify-center items-center gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md">
               <div className="flex items-center justify-between flex-wrap  gap-2">
                 <div className="flex items-center  gap-2 px-3 py-2 bg-[#F9F9F9] rounded-full shadow-md  text-black font-semibold text-base ">
                   <Image
@@ -225,41 +225,41 @@ export default function HeroSection() {
             }
           `}} />
           {/* Container for cards */}
-          <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-col lg:flex-row md:items-center lg:items-stretch lg:justify-between md:gap-6 px-4 md:px-8 lg:px-4 z-10">
+          <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-row md:items-stretch md:justify-between gap-4 md:gap-3 lg:gap-6 px-4 md:px-6 lg:px-4 z-10">
             {/* Karma Insights Box */}
-            <SlideIn direction="left" duration={0.8} className="text-black p-4 md:p-4 mb-0 shadow-xl w-full md:max-w-[500px] xl:w-[300px] lg:h-full flex flex-col gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
+            <SlideIn direction="left" duration={0.8} className="text-black p-4 md:p-2 lg:p-6 mb-0 shadow-xl w-full md:w-[220px] md:h-[165px] lg:w-[400px] lg:h-[250px] xl:w-[400px] xl:h-[250px] flex flex-col justify-center gap-4 md:gap-2 lg:gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto md:mx-0 hover-lift isolate">
               <div className="flex items-center justify-center md:justify-center flex-wrap gap-2">
-                <div className="flex items-center gap-2 px-3 py-2 bg-[#F9F9F9] rounded-full shadow-md text-black font-semibold text-base md:text-lg">
+                <div className="flex items-center gap-1 px-3 py-2 md:px-1.5 md:py-0.5 bg-[#F9F9F9] rounded-full shadow-md text-black font-semibold text-base md:text-[9px] lg:text-lg">
                   <Image src={img9} alt="Star Icon" width={20} height={20} />
                   Welfare Insights
                 </div>
               </div>
 
-              <div className="flex items-center  gap-6 xl:gap-24">
+              <div className="flex items-center md:justify-center lg:justify-center gap-6 md:gap-3 lg:gap-12 xl:gap-24">
                 <div className="text-center">
-                  <p className="text-2xl md:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
+                  <p className="text-2xl md:text-sm lg:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
                     800K
                   </p>
-                  <p className="text-sm md:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
+                  <p className="text-sm md:text-[8px] lg:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
                     Meals <br /> Served
                   </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl md:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
+                  <p className="text-2xl md:text-sm lg:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
                     50K
                   </p>
-                  <p className="text-sm md:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
+                  <p className="text-sm md:text-[8px] lg:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
                     Children&#39;s <br /> Educated
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center mt-2 flex-wrap gap-2">
-                <div className="flex -space-x-3">
+              <div className="flex items-center mt-2 md:mt-0 flex-wrap gap-2 md:gap-1 md:justify-center">
+                <div className="flex -space-x-3 md:-space-x-1.5">
                   {[k3, k1, k4, k5, k2].map((src, idx) => (
                     <motion.div
                       key={idx}
-                      className={`relative w-8 h-8 rounded-full border-2 border-white z-[${5 - idx}] animate-float-delay-${idx % 3 + 1}`}
+                      className={`relative w-8 h-8 md:w-5 md:h-5 lg:w-8 lg:h-8 rounded-full border-2 border-white z-[${5 - idx}] animate-float-delay-${idx % 3 + 1}`}
                       whileHover={{ scale: 1.2, zIndex: 10 }}
                     >
                       <Image
@@ -271,45 +271,45 @@ export default function HeroSection() {
                     </motion.div>
                   ))}
                 </div>
-                <span className="ml-2 text-gray-700 font-semibold italic text-xs md:text-sm">
+                <span className="ml-2 md:ml-0.5 text-gray-700 font-semibold italic text-xs md:text-[8px] lg:text-sm">
                   5000+ Donors around the world
                 </span>
               </div>
             </SlideIn>
 
             {/* CTA Box */}
-            <SlideIn direction="right" duration={0.8} delay={0.2} className="absolute lg:static text-[#2C2C2C] shadow-xl flex w-full md:max-w-[500px] lg:w-[380px] lg:h-full px-4 md:px-6 py-4 md:py-6 lg:py-8 xl:py-10 justify-center items-center rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto lg:mx-0 hover-lift isolate">
-              <div className="w-full text-center md:text-left">
-                <h3 className="text-lg md:text-xl font-semibold mb-2">
+            <SlideIn direction="right" duration={0.8} delay={0.2} className="absolute md:static text-[#2C2C2C] shadow-xl flex flex-col w-full md:w-[220px] md:h-[165px] lg:w-[400px] lg:h-[250px] xl:w-[400px] xl:h-[250px] px-4 md:p-2 lg:p-6 xl:p-8 justify-center items-center rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto md:mx-0 hover-lift isolate">
+              <div className="w-full text-center md:text-center lg:text-left">
+                <h3 className="text-lg md:text-[10px] lg:text-xl font-semibold mb-2 md:mb-0.5 lg:mb-2">
                   Nourish a Life. Uplift a Soul.
                 </h3>
-                <p className="text-md text-[#2C2C2C]/80 mb-4">
+                <p className="text-md md:text-[8px] lg:text-md text-[#2C2C2C]/80 mb-4 md:mb-1.5 lg:mb-4 leading-normal">
                   Your support delivers food, education, and
                   <br className="hidden md:block" />
                   hope to those who need it most.
                 </p>
-                <div className="flex flex-col sm:flex-row sm:justify-center md:justify-start md:space-x-4 gap-2 mt-4">
-                  <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick}>
-                    <button className="btn-interactive w-full flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-800 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md">
+                <div className="flex flex-col sm:flex-row sm:justify-center md:flex-row md:justify-center lg:flex-row sm:space-x-2 md:space-x-1.5 lg:space-x-4 gap-2 md:gap-1.5 lg:gap-2 mt-4 md:mt-1 lg:mt-4">
+                  <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick} className="w-full md:w-auto">
+                    <button className="btn-interactive w-full md:w-auto flex items-center justify-center gap-2 md:gap-1 bg-blue-900 hover:bg-blue-800 text-white cursor-pointer font-semibold px-4 py-3 md:px-1.5 md:py-1 lg:px-4 lg:py-3 rounded-lg shadow-md text-sm md:text-[8px] lg:text-base">
                       <Image
                         src={Heart}
                         alt="Donate Icon"
                         width={20}
                         height={20}
-                        className="w-6 h-6"
+                        className="w-6 h-6 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6"
                       />
                       Donate Now
                     </button>
                   </Link>
-
-                  <Link href="/about-us">
-                    <button className="btn-interactive w-full flex justify-center items-center gap-2 bg-white hover:bg-gray-100 cursor-pointer font-semibold px-4 py-3 text-black rounded-lg shadow-md hover-lift">
+ 
+                  <Link href="/about-us" className="w-full md:w-auto">
+                    <button className="btn-interactive w-full md:w-auto flex justify-center items-center gap-2 md:gap-1 bg-white hover:bg-gray-100 cursor-pointer font-semibold px-4 py-3 md:px-1.5 md:py-1 lg:px-4 lg:py-3 text-black rounded-lg shadow-md hover-lift text-sm md:text-[8px] lg:text-base">
                       <Image
                         src={info}
                         alt="Info Icon"
                         width={20}
                         height={30}
-                        className="w-6 h-6"
+                        className="w-6 h-6 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6"
                       />
                       About Us
                     </button>
@@ -322,9 +322,9 @@ export default function HeroSection() {
       </div>
 
       {/* Section Below Hero */}
-      <section className="flex flex-col justify-center items-center md:items-center w-full lg:mx-4 my-10 lg:my-16">
+      <section className="flex flex-col justify-center items-center md:items-center w-full px-4 md:px-0 lg:mx-4 my-10 lg:my-16">
         <ScaleIn duration={0.7} className="text-center">
-          <h2 className="mb-1 text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
+          <h2 className="mb-1 text-[28px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight sm:leading-[120%] text-[#2C2C2C] drop-shadow-sm">
             Give Nourishment, <br className="sm:hidden" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Give Knowledge</span>, Give Hope
           </h2>

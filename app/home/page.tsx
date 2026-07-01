@@ -174,7 +174,7 @@ const HomePage = () => {
         <section className="mt-5 px-4 md:px-10 lg:px-20">
           <div className="flex items-center justify-center bg-white mt-2">
             <ScaleIn className="flex flex-col items-center gap-4 w-full max-w-4xl px-4 text-center text-[--text-dark-charcoal]">
-              <h1 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-[120%] text-[#2C2C2C] drop-shadow-sm">
+              <h1 className="text-[28px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight sm:leading-[120%] text-[#2C2C2C] drop-shadow-sm">
                 A glimpse into the lives <br className="hidden md:block" />
                 you&#39;ve touched with your{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
