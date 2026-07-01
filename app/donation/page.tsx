@@ -278,9 +278,12 @@ export default function DonationPage() {
           if (typeof window !== "undefined") {
             localStorage.setItem("hkv_home_banner_url", resolvedUrl);
           }
+        } else {
+          setBannerUrl(akshayaBanner.src);
         }
       } catch (error) {
         console.error("Error fetching home banner:", error);
+        setBannerUrl(akshayaBanner.src);
       }
     };
     fetchHomeBanner();
@@ -637,18 +640,13 @@ export default function DonationPage() {
   return (
     <>
       <div className="relative w-full rounded-xl md:rounded-none md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto flex items-center justify-center bg-white overflow-hidden">
-        {bannerUrl ? (
+        {bannerUrl === null ? (
+          <div className="w-full aspect-[16/9] md:h-full bg-gray-200 animate-pulse rounded-xl md:rounded-none" />
+        ) : (
           <img
             src={bannerUrl}
             alt="Akshaya Tritiya Donation Banner"
             className="w-full h-auto block rounded-xl md:rounded-none md:h-full md:object-cover md:object-center min-[1025px]:object-fill"
-          />
-        ) : (
-          <Image
-            src={akshayaBanner}
-            alt="Akshaya Tritiya Donation Banner"
-            className="w-full h-auto block rounded-xl md:rounded-none md:h-full md:object-cover md:object-center min-[1025px]:object-fill"
-            priority
           />
         )}
         {/* <div className="absolute inset-0 z-10 flex items-center justify-center">

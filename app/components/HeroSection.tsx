@@ -53,9 +53,12 @@ export default function HeroSection() {
           if (typeof window !== "undefined") {
             localStorage.setItem("hkv_home_banner_url", resolvedUrl);
           }
+        } else {
+          setBannerUrl(akshayaBanner.src);
         }
       } catch (error) {
         console.error("Error fetching home banner:", error);
+        setBannerUrl(akshayaBanner.src);
       }
     };
 
@@ -109,8 +112,7 @@ export default function HeroSection() {
     )
   };
 
-  const bannerSrc = bannerUrl || akshayaBanner.src;
-  const carouselSlides = [bannerSrc, bannerSrc, bannerSrc];
+  const carouselSlides = bannerUrl ? [bannerUrl, bannerUrl, bannerUrl] : [];
 
   return (
     <>
@@ -130,12 +132,16 @@ export default function HeroSection() {
               ))}
             </Slider> */}
             <Link href="/donation#annadan-seva" onClick={handleDonateClick} className="cursor-pointer block w-full outline-none">
-              <img
-                src={carouselSlides[0]}
-                alt="Hero Banner"
-                className="w-full h-auto block"
-              // className="w-full max-h-[80vh] object-contain mx-auto"
-              />
+              {bannerUrl === null ? (
+                <div className="w-full aspect-[16/9] bg-gray-200 animate-pulse" />
+              ) : (
+                <img
+                  src={carouselSlides[0]}
+                  alt="Hero Banner"
+                  className="w-full h-auto block"
+                // className="w-full max-h-[80vh] object-contain mx-auto"
+                />
+              )}
             </Link>
           </div>
 
@@ -244,11 +250,15 @@ export default function HeroSection() {
           className="hidden md:block relative text-white w-full overflow-hidden"
         >
           <Link href="/donation#annadan-seva" onClick={handleDonateClick} className="cursor-pointer block w-full md:aspect-[16/7] min-[1025px]:h-[100vh] min-[1025px]:aspect-auto">
-            <img
-              src={carouselSlides[0]}
-              alt="Hero Banner"
-              className="w-full h-full md:object-cover md:object-center min-[1025px]:object-fill block"
-            />
+            {bannerUrl === null ? (
+              <div className="w-full h-full bg-gray-200 animate-pulse" />
+            ) : (
+              <img
+                src={carouselSlides[0]}
+                alt="Hero Banner"
+                className="w-full h-full md:object-cover md:object-center min-[1025px]:object-fill block"
+              />
+            )}
           </Link>
           <style dangerouslySetInnerHTML={{
             __html: `
