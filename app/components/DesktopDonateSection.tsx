@@ -84,7 +84,7 @@ export default function DesktopDonateSection() {
         {/* Left Column (Vertical Nav) */}
         <div className="col-span-5 flex flex-col justify-start pt-4">
           <h2 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold text-[#2C2C2C] drop-shadow-sm leading-tight mb-4">
-            Donate for <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Cause</span>
+            Donate for the Noble <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Cause</span>
           </h2>
           <p className="text-gray-600 leading-relaxed mb-8 text-base pr-4">
             Support our mission to provide food, education, and care to those in need. Your contribution brings hope and changes lives.

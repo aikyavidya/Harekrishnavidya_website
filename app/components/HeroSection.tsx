@@ -375,7 +375,7 @@ export default function HeroSection() {
             <span className="text-orange-500 font-bold px-1 py-0.5 rounded-md bg-orange-50 inline-block mr-1">
               Decide the path
             </span>
-            of your kindness — Your help leads to hope and transformation
+            of your kindness - Your help leads to hope and transformation
           </p>
         </ScaleIn>
       </section>

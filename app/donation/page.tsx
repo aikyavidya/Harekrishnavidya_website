@@ -755,7 +755,7 @@ export default function DonationPage() {
 
       <div className="bg-white text-center py-8 px-4 text-black">
         <button className="bg-gray-200 text-black font-semibold px-4 py-2 rounded-full mb-6 text-[36px]">
-          ✧ Vidhya Dana Seva
+          ✧ Vidya Dana Seva
         </button>
 
         <h2 className="text-2xl md:text-3xl font-semibold italic mb-2">

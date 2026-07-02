@@ -91,7 +91,7 @@ export default function MobileDonateCarousel() {
       {/* Header */}
       <div className="px-4 sm:px-6 mb-6 flex flex-col items-center justify-center text-center">
         <h2 className="text-[28px] md:text-[36px] font-extrabold text-[#2C2C2C] drop-shadow-sm leading-tight mb-3">
-          Donate for <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">cause</span>
+          Donate for the Noble <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">cause</span>
         </h2>
         <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-[400px]">
           Support our mission to provide food, education, and care to those in need. Your contribution brings hope and changes lives

@@ -433,8 +433,8 @@ function DonatePageContent() {
     const newErrors: FormErrors = {};
     if (!formData.fullName.trim()) {
       newErrors.fullName = "Full name is required";
-    } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = "Full name must be at least 2 characters";
+    } else if (formData.fullName.trim().length < 4) {
+      newErrors.fullName = "Full name must be at least 4 characters";
     }
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -1280,7 +1280,7 @@ function DonatePageContent() {
                     I would like to receive Maha Prasadam (Only within India)
                     {isMahaPrasadamDisabled && (
                       <p className="text-[11px] text-red-600 font-semibold mt-1">
-                        ⚠️ Maha Prasadam is available only for donations of ₹300 or more.
+                        ⚠️ Maha Prasadam is available only for donations of ₹300 or above.
                       </p>
                     )}
                   </span>
@@ -1299,7 +1299,7 @@ function DonatePageContent() {
                   I wish to receive 80G Tax Exemption
                   {is80GDisabled && (
                     <p className="text-[11px] text-red-600 font-semibold mt-1">
-                      ⚠️ 80G Tax Exemption is available only for donations of ₹500 or more.
+                      ⚠️ 80G Tax Exemption is available only for donations of ₹500 or above.
                     </p>
                   )}
                   <p className="text-[11px] text-black font-semibold mt-1">
@@ -1421,152 +1421,156 @@ function DonatePageContent() {
                     )}
                   </div>
 
-                  {/* Locality/Area */}
-                  <div>
-                    <label className="block text-sm font-bold text-black mb-1">
-                      Locality/Area<span className="text-red-600">*</span>
-                    </label>
-                    <div className="relative">
-                      {localityOptions.length === 0 ? (
-                        <input
-                          type="text"
-                          value=""
-                          disabled
-                          readOnly
-                          placeholder="Enter PIN code first"
-                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white text-gray-400 cursor-not-allowed"
-                        />
-                      ) : (
+                  {localityOptions.length > 0 && (
+                    <>
+                      {/* Locality/Area */}
+                      <div>
+                        <label className="block text-sm font-bold text-black mb-1">
+                          Locality/Area<span className="text-red-600">*</span>
+                        </label>
+                        <div className="relative">
+                          {localityOptions.length === 0 ? (
+                            <input
+                              type="text"
+                              value=""
+                              disabled
+                              readOnly
+                              placeholder="Enter PIN code first"
+                              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white text-gray-400 cursor-not-allowed"
+                            />
+                          ) : (
+                            <select
+                              name="locality"
+                              value={formData.locality}
+                              onChange={handleInputChange}
+                              required={formData.wantsMahaPrasadam || formData.wants80G}
+                              className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.locality ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
+                            >
+                              <option value="">Select Locality/Area</option>
+                              {localityOptions.map((area, index) => (
+                                <option key={index} value={area}>{area}</option>
+                              ))}
+                            </select>
+                          )}
+                          {errors.locality && (
+                            <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                          )}
+                        </div>
+                        {errors.locality && (
+                          <p className="text-red-600 text-sm mt-1">{errors.locality}</p>
+                        )}
+                      </div>
+
+                      {/* District */}
+                      <div>
+                        <label className="block text-sm font-bold text-black mb-1">
+                          District<span className="text-red-600">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="district"
+                            value={formData.district}
+                            onChange={handleInputChange}
+                            placeholder="District name"
+                            required={formData.wantsMahaPrasadam || formData.wants80G}
+                            className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.district ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                          />
+                          {errors.district && (
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                          )}
+                        </div>
+                        {errors.district && (
+                          <p className="text-red-600 text-sm mt-1">{errors.district}</p>
+                        )}
+                      </div>
+
+                      {/* State — dropdown with all 28 States + 8 UTs alphabetically */}
+                      <div>
+                        <label className="block text-sm font-bold text-black mb-1">
+                          State<span className="text-red-600">*</span>
+                        </label>
+                        <div className="relative">
                         <select
-                          name="locality"
-                          value={formData.locality}
+                          id="state"
+                          name="state"
+                          value={formData.state}
                           onChange={handleInputChange}
                           required={formData.wantsMahaPrasadam || formData.wants80G}
-                          className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.locality ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
+                          className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.state ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
                         >
-                          <option value="">Select Locality/Area</option>
-                          {localityOptions.map((area, index) => (
-                            <option key={index} value={area}>{area}</option>
-                          ))}
+                          <option value="">Select State / UT</option>
+                          <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                          <option value="Andhra Pradesh">Andhra Pradesh</option>
+                          <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                          <option value="Assam">Assam</option>
+                          <option value="Bihar">Bihar</option>
+                          <option value="Chandigarh">Chandigarh</option>
+                          <option value="Chhattisgarh">Chhattisgarh</option>
+                          <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                          <option value="Delhi">Delhi</option>
+                          <option value="Goa">Goa</option>
+                          <option value="Gujarat">Gujarat</option>
+                          <option value="Haryana">Haryana</option>
+                          <option value="Himachal Pradesh">Himachal Pradesh</option>
+                          <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                          <option value="Jharkhand">Jharkhand</option>
+                          <option value="Karnataka">Karnataka</option>
+                          <option value="Kerala">Kerala</option>
+                          <option value="Ladakh">Ladakh</option>
+                          <option value="Lakshadweep">Lakshadweep</option>
+                          <option value="Madhya Pradesh">Madhya Pradesh</option>
+                          <option value="Maharashtra">Maharashtra</option>
+                          <option value="Manipur">Manipur</option>
+                          <option value="Meghalaya">Meghalaya</option>
+                          <option value="Mizoram">Mizoram</option>
+                          <option value="Nagaland">Nagaland</option>
+                          <option value="Odisha">Odisha</option>
+                          <option value="Puducherry">Puducherry</option>
+                          <option value="Punjab">Punjab</option>
+                          <option value="Rajasthan">Rajasthan</option>
+                          <option value="Sikkim">Sikkim</option>
+                          <option value="Tamil Nadu">Tamil Nadu</option>
+                          <option value="Telangana">Telangana</option>
+                          <option value="Tripura">Tripura</option>
+                          <option value="Uttar Pradesh">Uttar Pradesh</option>
+                          <option value="Uttarakhand">Uttarakhand</option>
+                          <option value="West Bengal">West Bengal</option>
                         </select>
-                      )}
-                      {errors.locality && (
-                        <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
-                      )}
-                    </div>
-                    {errors.locality && (
-                      <p className="text-red-600 text-sm mt-1">{errors.locality}</p>
-                    )}
-                  </div>
+                        {errors.state && (
+                          <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                        )}
+                        </div>
+                        {errors.state && (
+                          <p className="text-red-600 text-sm mt-1">{errors.state}</p>
+                        )}
+                      </div>
 
-                  {/* District */}
-                  <div>
-                    <label className="block text-sm font-bold text-black mb-1">
-                      District<span className="text-red-600">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="district"
-                        value={formData.district}
-                        onChange={handleInputChange}
-                        placeholder="District name"
-                        required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.district ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
-                      />
-                      {errors.district && (
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
-                      )}
-                    </div>
-                    {errors.district && (
-                      <p className="text-red-600 text-sm mt-1">{errors.district}</p>
-                    )}
-                  </div>
-
-                  {/* State — dropdown with all 28 States + 8 UTs alphabetically */}
-                  <div>
-                    <label className="block text-sm font-bold text-black mb-1">
-                      State<span className="text-red-600">*</span>
-                    </label>
-                    <div className="relative">
-                    <select
-                      id="state"
-                      name="state"
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      required={formData.wantsMahaPrasadam || formData.wants80G}
-                      className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.state ? 'border-2 border-[#D32F2F] pr-10' : 'border-gray-300'}`}
-                    >
-                      <option value="">Select State / UT</option>
-                      <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                      <option value="Andhra Pradesh">Andhra Pradesh</option>
-                      <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                      <option value="Assam">Assam</option>
-                      <option value="Bihar">Bihar</option>
-                      <option value="Chandigarh">Chandigarh</option>
-                      <option value="Chhattisgarh">Chhattisgarh</option>
-                      <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                      <option value="Delhi">Delhi</option>
-                      <option value="Goa">Goa</option>
-                      <option value="Gujarat">Gujarat</option>
-                      <option value="Haryana">Haryana</option>
-                      <option value="Himachal Pradesh">Himachal Pradesh</option>
-                      <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                      <option value="Jharkhand">Jharkhand</option>
-                      <option value="Karnataka">Karnataka</option>
-                      <option value="Kerala">Kerala</option>
-                      <option value="Ladakh">Ladakh</option>
-                      <option value="Lakshadweep">Lakshadweep</option>
-                      <option value="Madhya Pradesh">Madhya Pradesh</option>
-                      <option value="Maharashtra">Maharashtra</option>
-                      <option value="Manipur">Manipur</option>
-                      <option value="Meghalaya">Meghalaya</option>
-                      <option value="Mizoram">Mizoram</option>
-                      <option value="Nagaland">Nagaland</option>
-                      <option value="Odisha">Odisha</option>
-                      <option value="Puducherry">Puducherry</option>
-                      <option value="Punjab">Punjab</option>
-                      <option value="Rajasthan">Rajasthan</option>
-                      <option value="Sikkim">Sikkim</option>
-                      <option value="Tamil Nadu">Tamil Nadu</option>
-                      <option value="Telangana">Telangana</option>
-                      <option value="Tripura">Tripura</option>
-                      <option value="Uttar Pradesh">Uttar Pradesh</option>
-                      <option value="Uttarakhand">Uttarakhand</option>
-                      <option value="West Bengal">West Bengal</option>
-                    </select>
-                    {errors.state && (
-                      <span className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
-                    )}
-                    </div>
-                    {errors.state && (
-                      <p className="text-red-600 text-sm mt-1">{errors.state}</p>
-                    )}
-                  </div>
-
-                  {/* Country */}
-                  <div>
-                    <label className="block text-sm font-bold text-black mb-1">
-                      Country<span className="text-red-600">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleInputChange}
-                        placeholder="Country"
-                        required={formData.wantsMahaPrasadam || formData.wants80G}
-                        className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.country ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
-                      />
-                      {errors.country && (
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
-                      )}
-                    </div>
-                    {errors.country && (
-                      <p className="text-red-600 text-sm mt-1">{errors.country}</p>
-                    )}
-                  </div>
+                      {/* Country */}
+                      <div>
+                        <label className="block text-sm font-bold text-black mb-1">
+                          Country<span className="text-red-600">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="country"
+                            value={formData.country}
+                            onChange={handleInputChange}
+                            placeholder="Country"
+                            required={formData.wantsMahaPrasadam || formData.wants80G}
+                            className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.country ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
+                          />
+                          {errors.country && (
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
+                          )}
+                        </div>
+                        {errors.country && (
+                          <p className="text-red-600 text-sm mt-1">{errors.country}</p>
+                        )}
+                      </div>
+                    </>
+                  )}
 
                 </div>
               </div>
