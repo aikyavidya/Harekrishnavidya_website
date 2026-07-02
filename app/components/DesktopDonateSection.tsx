@@ -23,6 +23,7 @@ type TabData = {
   mainBgClass: string;      // Faded background for the whole section
   link: string;
   themeClass: string;
+  activeButtonClass: string;
 };
 
 /* DONATE-SECTION-STYLE-REVERT: delete this entire block to revert to previous color styling */
@@ -38,7 +39,8 @@ const tabs: TabData[] = [
     containerBgColor: "bg-orange-100/50",
     mainBgClass: "lg:bg-orange-50",
     link: "/donation#annadan-seva",
-    themeClass: "text-orange-500"
+    themeClass: "text-orange-500",
+    activeButtonClass: "bg-orange-600 hover:bg-orange-700"
   },
   {
     id: "vidyadaan",
@@ -50,8 +52,9 @@ const tabs: TabData[] = [
     bgColor: "#bfdbfe", // blue-200
     containerBgColor: "bg-blue-100/50",
     mainBgClass: "lg:bg-blue-50",
-    link: "/donation#annadan-seva",
-    themeClass: "text-blue-500"
+    link: "/donation#vidya-dana-seva",
+    themeClass: "text-blue-500",
+    activeButtonClass: "bg-blue-600 hover:bg-blue-700"
   },
   {
     id: "generalseva",
@@ -63,13 +66,15 @@ const tabs: TabData[] = [
     bgColor: "#bbf7d0", // green-200
     containerBgColor: "bg-green-100/50",
     mainBgClass: "lg:bg-green-50",
-    link: "/donation#annadan-seva",
-    themeClass: "text-green-500"
+    link: "/donation#sponsor-a-child",
+    themeClass: "text-green-500",
+    activeButtonClass: "bg-green-600 hover:bg-green-700"
   }
 ];
 
 export default function DesktopDonateSection() {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   const currentTab = tabs.find(t => t.id === activeTab) || tabs[0];
@@ -93,28 +98,31 @@ export default function DesktopDonateSection() {
           <div className="flex flex-col gap-3">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
+              const isExpanded = isActive || hoveredTab === tab.id;
               return (
-                <button
+                <div
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`text-left transition-all duration-300 overflow-hidden ${
-                    isActive 
+                  onMouseEnter={() => setHoveredTab(tab.id)}
+                  onMouseLeave={() => setHoveredTab(null)}
+                  className={`text-left cursor-pointer transition-all duration-300 overflow-hidden ${
+                    isExpanded 
                       ? "bg-white rounded-2xl shadow-sm p-6" 
                       : "p-4 opacity-60 hover:opacity-100 hover:bg-white/40 rounded-2xl"
                   }`}
                 >
                   <div className="flex items-center gap-4 mb-1">
-                    <div className={`transition-colors duration-300 ${isActive ? tab.themeClass : 'text-gray-500'}`}>
+                    <div className={`transition-colors duration-300 ${isActive ? tab.themeClass : (hoveredTab === tab.id ? 'text-gray-900' : 'text-gray-500')}`}>
                       {tab.icon}
                     </div>
-                    <h3 className={`text-xl font-bold transition-colors duration-300 ${isActive ? 'text-gray-900' : 'text-gray-600'}`}>
+                    <h3 className={`text-xl font-bold transition-colors duration-300 ${isExpanded ? 'text-gray-900' : 'text-gray-600'}`}>
                       {tab.title}
                     </h3>
                   </div>
                   
                   {/* The active option's brief intro appears inside the selected left-hand box */}
                   <AnimatePresence>
-                    {isActive && (
+                    {isExpanded && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -123,10 +131,17 @@ export default function DesktopDonateSection() {
                         className="text-gray-600 text-sm leading-relaxed mt-3"
                       >
                         {tab.intro}
+                        
+                        <Link href={appendUTMToUrl(tab.link)} onClick={handleDonateClick} className="self-start mt-4 block">
+                          <button className={`flex items-center gap-2 px-6 py-3 text-white rounded-lg font-medium transition-colors shadow-sm ${isActive ? tab.activeButtonClass : 'bg-gray-900 hover:bg-black'}`}>
+                            <span>Donate Now</span>
+                            <ArrowUpRight size={18} />
+                          </button>
+                        </Link>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </button>
+                </div>
               );
             })}
           </div>
@@ -161,13 +176,7 @@ export default function DesktopDonateSection() {
                 {currentTab.detail}
               </p>
 
-              {/* Action Button */}
-              <Link href={appendUTMToUrl(currentTab.link)} onClick={handleDonateClick} className="self-end">
-                <button className="flex items-center gap-2 px-6 py-3 bg-[#0279BC] text-white rounded-lg font-medium hover:bg-[#026299] transition-colors shadow-sm">
-                  <span>Donate Now</span>
-                  <ArrowUpRight size={18} />
-                </button>
-              </Link>
+              {/* Action Button moved to left column */}
             </motion.div>
           </AnimatePresence>
         </div>

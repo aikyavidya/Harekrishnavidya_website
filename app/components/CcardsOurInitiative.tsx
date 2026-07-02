@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { FadeInOnScroll } from "./AnimationProvider";
 import { Flower2, Music, Users, Heart, Leaf, ArrowLeft, ArrowRight } from "lucide-react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { EffectCoverflow, Pagination, Autoplay } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -109,7 +109,12 @@ export default function ServicesSection() {
                   ? { clickable: true, el: '.desktop-pagination-container' }
                   : { clickable: true }
               }
-              modules={[EffectCoverflow, Pagination]}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: false,
+              }}
+              modules={[EffectCoverflow, Pagination, Autoplay]}
               className="w-full py-12"
             >
               {cards.map((card) => {

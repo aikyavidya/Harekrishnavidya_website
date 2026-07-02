@@ -753,7 +753,7 @@ export default function DonationPage() {
         </div>
       </div>
 
-      <div className="bg-white text-center py-8 px-4 text-black">
+      <div id="vidya-dana-seva" className="bg-white text-center py-8 px-4 text-black">
         <button className="bg-gray-200 text-black font-semibold px-4 py-2 rounded-full mb-6 text-[36px]">
           ✧ Vidya Dana Seva
         </button>
@@ -915,7 +915,7 @@ export default function DonationPage() {
         </div>
       </div>
 
-      <div className="bg-white text-center py-8 px-4 text-black ">
+      <div id="sponsor-a-child" className="bg-white text-center py-8 px-4 text-black ">
         <button className="bg-gray-200 text-black font-semibold px-4 py-2 rounded-full mb-6 text-[36px]">
           ✧ Sponsor a Child
         </button>

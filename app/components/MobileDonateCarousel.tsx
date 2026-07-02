@@ -54,7 +54,7 @@ const tabs: TabData[] = [
     image: edu1,
     bgColor: "#bfdbfe", // blue-200
     containerBgColor: "bg-blue-100/50",
-    link: "/donation#annadan-seva",
+    link: "/donation#vidya-dana-seva",
     themeClass: "text-blue-500"
   },
   {
@@ -66,7 +66,7 @@ const tabs: TabData[] = [
     image: value,
     bgColor: "#bbf7d0", // green-200
     containerBgColor: "bg-green-100/50",
-    link: "/donation#annadan-seva",
+    link: "/donation#sponsor-a-child",
     themeClass: "text-green-500"
   }
 ];
@@ -102,10 +102,11 @@ export default function MobileDonateCarousel() {
       <div className="w-full pl-4 sm:pl-6 overflow-visible">
         <Swiper
           modules={[Navigation, Pagination]}
-          slidesPerView="auto"
+          slidesPerView={1.15}
           spaceBetween={16}
           breakpoints={{
             768: {
+              slidesPerView: 1.25,
               spaceBetween: 24,
             },
             1024: {
@@ -120,7 +121,7 @@ export default function MobileDonateCarousel() {
           className="w-full overflow-visible"
         >
           {tabs.map((tab, idx) => (
-            <SwiperSlide key={`${tab.id}-${idx}`} className="w-[85vw] md:w-[60vw] lg:w-[45vw] h-auto flex flex-col pb-2">
+            <SwiperSlide key={`${tab.id}-${idx}`} className="h-auto flex flex-col pb-2">
               <div className="w-full flex flex-col h-full gap-4 shrink-0">
                 
                 {/* Image Card (Top) */}
