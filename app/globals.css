@@ -278,7 +278,7 @@ body {
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--orange);
+  background: #0279BC;
   transition: width 0.3s ease, left 0.3s ease;
   border-radius: 2px;
 }

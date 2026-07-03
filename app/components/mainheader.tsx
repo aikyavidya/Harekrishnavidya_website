@@ -229,7 +229,7 @@ export default function Header() {
   }, []);
 
   const linkClass = (href: string) =>
-    `nav-link-animated ${pathname === href ? "text-orange-600 font-semibold active" : ""}`;
+    `nav-link-animated ${pathname === href ? "text-[#0279BC] font-semibold active" : ""}`;
 
   return (
     <header
@@ -290,12 +290,12 @@ export default function Header() {
                 initial={{ opacity: 0, y: -10, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.2 }}
-                className="bg-orange-600/90 backdrop-blur-md rounded-lg shadow-lg py-3 w-52 space-y-1"
+                className="bg-[#0279BC]/90 backdrop-blur-md rounded-lg shadow-lg py-3 w-52 space-y-1"
               >
                 <li>
                   <Link
                     href="/video-gallery"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Video Gallery
                   </Link>
@@ -303,7 +303,7 @@ export default function Header() {
                 <li>
                   <Link
                     href="/donor-wall"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Donor Wall
                   </Link>
@@ -311,7 +311,7 @@ export default function Header() {
                 <li>
                   <Link
                     href="/photo-gallery"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Photo Gallery
                   </Link>
@@ -343,12 +343,12 @@ export default function Header() {
                 initial={{ opacity: 0, y: -10, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.2 }}
-                className="bg-orange-600/90 backdrop-blur-md rounded-lg shadow-lg py-3 w-52 space-y-1"
+                className="bg-[#0279BC]/90 backdrop-blur-md rounded-lg shadow-lg py-3 w-52 space-y-1"
               >
                 <li>
                   <Link
                     href="/donate-to-cause"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Donate to Cause
                   </Link>
@@ -356,7 +356,7 @@ export default function Header() {
                 <li>
                   <Link
                     href="/grocery-donation"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Grocery Donation
                   </Link>
@@ -364,7 +364,7 @@ export default function Header() {
                 <li>
                   <Link
                     href="/campaign-page"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Campaign Page
                   </Link>
@@ -372,7 +372,7 @@ export default function Header() {
                 <li>
                   <Link
                     href="/donation-kit"
-                    className="block px-4 py-2 text-white hover:bg-orange-500/50 hover:text-yellow-200 transition-colors"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                   >
                     Donation Kit
                   </Link>
@@ -446,7 +446,7 @@ export default function Header() {
               >
                 Media
                 <IoChevronDown
-                  className={`transition-transform duration-300 ${showMedia ? "rotate-180 text-orange-500" : ""}`}
+                  className={`transition-transform duration-300 ${showMedia ? "rotate-180 text-[#0279BC]" : ""}`}
                 />
               </button>
 
@@ -457,7 +457,7 @@ export default function Header() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-orange-200 pl-4 py-1 overflow-hidden"
+                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#0279BC]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
                       { l: "Video Gallery", h: "/video-gallery" },
@@ -467,7 +467,7 @@ export default function Header() {
                       <Link
                         key={link.h}
                         href={link.h}
-                        className="hover:text-orange-500 transition-colors"
+                        className="hover:text-[#0279BC] transition-colors"
                         onClick={() => { setIsOpen(false); setShowMedia(false); }}
                       >
                         {link.l}
@@ -505,7 +505,7 @@ export default function Header() {
               >
                 New Donation
                 <IoChevronDown
-                  className={`transition-transform duration-300 ${showDonation ? "rotate-180 text-orange-500" : ""}`}
+                  className={`transition-transform duration-300 ${showDonation ? "rotate-180 text-[#0279BC]" : ""}`}
                 />
               </button>
 
@@ -516,7 +516,7 @@ export default function Header() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-orange-200 pl-4 py-1 overflow-hidden"
+                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#0279BC]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
                       { l: "Donate to Cause", h: "/donate-to-cause" },
@@ -527,7 +527,7 @@ export default function Header() {
                       <Link
                         key={link.h}
                         href={link.h}
-                        className="hover:text-orange-500 transition-colors"
+                        className="hover:text-[#0279BC] transition-colors"
                         onClick={() => { setIsOpen(false); setShowDonation(false); }}
                       >
                         {link.l}
