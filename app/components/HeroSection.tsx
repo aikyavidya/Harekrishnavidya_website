@@ -40,8 +40,6 @@ export default function HeroSection() {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
-        setLeftCardDismissed(false);
-        setRightCardDismissed(false);
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -134,11 +132,9 @@ export default function HeroSection() {
 
   const renderInsightsCard = (isFixed: boolean) => (
     <div className={`text-black p-4 md:p-2 lg:p-6 mb-0 shadow-xl w-full md:w-[220px] md:h-[165px] lg:w-[400px] lg:h-[250px] xl:w-[400px] xl:h-[250px] flex flex-col justify-center gap-4 md:gap-2 lg:gap-4 rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto md:mx-0 hover-lift isolate ${isFixed ? "relative" : ""}`}>
-      {isFixed && (
-        <button onClick={() => setLeftCardDismissed(true)} className="absolute top-3 right-3 text-gray-500 hover:text-black bg-white/50 hover:bg-white rounded-full p-1 transition cursor-pointer z-20" aria-label="Dismiss">
-          <X size={16} />
-        </button>
-      )}
+      <button onClick={() => setLeftCardDismissed(true)} className="absolute top-3 right-3 text-gray-500 hover:text-black bg-white/50 hover:bg-white rounded-full p-1 transition cursor-pointer z-20" aria-label="Dismiss">
+        <X size={16} />
+      </button>
       <div className="flex items-center justify-center md:justify-center flex-wrap gap-2">
         <div className="flex items-center gap-1 px-3 py-2 md:px-1.5 md:py-0.5 bg-[#F9F9F9] rounded-full shadow-md text-black font-semibold text-base md:text-[9px] lg:text-lg">
           <Image src={img9} alt="Star Icon" width={20} height={20} />
@@ -186,11 +182,9 @@ export default function HeroSection() {
 
   const renderCTACard = (isFixed: boolean) => (
     <div className={`text-[#2C2C2C] shadow-xl flex flex-col w-full md:w-[220px] md:h-[165px] lg:w-[400px] lg:h-[250px] xl:w-[400px] xl:h-[250px] px-4 md:p-2 lg:p-6 xl:p-8 justify-center items-center rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md mx-auto md:mx-0 hover-lift isolate ${isFixed ? "relative" : "absolute md:static"}`}>
-      {isFixed && (
-        <button onClick={() => setRightCardDismissed(true)} className="absolute top-3 right-3 text-gray-500 hover:text-black bg-white/50 hover:bg-white rounded-full p-1 transition cursor-pointer z-20" aria-label="Dismiss">
-          <X size={16} />
-        </button>
-      )}
+      <button onClick={() => setRightCardDismissed(true)} className="absolute top-3 right-3 text-gray-500 hover:text-black bg-white/50 hover:bg-white rounded-full p-1 transition cursor-pointer z-20" aria-label="Dismiss">
+        <X size={16} />
+      </button>
       <div className="w-full text-center md:text-center lg:text-left">
         <h3 className="text-lg md:text-[10px] lg:text-xl font-semibold mb-2 md:mb-0.5 lg:mb-2">
           Nourish a Life. Uplift a Soul.
@@ -372,25 +366,22 @@ export default function HeroSection() {
             }
           `}} />
           {/* Container for cards (Absolute Initial State) */}
-          {!isScrolled && (
-            <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-row md:items-stretch md:justify-between gap-4 md:gap-3 lg:gap-6 px-4 md:px-6 lg:px-4 z-10">
-              <SlideIn direction="left" duration={0.8} className="w-full md:w-auto">
-                {renderInsightsCard(false)}
-              </SlideIn>
+          <div className="absolute bottom-4 md:bottom-6 lg:bottom-8 xl:bottom-10 left-1 right-1 flex flex-col md:flex-row md:items-stretch md:justify-between gap-4 md:gap-3 lg:gap-6 px-4 md:px-6 lg:px-4 z-10">
+            <SlideIn direction="left" duration={0.8} className="w-full md:w-auto">
+              {!leftCardDismissed && renderInsightsCard(false)}
+            </SlideIn>
+            {!isScrolled && (
               <SlideIn direction="right" duration={0.8} delay={0.2} className="w-full md:w-auto">
-                {renderCTACard(false)}
+                {!rightCardDismissed && renderCTACard(false)}
               </SlideIn>
-            </div>
-          )}
+            )}
+          </div>
         </section>
       </div>
 
       {/* Fixed Scrolled Cards Container */}
       {isScrolled && (
-        <div className="hidden md:flex fixed bottom-24 left-1 right-1 md:items-stretch md:justify-between gap-3 lg:gap-6 px-6 lg:px-4 z-40 pointer-events-none transition-opacity duration-300">
-          <div className="pointer-events-auto">
-            {!leftCardDismissed && renderInsightsCard(true)}
-          </div>
+        <div className="hidden md:flex fixed bottom-24 left-1 right-1 md:items-stretch md:justify-end gap-3 lg:gap-6 px-6 lg:px-4 z-40 pointer-events-none transition-opacity duration-300">
           <div className="pointer-events-auto">
             {!rightCardDismissed && renderCTACard(true)}
           </div>
