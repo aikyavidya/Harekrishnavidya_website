@@ -208,6 +208,7 @@ import useUTM from "../utils/useUTM";
 import { IoChevronDown } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePageLoader } from "./PageLoader";
 
 export default function Header() {
   const pathname = usePathname();
@@ -216,6 +217,7 @@ export default function Header() {
   const [showMedia, setShowMedia] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const { startLoading } = usePageLoader();
   const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   // Handle scroll detection for glassmorphism effect
@@ -229,7 +231,7 @@ export default function Header() {
   }, []);
 
   const linkClass = (href: string) =>
-    `nav-link-animated ${pathname === href ? "text-[#0279BC] font-semibold active" : ""}`;
+    `nav-link-animated ${pathname === href ? "text-[#1C398E] font-semibold active" : ""}`;
 
   return (
     <header
@@ -245,7 +247,7 @@ export default function Header() {
           className="flex items-center"
           whileHover={{ scale: 1.02 }}
         >
-          <Link href="/home">
+          <Link href="/home" onClick={startLoading}>
             <Image
               src={logo}
               alt="Hare Krishna Movement Logo"
@@ -258,15 +260,15 @@ export default function Header() {
 
         {/* Center: Desktop Navigation Links */}
         <nav className="hidden md:flex justify-center items-center md:space-x-4 min-[1025px]:space-x-8 md:text-xs min-[1025px]:text-[14px] text-gray-800 font-semibold">
-          <Link href="/home" className={linkClass("/home")}>
+          <Link href="/home" className={linkClass("/home")} onClick={startLoading}>
             Home
           </Link>
 
-          <Link href="/about-us" className={linkClass("/about-us")}>
+          <Link href="/about-us" className={linkClass("/about-us")} onClick={startLoading}>
             About Us
           </Link>
 
-          <Link href="/our-initiative" className={linkClass("/our-initiative")}>
+          <Link href="/our-initiative" className={linkClass("/our-initiative")} onClick={startLoading}>
             Our Initiative
           </Link>
 
@@ -296,6 +298,7 @@ export default function Header() {
                   <Link
                     href="/video-gallery"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Video Gallery
                   </Link>
@@ -304,6 +307,7 @@ export default function Header() {
                   <Link
                     href="/donor-wall"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Donor Wall
                   </Link>
@@ -312,6 +316,7 @@ export default function Header() {
                   <Link
                     href="/photo-gallery"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Photo Gallery
                   </Link>
@@ -320,7 +325,7 @@ export default function Header() {
             </div>
           </div>
 
-          <Link href="/contact" className={linkClass("/contact")}>
+          <Link href="/contact" className={linkClass("/contact")} onClick={startLoading}>
             Contact Us
           </Link>
           {/* <Link href="/sponsorships" className={linkClass("/sponsorships")}>
@@ -349,6 +354,7 @@ export default function Header() {
                   <Link
                     href="/donate-to-cause"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Donate to Cause
                   </Link>
@@ -357,6 +363,7 @@ export default function Header() {
                   <Link
                     href="/grocery-donation"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Grocery Donation
                   </Link>
@@ -365,6 +372,7 @@ export default function Header() {
                   <Link
                     href="/campaign-page"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Campaign Page
                   </Link>
@@ -373,6 +381,7 @@ export default function Header() {
                   <Link
                     href="/donation-kit"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
                   >
                     Donation Kit
                   </Link>
@@ -385,7 +394,7 @@ export default function Header() {
 
         {/* Right: Donate Now Button */}
         <div className="flex items-center justify-end gap-2 min-[1025px]:gap-4">
-          <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick} className="hidden md:block">
+          <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={(e) => { startLoading(); handleDonateClick(e); }} className="hidden md:block">
             <button className="flex items-center gap-2 md:px-3 md:py-1.5 min-[1025px]:px-5 min-[1025px]:py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium md:text-xs min-[1025px]:text-base">
               <FaHeart size={14} /> Donate Now
             </button>
@@ -426,7 +435,7 @@ export default function Header() {
                 <Link
                   href={link.href}
                   className={`block py-2 ${linkClass(link.href)}`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => { startLoading(); setIsOpen(false); }}
                 >
                   {link.label}
                 </Link>
@@ -446,7 +455,7 @@ export default function Header() {
               >
                 Media
                 <IoChevronDown
-                  className={`transition-transform duration-300 ${showMedia ? "rotate-180 text-[#0279BC]" : ""}`}
+                  className={`transition-transform duration-300 ${showMedia ? "rotate-180 text-[#1C398E]" : ""}`}
                 />
               </button>
 
@@ -457,7 +466,7 @@ export default function Header() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#0279BC]/30 pl-4 py-1 overflow-hidden"
+                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#1C398E]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
                       { l: "Video Gallery", h: "/video-gallery" },
@@ -467,8 +476,8 @@ export default function Header() {
                       <Link
                         key={link.h}
                         href={link.h}
-                        className="hover:text-[#0279BC] transition-colors"
-                        onClick={() => { setIsOpen(false); setShowMedia(false); }}
+                        className="hover:text-[#1C398E] transition-colors"
+                        onClick={() => { startLoading(); setIsOpen(false); setShowMedia(false); }}
                       >
                         {link.l}
                       </Link>
@@ -486,7 +495,7 @@ export default function Header() {
               <Link
                 href="/contact"
                 className={`block py-2 ${linkClass("/contact")}`}
-                onClick={() => setIsOpen(false)}
+                onClick={() => { startLoading(); setIsOpen(false); }}
               >
                 Contact Us
               </Link>
@@ -505,7 +514,7 @@ export default function Header() {
               >
                 New Donation
                 <IoChevronDown
-                  className={`transition-transform duration-300 ${showDonation ? "rotate-180 text-[#0279BC]" : ""}`}
+                  className={`transition-transform duration-300 ${showDonation ? "rotate-180 text-[#1C398E]" : ""}`}
                 />
               </button>
 
@@ -516,7 +525,7 @@ export default function Header() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#0279BC]/30 pl-4 py-1 overflow-hidden"
+                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#1C398E]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
                       { l: "Donate to Cause", h: "/donate-to-cause" },
@@ -527,8 +536,8 @@ export default function Header() {
                       <Link
                         key={link.h}
                         href={link.h}
-                        className="hover:text-[#0279BC] transition-colors"
-                        onClick={() => { setIsOpen(false); setShowDonation(false); }}
+                        className="hover:text-[#1C398E] transition-colors"
+                        onClick={() => { startLoading(); setIsOpen(false); setShowDonation(false); }}
                       >
                         {link.l}
                       </Link>
@@ -547,6 +556,7 @@ export default function Header() {
               <Link
                 href={appendUTMToUrl("/donation#annadan-seva")}
                 onClick={(e) => {
+                  startLoading();
                   setIsOpen(false);
                   handleDonateClick(e);
                 }}

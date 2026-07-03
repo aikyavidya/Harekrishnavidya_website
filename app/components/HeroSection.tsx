@@ -190,9 +190,7 @@ export default function HeroSection() {
           Nourish a Life. Uplift a Soul.
         </h3>
         <p className="text-md md:text-xs lg:text-lg text-[#2C2C2C]/80 mb-4 md:mb-1.5 lg:mb-4 leading-normal">
-          Your support delivers food, education, and
-          <br className="hidden md:block" />
-          hope to those who need it most.
+          Your support delivers food, education, and hope to those who need it most.
         </p>
         <div className="flex flex-col sm:flex-row sm:justify-center md:flex-row md:justify-center lg:flex-row sm:space-x-2 md:space-x-1.5 lg:space-x-4 gap-2 md:gap-1.5 lg:gap-2 mt-4 md:mt-1 lg:mt-4">
           <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick} className="w-full md:w-auto">

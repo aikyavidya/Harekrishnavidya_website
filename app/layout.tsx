@@ -7,6 +7,7 @@ import TopBar from "./components/TopBar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/Whatsapp";
 import ScrollButtons from "./components/ScrollButtons";
+import { PageLoaderProvider } from "./components/PageLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -136,12 +137,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        <TopBar />
-        <Header />
-        <ScrollButtons />
-        <WhatsAppButton />
-        {children}
-        <Footer />
+        <PageLoaderProvider>
+          <TopBar />
+          <Header />
+          <ScrollButtons />
+          <WhatsAppButton />
+          {children}
+          <Footer />
+        </PageLoaderProvider>
       </body>
     </html>
   );
