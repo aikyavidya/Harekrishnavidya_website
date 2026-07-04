@@ -62,8 +62,8 @@ export const PageLoaderProvider = ({ children }: { children: ReactNode }) => {
     <PageLoaderContext.Provider value={{ startLoading }}>
       {isLoading && (
         <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center gap-6">
-          <Image src={logo} alt="Hare Krishna Movement Logo" width={140} height={126} className="object-contain w-[140px] h-auto md:w-[220px]" priority />
-          <div className="w-48 h-1.5 md:w-96 md:h-2 bg-gray-200 rounded-full overflow-hidden">
+          <Image src={logo} alt="Hare Krishna Movement Logo" width={140} height={126} className="object-contain w-[110px] h-auto md:w-[180px]" priority />
+          <div className="w-48 h-2.5 md:w-96 md:h-3.5 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-[#0279BC] rounded-full"
               style={{ width: `${progress}%`, transition: "width 0.1s linear" }}
