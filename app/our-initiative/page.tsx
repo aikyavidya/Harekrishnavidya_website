@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import useUTM from "../utils/useUTM";
+import { useLanguage } from "../components/LanguageProvider";
 
 import temple from "../../public/images/greek-temple.png";
 import life from "../../public/images/life_cycle.png";
@@ -45,6 +46,7 @@ import Heart from "../../public/images/Heart.png";
 export default function Page() {
   const [isMobile, setIsMobile] = useState(false);
   const { appendUTMToUrl } = useUTM();
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Function to check screen width
@@ -66,7 +68,7 @@ export default function Page() {
           {/* Hero Section */}
           <div className="px-4 py-6">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">
-              Always and Forever
+              {t("initiative.alwaysAndForever")}
             </h2>
             {/* <div className="relative rounded-2xl overflow-hidden  mb-6">
               <Image
@@ -89,14 +91,11 @@ export default function Page() {
             {/* Initiative Section */}
             <div className="text-center mb-8">
               <h3 className="text-xl font-extrabold mb-3">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">An Initiative of </span>
-                <span className="text-[#2C2C2C] drop-shadow-sm">HARE KRISHNA MOVEMENT INDIA</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">{t("initiative.headingPart1")}</span>
+                <span className="text-[#2C2C2C] drop-shadow-sm">{t("initiative.headingPart2")}</span>
               </h3>
               <p className="text-gray-700  leading-relaxed">
-                At Hare krishna Vidya, we believe that change begins with
-                understanding the needs of the community. By addressing the root
-                causes of challenges like hunger, education gaps, and healthcare
-                disparities, we are creating sustainable and lasting impact.
+                {t("initiative.description")}
               </p>
             </div>
           </div>
@@ -119,13 +118,13 @@ export default function Page() {
           {/* Call to Action Section - Mobile */}
           <div className=" px-4 py-8 m-5 flex flex-col justify-center items-center  text-center font-bold">
             <p className="text-gray-800 text-md leading-relaxed mb-6 ">
-              We are providing <br />{" "}
+              {t("initiative.donateCta.part1")}<br />{" "}
               <span className="text-orange-400">
-                Free Food, Education and Values{" "}
+                {t("initiative.donateCta.part2")}
               </span>{" "}
-              <br /> for life based on{" "}
-              <span className="font-semibold">Bhagavad-Gita</span> to
-              <br /> underprivileged in Rural Areas of India
+              <br />{t("initiative.donateCta.part3")}
+              <span className="font-semibold">{t("initiative.donateCta.part4")}</span>
+              <br />{t("initiative.donateCta.part5")}
             </p>
 
             {/* Mobile Donate Button */}
@@ -137,12 +136,12 @@ export default function Page() {
                 <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105">
                   <Image
                     src={Heart}
-                    alt="Donate Icon"
+                    alt={t("initiative.alt.donateIcon")}
                     width={20}
                     height={20}
                     className="w-6 h-6"
                   />
-                  Donate Now
+                  {t("nav.donateNow")}
                 </button>
               </Link>
               {/* Right Arrow - Mobile */}
@@ -183,14 +182,11 @@ export default function Page() {
             {/* Bottom Section - Initiative */}
             <div className="md:col-span-2 text-center mt-2">
               <h3 className="text-[28px] sm:text-[36px] lg:text-[48px] font-extrabold">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">An Initiative of </span>
-                <span className="text-[#2C2C2C] drop-shadow-sm">HARE KRISHNA MOVEMENT INDIA</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">{t("initiative.headingPart1")}</span>
+                <span className="text-[#2C2C2C] drop-shadow-sm">{t("initiative.headingPart2")}</span>
               </h3>
               <p className="mt-4 text-gray-700 max-w-2xl mx-auto">
-                At Hare krishna Vidya, we believe that change begins with
-                understanding the needs of the community. By addressing the root
-                causes of challenges like hunger, education gaps, and healthcare
-                disparities, we are creating sustainable and lasting impact.
+                {t("initiative.description")}
               </p>
             </div>
           </section>
@@ -201,16 +197,12 @@ export default function Page() {
 
             <div className="md:col-span-2 text-center mt-2">
               <h2 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight text-[#2C2C2C] drop-shadow-sm">
-                Curriculum
+                {t("initiative.curriculum.heading")}
               </h2>
             </div>
             <div className="md:col-span-2 text-center mt-4">
               <p className="text-gray-500 mt-4 lg:mt-0 max-w-3xl mx-auto text-center mb-12 ">
-                The curriculum of <strong>Hare Krishna Vidya</strong> is a synthesis
-                of academic and value-based learning. The post-school
-                education centres of <strong>Hare Krishna Vidya</strong> cater to
-                underprivileged students of Grades 1 to 10. The sessions are systematically
-                organized every evening.
+                {t("initiative.curriculum.descPart1")}<strong>{t("initiative.curriculum.descPart2")}</strong>{t("initiative.curriculum.descPart3")}<strong>{t("initiative.curriculum.descPart2")}</strong>{t("initiative.curriculum.descPart4")}
               </p>
             </div>
             <div className="max-w-7xl mx-auto">
@@ -223,15 +215,13 @@ export default function Page() {
                 {/* Card 1 */}
                 <div className=" rounded-lg shadow-sm bg-blue-50 border border-orange-200 p-6  transition hover:scale-105 hover:shadow-lg">
                   <div className="w-12 h-12 flex items-center justify-center bg-blue-50 rounded-full mb-4">
-                    <Image src={m} width={100} height={100} alt="My image" />
+                    <Image src={m} width={100} height={100} alt={t("initiative.alt.myImage")} />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
-                    Moral Values & Ethics
+                    {t("initiative.curriculum.moralValuesTitle")}
                   </h3>
                   <p className="text-gray-500 text-sm">
-                    Moral values and ethics guide human behavior, defining what
-                    is right, fair, and just for harmonious, respectful, and
-                    responsible living.
+                    {t("initiative.curriculum.moralValuesDesc")}
                   </p>
                 </div>
 
@@ -242,31 +232,27 @@ export default function Page() {
                       src={temple}
                       width={100}
                       height={100}
-                      alt="My image"
+                      alt={t("initiative.alt.myImage")}
                     />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
-                    Incredible Culture & Heritage of Bharat
+                    {t("initiative.curriculum.cultureTitle")}
                   </h3>
                   <p className="text-gray-500 text-sm">
-                    The incredible culture and heritage of Bharat reflect its
-                    rich traditions, diverse art, timeless wisdom, and unity in
-                    cultural diversity.
+                    {t("initiative.curriculum.cultureDesc")}
                   </p>
                 </div>
 
                 {/* Card 3 */}
                 <div className="bg-blue-50 rounded-lg shadow-sm border border-orange-200 p-6  transition hover:scale-105 hover:shadow-lg">
                   <div className="w-12 h-12 flex items-center justify-center bg-blue-50 rounded-full mb-4">
-                    <Image src={life} width={100} height={100} alt="My image" />
+                    <Image src={life} width={100} height={100} alt={t("initiative.alt.myImage")} />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
-                    Life skills for contemporary world
+                    {t("initiative.curriculum.lifeSkillsTitle")}
                   </h3>
                   <p className="text-gray-500 text-sm">
-                    Life skills for the contemporary world empower individuals
-                    to adapt, communicate, solve problems, and thrive in an
-                    ever-changing global environment..
+                    {t("initiative.curriculum.lifeSkillsDesc")}
                   </p>
                 </div>
               </div>
@@ -290,11 +276,11 @@ export default function Page() {
               {/* Main text */}
               <div className="mb-5">
                 <p className="text-gray-800 text-lg leading-relaxed">
-                  We are providing Free Food, Education and Values for life
-                  based on <span className="font-semibold">Bhagavad-Gita</span>{" "}
-                  to underprivileged
-                  <br />
-                  in Rural Areas of India.
+                  {t("initiative.donateCta.part1")}
+                  {t("initiative.donateCta.part2")}
+                  {t("initiative.donateCta.part3")}
+                  <span className="font-semibold">{t("initiative.donateCta.part4")}</span>{" "}
+                  {t("initiative.donateCta.part5")}
                 </p>
               </div>
               {/* Arrows and Donate Button Container */}
@@ -307,12 +293,12 @@ export default function Page() {
                   <button className="flex items-center gap-2 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-3 mt-2 rounded-lg shadow-md z-10 transition-transform transform hover:scale-105">
                     <Image
                       src={Heart}
-                      alt="Donate Icon"
+                      alt={t("initiative.alt.donateIcon")}
                       width={24}
                       height={24}
                       className="w-6 h-6"
                     />
-                    Donate Now
+                    {t("nav.donateNow")}
                   </button>
                 </Link>
 

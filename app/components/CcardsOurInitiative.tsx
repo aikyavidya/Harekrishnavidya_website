@@ -11,6 +11,7 @@ import { FadeInOnScroll } from "./AnimationProvider";
 import { Flower2, Music, Users, Heart, Leaf, ArrowLeft, ArrowRight } from "lucide-react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Autoplay } from 'swiper/modules';
+import { useLanguage } from "./LanguageProvider";
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -62,6 +63,56 @@ export default function ServicesSection() {
     }
   ];
 
+  const { t } = useLanguage();
+
+  const localizedCards = [
+    {
+      ...cards[0],
+      title: t("initiative.cards.spiritualEducation.title"),
+      items: [
+        t("initiative.cards.spiritualEducation.item1"),
+        t("initiative.cards.spiritualEducation.item2"),
+        t("initiative.cards.spiritualEducation.item3"),
+      ]
+    },
+    {
+      ...cards[1],
+      title: t("initiative.cards.arts.title"),
+      items: [
+        t("initiative.cards.arts.item1"),
+        t("initiative.cards.arts.item2"),
+        t("initiative.cards.arts.item3"),
+      ]
+    },
+    {
+      ...cards[2],
+      title: t("initiative.cards.leadership.title"),
+      items: [
+        t("initiative.cards.leadership.item1"),
+        t("initiative.cards.leadership.item2"),
+        t("initiative.cards.leadership.item3"),
+      ]
+    },
+    {
+      ...cards[3],
+      title: t("initiative.cards.health.title"),
+      items: [
+        t("initiative.cards.health.item1"),
+        t("initiative.cards.health.item2"),
+        t("initiative.cards.health.item3"),
+      ]
+    },
+    {
+      ...cards[4],
+      title: t("initiative.cards.base.title"),
+      items: [
+        t("initiative.cards.base.item1"),
+        t("initiative.cards.base.item2"),
+        t("initiative.cards.base.item3"),
+      ]
+    }
+  ];
+
   const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
@@ -80,7 +131,7 @@ export default function ServicesSection() {
         <FadeInOnScroll>
           <div className="text-center mb-10">
             <h2 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight text-[#2C2C2C] drop-shadow-sm">
-              Where Spirituality Meets Practical Skills
+              {t("initiative.cards.heading")}
             </h2>
           </div>
 
@@ -117,7 +168,7 @@ export default function ServicesSection() {
               modules={[EffectCoverflow, Pagination, Autoplay]}
               className="w-full py-12"
             >
-              {cards.map((card) => {
+              {localizedCards.map((card) => {
                 const IconComponent = card.icon;
                 return (
                   <SwiperSlide key={card.id}>
@@ -155,7 +206,7 @@ export default function ServicesSection() {
                 <button
                   onClick={() => swiperRef.current?.slidePrev()}
                   className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 active:scale-95 text-gray-700 pointer-events-auto"
-                  aria-label="Previous slide"
+                  aria-label={t("donate.prevSlide")}
                 >
                   <ArrowLeft size={18} />
                 </button>
@@ -166,7 +217,7 @@ export default function ServicesSection() {
                 <button
                   onClick={() => swiperRef.current?.slideNext()}
                   className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 active:scale-95 text-gray-700 pointer-events-auto"
-                  aria-label="Next slide"
+                  aria-label={t("donate.nextSlide")}
                 >
                   <ArrowRight size={18} />
                 </button>
