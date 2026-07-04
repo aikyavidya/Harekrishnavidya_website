@@ -24,6 +24,7 @@ import cul1 from "../../public/galleryection/cul1.jpg";
 import edu3 from "../../public/galleryection/edu3.jpg";
 
 import StatsSection from "../components/StatSection";
+import { useLanguage } from "../components/LanguageProvider";
 
 // const stats: Stat[] = [
 //   {
@@ -62,6 +63,7 @@ export default function Page() {
   console.log("About Us Page Rendered");
   const [activeTab, setActiveTab] = useState("mission");
   const [isMobile, setIsMobile] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Function to check screen width
@@ -104,21 +106,47 @@ export default function Page() {
     ],
   };
 
+  const localizedMissionContent = {
+    ...missionContent,
+    title: t("about.ourMission"),
+    description: t("about.mission.paragraph"),
+    subtitle: t("about.mission.howWeBringToLife"),
+    points: [
+      t("about.mission.point1"),
+      t("about.mission.point2"),
+      t("about.mission.point3"),
+      t("about.mission.point4"),
+    ]
+  };
+
+  const localizedVisionContent = {
+    ...visionContent,
+    title: t("about.ourVision"),
+    description: t("about.vision.paragraphDesktop"),
+    subtitle: t("about.vision.encompasses"),
+    points: [
+      t("about.vision.point1"),
+      t("about.vision.point2"),
+      t("about.vision.point3"),
+      t("about.vision.point4"),
+    ]
+  };
+
   const currentContent =
-    activeTab === "mission" ? missionContent : visionContent;
+    activeTab === "mission" ? localizedMissionContent : localizedVisionContent;
   // --------------------
 
   const [zoomed, setZoomed] = useState<number | null>(null);
 
   const galleryImages = [
-    { src: edu1, alt: "Gallery 3" },
-    { src: fest1, alt: "Gallery 3" },
-    { src: value, alt: "Gallery 2" },
-    { src: yoga1, alt: "Gallery 3" },
-    { src: edu2, alt: "Gallery 3" },
-    { src: fest2, alt: "Gallery 3" },
-    { src: cul1, alt: "Gallery 3" },
-    { src: edu3, alt: "Gallery 3" },
+    { src: edu1, alt: t("about.alt.gallery3") },
+    { src: fest1, alt: t("about.alt.gallery3") },
+    { src: value, alt: t("about.alt.gallery2") },
+    { src: yoga1, alt: t("about.alt.gallery3") },
+    { src: edu2, alt: t("about.alt.gallery3") },
+    { src: fest2, alt: t("about.alt.gallery3") },
+    { src: cul1, alt: t("about.alt.gallery3") },
+    { src: edu3, alt: t("about.alt.gallery3") },
   ];
 
   return (
@@ -142,7 +170,7 @@ export default function Page() {
               <div className="flex justify-center items-center">
                 <Image
                   src={pImg}
-                  alt="Srila Prabhupada"
+                  alt={t("about.alt.srilaPrabhupada")}
                   width={500}
                   height={470}
                   className="object-contain "
@@ -154,9 +182,9 @@ export default function Page() {
                   {/* AC Bhaktivedanta Swami Prabhupada */}
                 </h1>
                 <p className="text-sm text-gray-700 font-medium leading-relaxed">
-                  Founder-Acharya of the worldwide
+                  {t("about.founderAcharyaOf")}
                   <br />
-                  HARE KRISHNA MOVEMENT INDIA
+                  {t("about.hkmFullName")}
                 </p>
               </div>
 
@@ -166,17 +194,13 @@ export default function Page() {
               >
                 <div>
                   <p className="text-base leading-relaxed">
-                    HARE KRISHNA MOVEMENT INDIA (HKM) was founded by His Divine Grace{" "}
+                    {t("about.hkmFoundedBy")}{" "}
                     <span className="font-bold italic">
-                      A.C. Bhaktivedanta Prabhupada
+                      {t("about.acBhaktivedanta")}
                     </span>
-                    , also called{" "}
-                    <span className="font-bold italic">Srila Prabhupada</span>{" "}
-                    by devotees affectionately; a man of many facets, a
-                    versatile personality, and more. He has been called a
-                    scholar, a philosopher, a cultural ambassador, a prolific
-                    author, a social critic, and a holy man at various times. In
-                    truth, he was all these things and more.
+                    {t("about.alsoCalled")}{" "}
+                    <span className="font-bold italic">{t("about.srilaPrabhupada")}</span>{" "}
+                    {t("about.devoteesDescription")}
                   </p>
                 </div>
               </div>
@@ -186,9 +210,7 @@ export default function Page() {
                 style={{ background: "#FF9C5A" }}
               >
                 <p className="text-base leading-relaxed">
-                  On his order HKM is carrying out massive food distribution
-                  programs with the support from respective governments and CSR
-                  funding from corporates.
+                  {t("about.foodDistribution")}
                 </p>
               </div>
             </div>
@@ -207,7 +229,7 @@ export default function Page() {
                 textOrientation: "mixed",
               }}
             >
-              Our Associated Trusts
+              {t("about.associatedTrusts")}
             </Link>
 
             {/* <Link
@@ -232,7 +254,7 @@ export default function Page() {
           <div className="flex flex-col items-center text-center ">
             <Image
               src={pImg}
-              alt="Srila Prabhupada"
+              alt={t("about.alt.srilaPrabhupada")}
               width={400}
               height={420}
               className="object-contain"
@@ -241,13 +263,13 @@ export default function Page() {
 
             <div className="mt-1">
               <h1 className="text-3xl font-bold text-[#FF9C5A] leading-tight">
-                Our Inspiration
+                {t("about.ourInspiration")}
                 {/* AC Bhaktivedanta Swami Prabhupada */}
               </h1>
               <p className="text-lg text-gray-700 font-medium leading-relaxed">
-                His Divine Grace Abhay  Charanaravinda Bhaktivedanta Swami
+                {t("about.hdgTitle")}
                 <br />
-                Vishwa Guru Srila Prabhupada
+                {t("about.vishwaGuru")}
               </p>
             </div>
           </div>
@@ -257,26 +279,20 @@ export default function Page() {
             {/* First Paragraph */}
             <div className="bg-[#FF9C5A] text-white p-6 rounded-2xl shadow-lg">
               <p className="text-base leading-relaxed">
-                HARE KRISHNA MOVEMENT INDIA (HKM) was founded by His Divine Grace{" "}
+                {t("about.hkmFoundedBy")}{" "}
                 <span className="font-bold italic">
-                  A.C. Bhaktivedanta Prabhupada
+                  {t("about.acBhaktivedanta")}
                 </span>
-                , also called{" "}
-                <span className="font-bold italic">Srila Prabhupada</span> by
-                devotees affectionately; a man of many facets, a versatile
-                personality, and more. He has been called a scholar, a
-                philosopher, a cultural ambassador, a prolific author, a social
-                critic, and a holy man at various times. In truth, he was all
-                these things and more.
+                {t("about.alsoCalled")}{" "}
+                <span className="font-bold italic">{t("about.srilaPrabhupada")}</span>{" "}
+                {t("about.devoteesDescription")}
               </p>
             </div>
 
             {/* Second Paragraph */}
             <div className="bg-[#FF9C5A] text-white p-6 rounded-2xl shadow-lg">
               <p className="text-base leading-relaxed">
-                On his order HKM is carrying out massive food distribution
-                programs with the support from respective governments and CSR
-                funding from corporates.
+                {t("about.foodDistribution")}
               </p>
             </div>
           </div>
@@ -292,14 +308,9 @@ export default function Page() {
       <div className="mt-8 md:mt-16 px-2 md:px-0">
         {/* Mobile Mission Section */}
         <div className="block md:hidden">
-          <h2 className="text-4xl font-bold py-2">Our Mission</h2>
+          <h2 className="text-4xl font-bold py-2">{t("about.ourMission")}</h2>
           <p className="text-gray-600">
-            At Hare Krishna Vidya, our mission is to empower underprivileged
-            children from rural communities by nurturing not just their minds,
-            but their hearts and hopes too. We believe that every child,
-            regardless of their socio-economic background, deserves the chance
-            to thrive and that education, nourishment, and values are the
-            pillars of true empowerment.
+            {t("about.mission.paragraph")}
           </p>
 
           <div className="mt-10">
@@ -320,13 +331,10 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col justify-end items-end mt-10">
-            <h2 className="text-4xl font-bold">Our Vision</h2>
+            <h2 className="text-4xl font-bold">{t("about.ourVision")}</h2>
             <div className="text-end">
               <p>
-                We envision a world where every child is given the wings to
-                rise, not just survive. A future where learning is joyful,
-                nourishing is dignified, and values are woven into the heart of
-                education.
+                {t("about.vision.paragraphMobile")}
               </p>
             </div>
             <div className="px-2 mt-10">
@@ -366,7 +374,7 @@ export default function Page() {
                 borderTopRightRadius: "150px",
               }}
             >
-              Our Mission
+              {t("about.ourMission")}
             </button>
 
             <button
@@ -379,7 +387,7 @@ export default function Page() {
                 borderTopRightRadius: "150px",
               }}
             >
-              Our Vision
+              {t("about.ourVision")}
             </button>
           </div>
 
@@ -424,7 +432,7 @@ export default function Page() {
             <div className="flex-1 relative">
               <Image
                 src={iImg}
-                alt="Children learning in classroom"
+                alt={t("about.alt.childrenLearning")}
                 fill
                 className="object-cover"
                 placeholder="blur"
@@ -487,24 +495,23 @@ export default function Page() {
               <span className="text-orange-500 mr-1">
                 <Image
                   src={img9}
-                  alt="Icon"
+                  alt={t("about.alt.icon")}
                   width={24}
                   height={24}
                   className="inline-block align-middle"
                 />
               </span>
               <span className="font-bold md:font-medium text-gray-700">
-                From Need to Nurture
+                {t("about.fromNeedToNurture")}
               </span>
             </div>
 
             <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-              The cause for which we are <span className="text-orange-500">here?</span>
+              {t("about.causeHeadingPart1")}<span className="text-orange-500">{t("about.causeHeadingPart2")}</span>
             </h1>
 
             <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Because every child deserves a chance to learn, grow, and thrive
-              no matter where they come from.
+              {t("about.everyChildDeserves")}
             </p>
           </div>
 
@@ -515,20 +522,14 @@ export default function Page() {
                 <div className="hidden flex-col justify-center items-center w-4 h-4 bg-orange-500 rounded-full mr-6"></div>
                 <div className="flex-1 max-w-lg">
                   <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                    The Need
+                    {t("about.theNeed")}
                   </h2>
                   <div className="space-y-4 text-gray-600 leading-relaxed">
                     <p>
-                      The purpose of education is to develop all round and
-                      well-balanced students. This is achieved by integrated
-                      curriculum of Hare Krishna Vidya, which puts value
-                      education and life skills into the curriculum along with
-                      school subjects.
+                      {t("about.purposeOfEducation")}
                     </p>
                     <p className="font-bold text-[18px] leading-[160%] text-[#656565] font-inter">
-                      &quot;Hare Krishna Vidya&quot; is designed for
-                      underprivileged students of classes 1st to 10th,
-                      especially in rural areas.
+                      {t("about.designedForStudents")}
                     </p>
                   </div>
                 </div>
@@ -540,14 +541,11 @@ export default function Page() {
                 <div className="hidden flex-col justify-center items-center w-4 h-4 bg-orange-500 rounded-full mr-6"></div>
                 <div className="flex-1 max-w-lg">
                   <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                    The Cause
+                    {t("about.theCause")}
                   </h2>
                   <div className="text-gray-600 leading-relaxed">
                     <p>
-                      Hare Krishna Vidya affiliated to HARE KRISHNA MOVEMENT INDIA
-                      Hyderabad which is a non-profit organization on a mission
-                      to empower every single child from rural areas, through
-                      free education.
+                      {t("about.affiliatedNonProfit")}
                     </p>
                   </div>
                 </div>
@@ -559,16 +557,11 @@ export default function Page() {
                 <div className="hidden flex-col justify-center items-center w-4 h-4 bg-orange-500 rounded-full mr-6"></div>
                 <div className="flex-1 max-w-lg">
                   <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                    Teaching Moral Values
+                    {t("about.teachingMoralValues")}
                   </h2>
                   <div className="text-gray-600 leading-relaxed">
                     <p>
-                      Hare Krishna Vidya organizes evening tuitions under the
-                      care of trained teachers, systematically. Teacher focuses
-                      on teaching life skills, values to children, and organizes
-                      study programs to complete homework, read subjects and
-                      doubts will be clarified through teacher and peer
-                      learning.
+                      {t("about.eveningTuitions")}
                     </p>
                   </div>
                 </div>
@@ -601,20 +594,14 @@ export default function Page() {
                 <div className="flex-shrink-0 w-4 h-4 bg-orange-500 rounded-full mt-2 mr-6"></div>
                 <div className="flex-1 max-w-lg">
                   <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                    The Need
+                    {t("about.theNeed")}
                   </h2>
                   <div className="space-y-4 text-gray-600 leading-relaxed">
                     <p>
-                      The purpose of education is to develop all round and
-                      well-balanced students. This is achieved by integrated
-                      curriculum of Hare Krishna Vidya, which puts value
-                      education and life skills into the curriculum along with
-                      school subjects.
+                      {t("about.purposeOfEducation")}
                     </p>
                     <p className="font-bold text-[18px] leading-[160%] text-[#656565] font-inter">
-                      &quot;Hare Krishna Vidya&quot; is designed for
-                      underprivileged students of classes 1st to 10th,
-                      especially in rural areas.
+                      {t("about.designedForStudents")}
                     </p>
                   </div>
                 </div>
@@ -625,14 +612,11 @@ export default function Page() {
               <div className="flex items-start max-w-lg">
                 <div className="flex-1 text-right">
                   <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                    The Cause
+                    {t("about.theCause")}
                   </h2>
                   <div className="text-gray-600 leading-relaxed">
                     <p>
-                      Hare Krishna Vidya affiliated to HARE KRISHNA MOVEMENT INDIA
-                      Hyderabad which is a non-profit organization on a mission
-                      to empower every single child from rural areas, through
-                      free education.
+                      {t("about.affiliatedNonProfit")}
                     </p>
                   </div>
                 </div>
@@ -645,16 +629,11 @@ export default function Page() {
                 <div className="flex-shrink-0 w-4 h-4 bg-orange-500 rounded-full mt-2 mr-6"></div>
                 <div className="flex-1 max-w-lg">
                   <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                    Teaching Moral Values
+                    {t("about.teachingMoralValues")}
                   </h2>
                   <div className="text-gray-600 leading-relaxed">
                     <p>
-                      Hare Krishna Vidya organizes evening tuitions under the
-                      care of trained teachers, systematically. Teacher focuses
-                      on teaching life skills, values to children, and organizes
-                      study programs to complete homework, read subjects and
-                      doubts will be clarified through teacher and peer
-                      learning.
+                      {t("about.eveningTuitions")}
                     </p>
                   </div>
                 </div>

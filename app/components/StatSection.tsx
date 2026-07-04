@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchStats } from "../../utils/api";
 import { StaggerContainer, StaggerItem, FadeInOnScroll } from "./AnimationProvider";
+import { useLanguage } from "./LanguageProvider";
 
 interface CountUpProps {
   end: number;
@@ -49,6 +50,7 @@ export default function StatsSection() {
   const [inView, setInView] = useState(false);
   const [stats, setStats] = useState<Stat[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadStats = async () => {
@@ -58,10 +60,10 @@ export default function StatsSection() {
       } else {
         // Fallback data if API fails or returns empty
         setStats([
-          { _id: "1", number: "10+", label: "Years Of Foundation" },
-          { _id: "2", number: "5000+", label: "Monthly Donors" },
-          { _id: "3", number: "1.5K+", label: "Incredible Volunteers" },
-          { _id: "4", number: "785", label: "Successful Campaigns" },
+          { _id: "1", number: "10+", label: t("stat.yearsOfFoundation") },
+          { _id: "2", number: "5000+", label: t("stat.monthlyDonors") },
+          { _id: "3", number: "1.5K+", label: t("stat.incredibleVolunteers") },
+          { _id: "4", number: "785", label: t("stat.successfulCampaigns") },
         ]);
       }
     };
