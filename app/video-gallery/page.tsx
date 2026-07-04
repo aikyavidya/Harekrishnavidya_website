@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useLanguage } from "../components/LanguageProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,6 +48,14 @@ const categoryConfig = {
 };
 
 const VideoGallery = () => {
+    const { t } = useLanguage();
+    const categoryShortKeys: Record<string, string> = {
+        event: "videoGallery.filter.eventsShort",
+        campaign: "videoGallery.filter.campaignsShort",
+        testimonial: "videoGallery.filter.testimonialsShort",
+        documentary: "videoGallery.filter.documentariesShort",
+        update: "videoGallery.filter.updatesShort"
+    };
     const [videos, setVideos] = useState<VideoItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
@@ -161,7 +170,7 @@ const VideoGallery = () => {
                 <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
                     <div className="text-center">
                         <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-primary mb-4"></div>
-                        <p className="text-lg font-medium text-foreground">Loading videos...</p>
+                        <p className="text-lg font-medium text-foreground">{t("videoGallery.loading")}</p>
                     </div>
                 </div>
             )}
@@ -171,10 +180,10 @@ const VideoGallery = () => {
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
                         <Video className="w-12 h-12 text-red-500 mx-auto mb-3" />
-                        <h3 className="text-xl font-bold text-red-800 mb-2">Failed to Load Videos</h3>
-                        <p className="text-red-600 mb-4">{error}</p>
+                        <h3 className="text-xl font-bold text-red-800 mb-2">{t("videoGallery.failedTitle")}</h3>
+                        <p className="text-red-600 mb-4">{error ? t("videoGallery.failedMessage") : error}</p>
                         <Button onClick={fetchVideos} className="bg-red-600 hover:bg-red-700">
-                            Try Again
+                            {t("videoGallery.tryAgain")}
                         </Button>
                     </div>
                 </div>
@@ -219,7 +228,7 @@ const VideoGallery = () => {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                                 </span>
-                                <span className="text-white/90 text-xs sm:text-sm font-medium">Watch Stories of Impact</span>
+                                <span className="text-white/90 text-xs sm:text-sm font-medium">{t("videoGallery.hero.subtitle")}</span>
                             </motion.div>
 
                             {/* Main Title */}
@@ -229,10 +238,10 @@ const VideoGallery = () => {
                                 transition={{ duration: 0.7, delay: 0.1 }}
                                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight mb-6"
                             >
-                                Our
-                                <span className="block text-white/90">Video</span>
+                                {t("videoGallery.hero.titlePart1")}
+                                <span className="block text-white/90">{t("videoGallery.hero.titlePart2")}</span>
                                 <span className="block relative">
-                                    <span className="relative z-10">Gallery</span>
+                                    <span className="relative z-10">{t("videoGallery.hero.titlePart3")}</span>
                                     <motion.span
                                         initial={{ scaleX: 0 }}
                                         animate={{ scaleX: 1 }}
@@ -249,9 +258,9 @@ const VideoGallery = () => {
                                 transition={{ duration: 0.6, delay: 0.3 }}
                                 className="text-lg sm:text-xl text-white/80 mb-8 max-w-md leading-relaxed"
                             >
-                                Experience the transformative journey —
-                                <span className="text-white font-semibold"> {loading ? "..." : `${videos.length}+`} videos</span> showcasing
-                                <span className="text-white font-semibold"> real stories</span> of hope and change.
+                                {t("videoGallery.hero.descPart1")}
+                                <span className="text-white font-semibold"> {loading ? "..." : `${videos.length}+`}{t("videoGallery.hero.descPart2")}</span>
+                                <span className="text-white font-semibold">{t("videoGallery.hero.descPart3")}</span>{t("videoGallery.hero.descPart4")}
                             </motion.p>
 
                             {/* Quick Stats - Inline */}
@@ -262,9 +271,9 @@ const VideoGallery = () => {
                                 className="flex flex-wrap gap-6"
                             >
                                 {[
-                                    { value: loading ? "..." : `${videos.length}+`, label: "Videos" },
-                                    { value: loading ? "..." : `${videos.reduce((acc, v) => acc + v.viewCount, 0) > 1000 ? Math.floor(videos.reduce((acc, v) => acc + v.viewCount, 0) / 1000) + 'K+' : videos.reduce((acc, v) => acc + v.viewCount, 0)}`, label: "Views" },
-                                    { value: loading ? "..." : `${videos.length}+`, label: "Stories" },
+                                    { value: loading ? "..." : `${videos.length}+`, label: t("videoGallery.hero.statVideos") },
+                                    { value: loading ? "..." : `${videos.reduce((acc, v) => acc + v.viewCount, 0) > 1000 ? Math.floor(videos.reduce((acc, v) => acc + v.viewCount, 0) / 1000) + 'K+' : videos.reduce((acc, v) => acc + v.viewCount, 0)}`, label: t("videoGallery.hero.statViews") },
+                                    { value: loading ? "..." : `${videos.length}+`, label: t("videoGallery.hero.statStories") },
                                 ].map((stat) => (
                                     <div key={stat.label} className="text-center">
                                         <div className="text-3xl sm:text-4xl font-black text-white">{stat.value}</div>
@@ -287,7 +296,7 @@ const VideoGallery = () => {
                                 >
                                     <Link href={"/donation#annadan-seva"}>
                                         <Heart className="w-3 h-3 mr-2 fill-[#FF7F2A] group-hover:scale-110 transition-transform" />
-                                        Donate
+                                        {t("videoGallery.hero.donateButton")}
                                     </Link>
                                 </Button>
                             </motion.div>
@@ -340,7 +349,7 @@ const VideoGallery = () => {
                                     </div>
                                     <div>
                                         <div className="text-2xl font-black text-foreground">{loading ? "..." : `${videos.length}+`}</div>
-                                        <div className="text-sm text-muted-foreground">Impact Stories</div>
+                                        <div className="text-sm text-muted-foreground">{t("videoGallery.grid.impactStories")}</div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -357,7 +366,7 @@ const VideoGallery = () => {
                         transition={{ delay: 1 }}
                         className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                     >
-                        <span className="text-white/60 text-xs uppercase tracking-widest">Scroll to explore</span>
+                        <span className="text-white/60 text-xs uppercase tracking-widest">{t("videoGallery.scrollToExplore")}</span>
                         <motion.div
                             animate={{ y: [0, 8, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5 }}
@@ -379,12 +388,12 @@ const VideoGallery = () => {
                         className="flex flex-wrap justify-center gap-2 sm:gap-3"
                     >
                         {[
-                            { id: "all", label: "All Videos", icon: LayoutGrid, count: videos.length },
-                            { id: "event", label: "Events", icon: Calendar, count: videos.filter(v => categoryMap[v.category] === "event").length },
-                            { id: "campaign", label: "Campaigns", icon: Megaphone, count: videos.filter(v => categoryMap[v.category] === "campaign").length },
-                            { id: "testimonial", label: "Testimonials", icon: MessageSquareHeart, count: videos.filter(v => categoryMap[v.category] === "testimonial").length },
-                            { id: "documentary", label: "Documentaries", icon: Film, count: videos.filter(v => categoryMap[v.category] === "documentary").length },
-                            { id: "update", label: "Updates", icon: Bell, count: videos.filter(v => categoryMap[v.category] === "update").length },
+                            { id: "all", label: t("videoGallery.filter.allVideos"), shortLabel: t("videoGallery.filter.allShort"), icon: LayoutGrid, count: videos.length },
+                            { id: "event", label: t("videoGallery.filter.events"), shortLabel: t("videoGallery.filter.eventsShort"), icon: Calendar, count: videos.filter(v => categoryMap[v.category] === "event").length },
+                            { id: "campaign", label: t("videoGallery.filter.campaigns"), shortLabel: t("videoGallery.filter.campaignsShort"), icon: Megaphone, count: videos.filter(v => categoryMap[v.category] === "campaign").length },
+                            { id: "testimonial", label: t("videoGallery.filter.testimonials"), shortLabel: t("videoGallery.filter.testimonialsShort"), icon: MessageSquareHeart, count: videos.filter(v => categoryMap[v.category] === "testimonial").length },
+                            { id: "documentary", label: t("videoGallery.filter.documentaries"), shortLabel: t("videoGallery.filter.documentariesShort"), icon: Film, count: videos.filter(v => categoryMap[v.category] === "documentary").length },
+                            { id: "update", label: t("videoGallery.filter.updates"), shortLabel: t("videoGallery.filter.updatesShort"), icon: Bell, count: videos.filter(v => categoryMap[v.category] === "update").length },
                         ].map((filter, index) => (
                             <motion.button
                                 key={filter.id}
@@ -405,7 +414,7 @@ const VideoGallery = () => {
                             >
                                 <filter.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 <span className="hidden sm:inline">{filter.label}</span>
-                                <span className="sm:hidden">{filter.id === "all" ? "All" : filter.label.split(" ")[0]}</span>
+                                <span className="sm:hidden">{filter.shortLabel}</span>
                                 <span className={`
                   px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold
                   ${categoryFilter === filter.id
@@ -439,7 +448,7 @@ const VideoGallery = () => {
                             className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2"
                         >
                             <Play className="w-6 h-6 text-primary" />
-                            Featured Videos
+                            {t("videoGallery.grid.featuredVideos")}
                         </motion.h2>
                         <motion.div
                             initial="hidden"
@@ -506,7 +515,7 @@ const VideoGallery = () => {
 
                                             {/* Category Badge */}
                                             <Badge className={`absolute top-3 left-3 ${categoryConfig[categoryMap[video.category] || "event"].color}`}>
-                                                {categoryConfig[categoryMap[video.category] || "event"].label}
+                                                {t(categoryShortKeys[categoryMap[video.category] || "event"])}
                                             </Badge>
                                         </div>
                                         <CardContent className="p-5">
@@ -517,7 +526,7 @@ const VideoGallery = () => {
                                             <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                                 <span className="flex items-center gap-1">
                                                     <Eye className="w-3 h-3" />
-                                                    {formatViews(video.viewCount)} views
+                                                    {formatViews(video.viewCount)}{t("videoGallery.grid.viewsSuffix")}
                                                 </span>
                                                 <span className="flex items-center gap-1">
                                                     <Calendar className="w-3 h-3" />
@@ -542,7 +551,7 @@ const VideoGallery = () => {
                             {/* Search */}
                             <input
                                 type="text"
-                                placeholder="Search videos..."
+                                placeholder={t("videoGallery.search.placeholder")}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="border rounded-md px-3 py-2 sm:max-w-md w-full"
@@ -554,12 +563,12 @@ const VideoGallery = () => {
                                 onChange={(e) => setCategoryFilter(e.target.value)}
                                 className="border rounded-md px-3 py-2 w-full sm:w-[160px] cursor-pointer"
                             >
-                                <option value="all">All Categories</option>
-                                <option value="event">Events</option>
-                                <option value="campaign">Campaigns</option>
-                                <option value="testimonial">Testimonials</option>
-                                <option value="documentary">Documentaries</option>
-                                <option value="update">Updates</option>
+                                <option value="all">{t("videoGallery.filter.allCategories")}</option>
+                                <option value="event">{t("videoGallery.filter.events")}</option>
+                                <option value="campaign">{t("videoGallery.filter.campaigns")}</option>
+                                <option value="testimonial">{t("videoGallery.filter.testimonials")}</option>
+                                <option value="documentary">{t("videoGallery.filter.documentaries")}</option>
+                                <option value="update">{t("videoGallery.filter.updates")}</option>
                             </select>
 
                             {/* Sort */}
@@ -568,9 +577,9 @@ const VideoGallery = () => {
                                 onChange={(e) => setSortBy(e.target.value)}
                                 className="border rounded-md px-3 py-2 w-full sm:w-[160px] cursor-pointer"
                             >
-                                <option value="date">Most Recent</option>
-                                <option value="views">Most Viewed</option>
-                                <option value="title">Title A-Z</option>
+                                <option value="date">{t("videoGallery.sort.mostRecent")}</option>
+                                <option value="views">{t("videoGallery.sort.mostViewed")}</option>
+                                <option value="title">{t("videoGallery.sort.titleAZ")}</option>
                             </select>
 
                         </div>
@@ -652,7 +661,7 @@ const VideoGallery = () => {
 
                                             {/* Category */}
                                             <Badge className={`absolute top-2 left-2 text-xs ${categoryConfig[categoryMap[video.category] || "event"].color}`}>
-                                                {categoryConfig[categoryMap[video.category] || "event"].label}
+                                                {t(categoryShortKeys[categoryMap[video.category] || "event"])}
                                             </Badge>
                                         </div>
                                         <CardContent className="p-4">
@@ -678,8 +687,8 @@ const VideoGallery = () => {
                             <div className="w-20 h-20 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
                                 <Video className="w-8 h-8 text-muted-foreground" />
                             </div>
-                            <h3 className="text-xl font-semibold text-foreground mb-2">No videos found</h3>
-                            <p className="text-muted-foreground">Try adjusting your search or filters</p>
+                            <h3 className="text-xl font-semibold text-foreground mb-2">{t("videoGallery.grid.noVideosFound")}</h3>
+                            <p className="text-muted-foreground">{t("videoGallery.grid.adjustFilters")}</p>
                         </div>
                     )}
                 </div>
@@ -723,7 +732,7 @@ const VideoGallery = () => {
                             transition={{ delay: 0.3 }}
                             className="text-2xl sm:text-3xl font-extrabold text-white mb-4"
                         >
-                            Be Part of Our Story
+                            {t("videoGallery.cta.heading")}
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -732,7 +741,7 @@ const VideoGallery = () => {
                             transition={{ delay: 0.4 }}
                             className="text-white/90 mb-8 max-w-xl mx-auto"
                         >
-                            Your support helps us create more success stories. Join us in transforming lives through education.
+                            {t("videoGallery.cta.description")}
                         </motion.p>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -763,7 +772,7 @@ const VideoGallery = () => {
   "
                             >
                                 <Heart className="w-5 h-5 mr-2" />
-                                Support Our Mission
+                                {t("videoGallery.cta.button")}
                             </Link>
 
                         </motion.div>
@@ -828,7 +837,7 @@ const VideoGallery = () => {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 mt-3 text-primary hover:text-primary/90 text-sm font-medium"
                                 >
-                                    Open in new tab
+                                    {t("videoGallery.modal.openInNewTab")}
                                 </a>
                             </div>
                         </motion.div>
