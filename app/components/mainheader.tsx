@@ -209,6 +209,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePageLoader } from "./PageLoader";
+import { useLanguage } from "./LanguageProvider";
 
 export default function Header() {
   const pathname = usePathname();
@@ -218,6 +219,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   const { startLoading } = usePageLoader();
+  const { language, setLanguage, t } = useLanguage();
   const { appendUTMToUrl, handleDonateClick } = useUTM();
 
   // Handle scroll detection for glassmorphism effect
@@ -261,15 +263,15 @@ export default function Header() {
         {/* Center: Desktop Navigation Links */}
         <nav className="hidden md:flex justify-center items-center md:space-x-4 min-[1025px]:space-x-8 md:text-xs min-[1025px]:text-[14px] text-gray-800 font-semibold">
           <Link href="/home" className={linkClass("/home")} onClick={startLoading}>
-            Home
+            {t("nav.home")}
           </Link>
 
           <Link href="/about-us" className={linkClass("/about-us")} onClick={startLoading}>
-            About Us
+            {t("nav.aboutUs")}
           </Link>
 
           <Link href="/our-initiative" className={linkClass("/our-initiative")} onClick={startLoading}>
-            Our Initiative
+            {t("nav.ourInitiative")}
           </Link>
 
           {/* <Link href="/gallery" className={linkClass("/gallery")}>
@@ -283,7 +285,7 @@ export default function Header() {
                 "/media"
               )}`}
             >
-              <span>Media</span>
+              <span>{t("nav.media")}</span>
               <IoChevronDown className="text-black text-lg transition-transform duration-300 group-hover:rotate-180" />
             </div>
 
@@ -300,7 +302,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Video Gallery
+                    {t("nav.videoGallery")}
                   </Link>
                 </li>
                 <li>
@@ -309,7 +311,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Donor Wall
+                    {t("nav.donorWall")}
                   </Link>
                 </li>
                 <li>
@@ -318,7 +320,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Photo Gallery
+                    {t("nav.photoGallery")}
                   </Link>
                 </li>
               </motion.ul>
@@ -326,7 +328,7 @@ export default function Header() {
           </div>
 
           <Link href="/contact" className={linkClass("/contact")} onClick={startLoading}>
-            Contact Us
+            {t("nav.contactUs")}
           </Link>
           {/* <Link href="/sponsorships" className={linkClass("/sponsorships")}>
             Sponsorships
@@ -339,7 +341,7 @@ export default function Header() {
                 "/new-donation"
               )}`}
             >
-              <span>New Donation</span>
+              <span>{t("nav.newDonation")}</span>
               <IoChevronDown className="text-black text-lg transition-transform duration-300 group-hover:rotate-180" />
             </div>
 
@@ -356,7 +358,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Donate to Cause
+                    {t("nav.donateToCause")}
                   </Link>
                 </li>
                 <li>
@@ -365,7 +367,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Grocery Donation
+                    {t("nav.groceryDonation")}
                   </Link>
                 </li>
                 <li>
@@ -374,7 +376,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Campaign Page
+                    {t("nav.campaignPage")}
                   </Link>
                 </li>
                 <li>
@@ -383,7 +385,7 @@ export default function Header() {
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    Donation Kit
+                    {t("nav.donationKit")}
                   </Link>
                 </li>
               </motion.ul>
@@ -394,9 +396,32 @@ export default function Header() {
 
         {/* Right: Donate Now Button */}
         <div className="flex items-center justify-end gap-2 min-[1025px]:gap-4">
+          {/* Desktop Language Toggle */}
+          <div className="hidden md:block relative group">
+            <div className="flex items-center gap-1 cursor-pointer font-semibold text-gray-800 text-sm">
+              <span>{language === "en" ? "English" : "తెలుగు"}</span>
+              <IoChevronDown className="text-black text-lg transition-transform duration-300 group-hover:rotate-180" />
+            </div>
+            <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <div className="bg-[#0279BC]/90 backdrop-blur-md rounded-lg shadow-lg py-2 w-32 space-y-1">
+                <button
+                  onClick={() => setLanguage("en")}
+                  className="block w-full text-left px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => setLanguage("te")}
+                  className="block w-full text-left px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                >
+                  తెలుగు
+                </button>
+              </div>
+            </div>
+          </div>
           <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={(e) => { startLoading(); handleDonateClick(e); }} className="hidden md:block">
             <button className="flex items-center gap-2 md:px-3 md:py-1.5 min-[1025px]:px-5 min-[1025px]:py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium md:text-xs min-[1025px]:text-base">
-              <FaHeart size={14} /> Donate Now
+              <FaHeart size={14} /> {t("nav.donateNow")}
             </button>
           </Link>
 
@@ -422,9 +447,9 @@ export default function Header() {
             className="md:hidden flex flex-col gap-2 bg-white px-6 py-4 text-black text-lg shadow-md border-t border-gray-100 overflow-hidden absolute w-full left-0 top-full"
           >
             {[
-              { label: "Home", href: "/home" },
-              { label: "About Us", href: "/about-us" },
-              { label: "Our Initiative", href: "/our-initiative" },
+              { label: t("nav.home"), href: "/home" },
+              { label: t("nav.aboutUs"), href: "/about-us" },
+              { label: t("nav.ourInitiative"), href: "/our-initiative" },
             ].map((link, i) => (
               <motion.div
                 key={link.href}
@@ -453,7 +478,7 @@ export default function Header() {
                 className="flex items-center justify-between w-full text-left font-medium text-black"
                 onClick={() => setShowMedia(!showMedia)}
               >
-                Media
+                {t("nav.media")}
                 <IoChevronDown
                   className={`transition-transform duration-300 ${showMedia ? "rotate-180 text-[#1C398E]" : ""}`}
                 />
@@ -469,9 +494,9 @@ export default function Header() {
                     className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#1C398E]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
-                      { l: "Video Gallery", h: "/video-gallery" },
-                      { l: "Donor Wall", h: "/donor-wall" },
-                      { l: "Photo Gallery", h: "/photo-gallery" }
+                      { l: t("nav.videoGallery"), h: "/video-gallery" },
+                      { l: t("nav.donorWall"), h: "/donor-wall" },
+                      { l: t("nav.photoGallery"), h: "/photo-gallery" }
                     ].map(link => (
                       <Link
                         key={link.h}
@@ -497,7 +522,7 @@ export default function Header() {
                 className={`block py-2 ${linkClass("/contact")}`}
                 onClick={() => { startLoading(); setIsOpen(false); }}
               >
-                Contact Us
+                {t("nav.contactUs")}
               </Link>
             </motion.div>
 
@@ -512,7 +537,7 @@ export default function Header() {
                 className="flex items-center justify-between w-full text-left font-medium text-black"
                 onClick={() => setShowDonation(!showDonation)}
               >
-                New Donation
+                {t("nav.newDonation")}
                 <IoChevronDown
                   className={`transition-transform duration-300 ${showDonation ? "rotate-180 text-[#1C398E]" : ""}`}
                 />
@@ -528,10 +553,10 @@ export default function Header() {
                     className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#1C398E]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
-                      { l: "Donate to Cause", h: "/donate-to-cause" },
-                      { l: "Grocery Donation", h: "/grocery-donation" },
-                      { l: "Campaign Page", h: "/campaign-page" },
-                      { l: "Donation Kit", h: "/donation-kit" }
+                      { l: t("nav.donateToCause"), h: "/donate-to-cause" },
+                      { l: t("nav.groceryDonation"), h: "/grocery-donation" },
+                      { l: t("nav.campaignPage"), h: "/campaign-page" },
+                      { l: t("nav.donationKit"), h: "/donation-kit" }
                     ].map(link => (
                       <Link
                         key={link.h}
@@ -562,7 +587,7 @@ export default function Header() {
                 }}
               >
                 <button className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-[#0279BC] text-white rounded-lg transition-transform duration-300 hover:scale-105 font-medium">
-                  <FaHeart size={14} /> Donate Now
+                  <FaHeart size={14} /> {t("nav.donateNow")}
                 </button>
               </Link>
             </motion.div>

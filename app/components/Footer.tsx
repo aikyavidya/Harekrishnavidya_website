@@ -13,8 +13,10 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import logo from "../../public/images/logo.png";
+import { useLanguage } from "./LanguageProvider";
 
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <>
       <footer className="bg-[#002A42] text-white px-2 lg:px-4 py-5 overflow-hidden">
@@ -34,9 +36,7 @@ export default function Footer() {
               </motion.div>
               <div className="pt-2">
                 <p className="text-sm   text-white leading-[1.8]">
-                  &quot;Hare Krishna Vidya&quot;, by HARE KRISHNA MOVEMENT INDIA,
-                  serves underprivileged students of  classes 1–10, especially in <br />
-                  rural areas.
+                  {t("footer.description")}
                 </p>
                 <div className="mt-4">
                   <ul className="flex items-center gap-3">
@@ -89,14 +89,14 @@ export default function Footer() {
  
             {/* Quick Links */}
             <StaggerItem className="space-y-4 col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
-              <h2 className="text-[#F4A261] text-xl font-bold">Quick Links</h2>
+              <h2 className="text-[#F4A261] text-xl font-bold">{t("footer.quickLinks")}</h2>
               <ul className="space-y-2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <li>
                   <Link
                     href="/about-us"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    About Us
+                    {t("nav.aboutUs")}
                   </Link>
                 </li>
                 <li>
@@ -104,7 +104,7 @@ export default function Footer() {
                     href="/our-initiative"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Our Initiative
+                    {t("nav.ourInitiative")}
                   </Link>
                 </li>
                 <li>
@@ -112,7 +112,7 @@ export default function Footer() {
                     href="/blog"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Blogs
+                    {t("footer.blogs")}
                   </Link>
                 </li>
  
@@ -121,7 +121,7 @@ export default function Footer() {
                     href="/events"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Events
+                    {t("footer.events")}
                   </Link>
                 </li>
                 <li>
@@ -129,7 +129,7 @@ export default function Footer() {
                     href="/career"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Career
+                    {t("footer.career")}
                   </Link>
                 </li>
               </ul>
@@ -137,14 +137,14 @@ export default function Footer() {
  
             {/* Useful Links */}
             <StaggerItem className="space-y-4 col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
-              <h2 className="text-[#F4A261] text-xl font-bold">Useful Links</h2>
+              <h2 className="text-[#F4A261] text-xl font-bold">{t("footer.usefulLinks")}</h2>
               <ul className="space-y-2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <li>
                   <Link
                     href="/policies"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Privacy Policy
+                    {t("footer.privacyPolicy")}
                   </Link>
                 </li>
                 <li>
@@ -152,7 +152,7 @@ export default function Footer() {
                     href="/terms-conditions"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Terms and Conditions
+                    {t("footer.termsAndConditions")}
                   </Link>
                 </li>
                 <li>
@@ -160,7 +160,7 @@ export default function Footer() {
                     href="/refund"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Refund Policy
+                    {t("footer.refundPolicy")}
                   </Link>
                 </li>
                 <li>
@@ -168,7 +168,7 @@ export default function Footer() {
                     href="/certificates"
                     className="text-white hover:text-yellow-200 text-base nav-link-animated inline-block"
                   >
-                    Certificates
+                    {t("footer.certificates")}
                   </Link>
                 </li>
               </ul>
@@ -176,7 +176,7 @@ export default function Footer() {
  
             {/* Contact Section */}
             <StaggerItem className="space-y-4 col-span-2 lg:col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
-              <h2 className="text-[#F4A261] text-xl font-bold">Contact Us</h2>
+              <h2 className="text-[#F4A261] text-xl font-bold">{t("footer.contactUs")}</h2>
               <div className="space-y-2 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <div className="group flex items-start gap-3 justify-center lg:justify-start text-center lg:text-left max-w-[280px] lg:max-w-none">
                   <motion.div whileHover={{ y: -2, color: "#F4A261" }} className="hidden lg:block"><FaMapMarkerAlt size={16} className="mt-1 flex-shrink-0 transition-colors" /></motion.div>
@@ -187,8 +187,7 @@ export default function Footer() {
                     className="group-hover:text-yellow-200 text-base leading-relaxed transition-colors text-center lg:text-left"
                   >
                     <FaMapMarkerAlt size={16} className="inline-block mr-1.5 mb-1 lg:hidden text-[#F4A261]" />
-                    Hare Krishna Golden Temple, Road No. 12, MLA Colony, Banjara
-                    Hills, Hyderabad - 500034
+                    {t("footer.address")}
                   </a>
                 </div>
  
@@ -228,7 +227,7 @@ export default function Footer() {
       {/* Bottom Section */}
       <div className="bg-[#002A42] border-t border-white pt-4 pb-3 px-10 flex items-center justify-center text-sm text-white">
         <p className="pb-3 text-center">
-          Copyright © 2025 Hare Krishna Vidya
+          {t("footer.copyright")}
         </p>
       </div>
     </>
