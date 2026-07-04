@@ -5,6 +5,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, GraduationCap, Utensils, HeartHandshake } from "lucide-react";
 import useUTM from "../utils/useUTM";
+import { useLanguage } from "./LanguageProvider";
 
 import edu1 from "../../public/galleryection/edu1.jpg";
 import fest1 from "../../public/galleryection/fest1.jpg";
@@ -76,8 +77,16 @@ export default function DesktopDonateSection() {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const { appendUTMToUrl, handleDonateClick } = useUTM();
+  const { t } = useLanguage();
 
-  const currentTab = tabs.find(t => t.id === activeTab) || tabs[0];
+  const localizedTabs = tabs.map(tab => {
+    if (tab.id === "annadaan") return { ...tab, title: t("donate.tabs.annadaan.title"), intro: t("donate.tabs.annadaan.shortDesc"), detail: t("donate.tabs.annadaan.longDesc") };
+    if (tab.id === "vidyadaan") return { ...tab, title: t("donate.tabs.vidyaDaan.title"), intro: t("donate.tabs.vidyaDaan.shortDesc"), detail: t("donate.tabs.vidyaDaan.longDesc") };
+    if (tab.id === "generalseva") return { ...tab, title: t("donate.tabs.generalSeva.title"), intro: t("donate.subheading"), detail: t("donate.tabs.generalSeva.desc") };
+    return tab;
+  });
+
+  const currentTab = localizedTabs.find(t => t.id === activeTab) || localizedTabs[0];
 
   return (
     <motion.div 
@@ -89,14 +98,14 @@ export default function DesktopDonateSection() {
         {/* Left Column (Vertical Nav) */}
         <div className="col-span-5 flex flex-col justify-start pt-4">
           <h2 className="text-[36px] sm:text-[42px] lg:text-[48px] font-extrabold text-[#2C2C2C] drop-shadow-sm leading-tight mb-4">
-            Donate for the Noble <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Cause</span>
+            {t("donate.headingLine1")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">{t("donate.headingLine2")}</span>
           </h2>
           <p className="text-gray-600 leading-relaxed mb-8 text-base pr-4">
-            Support our mission to provide food, education, and care to those in need. Your contribution brings hope and changes lives.
+            {t("donate.subheading")}
           </p>
 
           <div className="flex flex-col gap-3">
-            {tabs.map((tab) => {
+            {localizedTabs.map((tab) => {
               const isActive = activeTab === tab.id;
               const isExpanded = isActive || hoveredTab === tab.id;
               return (
@@ -134,7 +143,7 @@ export default function DesktopDonateSection() {
                         
                         <Link href={appendUTMToUrl(tab.link)} onClick={handleDonateClick} className="self-start mt-4 block">
                           <button className={`flex items-center gap-2 px-6 py-3 text-white rounded-lg font-medium transition-colors shadow-sm ${isActive ? tab.activeButtonClass : 'bg-gray-900 hover:bg-black'}`}>
-                            <span>Donate Now</span>
+                            <span>{t("nav.donateNow")}</span>
                             <ArrowUpRight size={18} />
                           </button>
                         </Link>

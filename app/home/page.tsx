@@ -27,6 +27,7 @@ import CausesSection from "../components/CauseSection";
 import DesktopDonateSection from "../components/DesktopDonateSection";
 import MobileDonateCarousel from "../components/MobileDonateCarousel";
 import useUTM from "../utils/useUTM";
+import { useLanguage } from "../components/LanguageProvider";
 
 const TESTIMONIALS_API = "https://api.harekrishnavidya.org/api/testimonials/";
 
@@ -51,6 +52,7 @@ const HomePage = () => {
   const [cardData, setCardData] = useState<CardData[]>([]);
   const [testimonialsLoading, setTestimonialsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   // Close modal on escape key
   useEffect(() => {
@@ -87,18 +89,18 @@ const HomePage = () => {
 
   const galleryImages = [
     // Block 1: Feature Row
-    { src: cul1, alt: "Teacher with Mask", focalPoint: "50% 25%" }, // Massive Hero
-    { src: edu3, alt: "Reading Session", focalPoint: "50% 40%" }, // Tall Portrait
+    { src: cul1, alt: t("home.alt.teacherWithMask"), focalPoint: "50% 25%" }, // Massive Hero
+    { src: edu3, alt: t("home.alt.readingSession"), focalPoint: "50% 40%" }, // Tall Portrait
     
     // Block 2: The Service & Nourishment Row
-    { src: fest2, alt: "Volunteer Serving", focalPoint: "50% 40%" }, // Large Landscape Top
-    { src: yoga1, alt: "Food Serving Activity", focalPoint: "50% 50%" }, // Epic Skyscraper Right
-    { src: fest1, alt: "Children Eating Together", focalPoint: "50% 40%" }, // Large Landscape Bottom
+    { src: fest2, alt: t("home.alt.volunteerServing"), focalPoint: "50% 40%" }, // Large Landscape Top
+    { src: yoga1, alt: t("home.alt.foodServingActivity"), focalPoint: "50% 50%" }, // Epic Skyscraper Right
+    { src: fest1, alt: t("home.alt.childrenEatingTogether"), focalPoint: "50% 40%" }, // Large Landscape Bottom
     
     // Block 3: Faces & Community
-    { src: edu2, alt: "Girl Student Portrait", focalPoint: "50% 30%" }, // Narrow Portrait
-    { src: value, alt: "Boy with Plate", focalPoint: "50% 40%" }, // Narrow Portrait
-    { src: edu1, alt: "Night Gathering", focalPoint: "50% 50%" }, // Landscape
+    { src: edu2, alt: t("home.alt.girlStudentPortrait"), focalPoint: "50% 30%" }, // Narrow Portrait
+    { src: value, alt: t("home.alt.boyWithPlate"), focalPoint: "50% 40%" }, // Narrow Portrait
+    { src: edu1, alt: t("home.alt.nightGathering"), focalPoint: "50% 50%" }, // Landscape
   ];
 
   return (
@@ -175,9 +177,9 @@ const HomePage = () => {
           <div className="flex items-center justify-center bg-white mt-2">
             <ScaleIn className="flex flex-col items-center gap-4 w-full max-w-4xl px-4 text-center text-[--text-dark-charcoal]">
               <h1 className="text-[28px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight sm:leading-[120%] text-[#2C2C2C] drop-shadow-sm">
-                A glimpse into the lives <br className="hidden md:block" />
-                you&#39;ve touched with your{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">kindness</span>
+                {t("home.galleryHeading1")} <br className="hidden md:block" />
+                {t("home.galleryHeading2")}{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 italic animate-gradient-shift">{t("home.galleryHeading3")}</span>
               </h1>
             </ScaleIn>
           </div>
@@ -260,7 +262,7 @@ const HomePage = () => {
                 <div className="w-full h-full relative">
                   <Image
                     src={selectedImage}
-                    alt="Gallery Full Size"
+                    alt={t("home.alt.galleryFullSize")}
                     fill
                     className="object-contain"
                   />

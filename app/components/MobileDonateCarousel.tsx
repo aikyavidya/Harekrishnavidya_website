@@ -4,6 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ArrowLeft, ArrowRight, GraduationCap, Utensils, HeartHandshake } from "lucide-react";
 import useUTM from "../utils/useUTM";
+import { useLanguage } from "./LanguageProvider";
 
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -75,6 +76,14 @@ export default function MobileDonateCarousel() {
   const { appendUTMToUrl, handleDonateClick } = useUTM();
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
+  const { t } = useLanguage();
+
+  const localizedTabs = tabs.map(tab => {
+    if (tab.id === "annadaan") return { ...tab, title: t("donate.tabs.annadaan.title"), intro: t("donate.tabs.annadaan.shortDesc"), detail: t("donate.tabs.annadaan.longDesc") };
+    if (tab.id === "vidyadaan") return { ...tab, title: t("donate.tabs.vidyaDaan.title"), intro: t("donate.tabs.vidyaDaan.shortDesc"), detail: t("donate.tabs.vidyaDaan.longDesc") };
+    if (tab.id === "generalseva") return { ...tab, title: t("donate.tabs.generalSeva.title"), intro: t("donate.subheading"), detail: t("donate.tabs.generalSeva.desc") };
+    return tab;
+  });
 
   const handleNext = useCallback(() => {
     if (swiperRef.current) swiperRef.current.slideNext();
@@ -91,10 +100,10 @@ export default function MobileDonateCarousel() {
       {/* Header */}
       <div className="px-4 sm:px-6 mb-6 flex flex-col items-center justify-center text-center">
         <h2 className="text-[28px] md:text-[36px] font-extrabold text-[#2C2C2C] drop-shadow-sm leading-tight mb-3">
-          Donate for the Noble <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">cause</span>
+          {t("donate.headingLine1")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">{t("donate.headingLine2")}</span>
         </h2>
         <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-[400px]">
-          Support our mission to provide food, education, and care to those in need. Your contribution brings hope and changes lives
+          {t("donate.subheading")}
         </p>
       </div>
 
@@ -120,7 +129,7 @@ export default function MobileDonateCarousel() {
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
           className="w-full overflow-visible"
         >
-          {tabs.map((tab, idx) => (
+          {localizedTabs.map((tab, idx) => (
             <SwiperSlide key={`${tab.id}-${idx}`} className="h-auto flex flex-col pb-2">
               <div className="w-full flex flex-col h-full gap-4 shrink-0">
                 
@@ -143,7 +152,7 @@ export default function MobileDonateCarousel() {
 
                   <Link href={appendUTMToUrl(tab.link)} onClick={handleDonateClick} className="self-end shrink-0 mb-1">
                     <button className="flex items-center gap-2 px-5 py-2.5 bg-[#0279BC] text-white rounded-lg text-sm font-medium hover:bg-[#026299] shadow-sm">
-                      <span>Donate Now</span>
+                      <span>{t("nav.donateNow")}</span>
                       <ArrowUpRight size={16} />
                     </button>
                   </Link>
@@ -180,13 +189,13 @@ export default function MobileDonateCarousel() {
         <button 
           onClick={handlePrev} 
           className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 active:scale-95 text-gray-700"
-          aria-label="Previous slide"
+          aria-label={t("donate.prevSlide")}
         >
           <ArrowLeft size={18} />
         </button>
 
         <div className="flex items-center gap-2">
-          {tabs.map((_, idx) => (
+          {localizedTabs.map((_, idx) => (
             <button
               key={idx}
               onClick={() => swiperRef.current?.slideToLoop(idx)}
@@ -201,7 +210,7 @@ export default function MobileDonateCarousel() {
         <button 
           onClick={handleNext} 
           className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 active:scale-95 text-gray-700"
-          aria-label="Next slide"
+          aria-label={t("donate.nextSlide")}
         >
           <ArrowRight size={18} />
         </button>

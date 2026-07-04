@@ -24,11 +24,13 @@ import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import useUTM from "../utils/useUTM";
 import { motion } from "framer-motion";
 import { ScaleIn, SlideIn } from "./AnimationProvider";
+import { useLanguage } from "./LanguageProvider";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.harekrishnavidya.org";
 
 export default function HeroSection() {
   const { appendUTMToUrl, handleDonateClick } = useUTM();
+  const { t } = useLanguage();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [leftCardDismissed, setLeftCardDismissed] = useState(false);
@@ -137,26 +139,26 @@ export default function HeroSection() {
       </button>
       <div className="flex items-center justify-center md:justify-center flex-wrap gap-2">
         <div className="flex items-center gap-1 px-3 py-2 md:px-1.5 md:py-0.5 bg-[#F9F9F9] rounded-full shadow-md text-black font-semibold text-base md:text-[9px] lg:text-lg">
-          <Image src={img9} alt="Star Icon" width={20} height={20} />
-          Welfare Insights
+          <Image src={img9} alt={t("hero.alt.starIcon")} width={20} height={20} />
+          {t("hero.welfareInsights")}
         </div>
       </div>
 
       <div className="flex items-center md:justify-center lg:justify-center gap-6 md:gap-3 lg:gap-12 xl:gap-24">
         <div className="text-center">
           <p className="text-2xl md:text-sm lg:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
-            800K
+            {t("hero.mealsCount")}
           </p>
-          <p className="text-sm md:text-[8px] lg:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
-            Meals <br /> Served
+          <p className="text-sm md:text-[8px] lg:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0 max-w-[100px] mx-auto">
+            {t("hero.mealsServed")}
           </p>
         </div>
         <div className="text-center">
           <p className="text-2xl md:text-sm lg:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
-            50K
+            {t("hero.childrenCount")}
           </p>
-          <p className="text-sm md:text-[8px] lg:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
-            Children&#39;s <br /> Educated
+          <p className="text-sm md:text-[8px] lg:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0 max-w-[120px] mx-auto">
+            {t("hero.childrenEducated")}
           </p>
         </div>
       </div>
@@ -174,7 +176,7 @@ export default function HeroSection() {
           ))}
         </div>
         <span className="ml-2 md:ml-0.5 text-gray-700 font-semibold italic text-xs md:text-[8px] lg:text-sm">
-          5000+ Donors around the world
+          {t("hero.donorsCount")}
         </span>
       </div>
     </div>
@@ -187,22 +189,22 @@ export default function HeroSection() {
       </button>
       <div className="w-full text-center md:text-center lg:text-left">
         <h3 className="text-lg md:text-[10px] lg:text-xl font-semibold mb-2 md:mb-0.5 lg:mb-2">
-          Nourish a Life. Uplift a Soul.
+          {t("hero.title")}
         </h3>
         <p className="text-md md:text-xs lg:text-lg text-[#2C2C2C]/80 mb-4 md:mb-1.5 lg:mb-4 leading-normal">
-          Your support delivers food, education, and hope to those who need it most.
+          {t("hero.subtitle")}
         </p>
         <div className="flex flex-col sm:flex-row sm:justify-center md:flex-row md:justify-center lg:flex-row sm:space-x-2 md:space-x-1.5 lg:space-x-4 gap-2 md:gap-1.5 lg:gap-2 mt-4 md:mt-1 lg:mt-4">
           <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick} className="w-full md:w-auto">
             <button className="btn-interactive w-full md:w-auto flex items-center justify-center gap-2 md:gap-1 bg-blue-900 hover:bg-blue-800 text-white cursor-pointer font-semibold px-4 py-3 md:px-1.5 md:py-1 lg:px-4 lg:py-3 rounded-lg shadow-md text-sm md:text-[8px] lg:text-base">
-              <Image src={Heart} alt="Donate Icon" width={20} height={20} className="w-6 h-6 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6" />
-              Donate Now
+              <Image src={Heart} alt={t("hero.alt.donateIcon")} width={20} height={20} className="w-6 h-6 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6" />
+              {t("nav.donateNow")}
             </button>
           </Link>
           <Link href="/about-us" className="w-full md:w-auto">
             <button className="btn-interactive w-full md:w-auto flex justify-center items-center gap-2 md:gap-1 bg-white hover:bg-gray-100 cursor-pointer font-semibold px-4 py-3 md:px-1.5 md:py-1 lg:px-4 lg:py-3 text-black rounded-lg shadow-md hover-lift text-sm md:text-[8px] lg:text-base">
-              <Image src={info} alt="Info Icon" width={20} height={30} className="w-6 h-6 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6" />
-              About Us
+              <Image src={info} alt={t("hero.alt.infoIcon")} width={20} height={30} className="w-6 h-6 md:w-3.5 md:h-3.5 lg:w-6 lg:h-6" />
+              {t("nav.aboutUs")}
             </button>
           </Link>
         </div>
@@ -233,7 +235,7 @@ export default function HeroSection() {
               ) : (
                 <img
                   src={carouselSlides[0]}
-                  alt="Hero Banner"
+                  alt={t("hero.alt.heroBanner")}
                   className="w-full h-auto block"
                 // className="w-full max-h-[80vh] object-contain mx-auto"
                 />
@@ -249,30 +251,30 @@ export default function HeroSection() {
                 <div className="flex items-center  gap-2 px-3 py-2 bg-[#F9F9F9] rounded-full shadow-md  text-black font-semibold text-base ">
                   <Image
                     src={img9}
-                    alt="Star Icon"
+                    alt={t("hero.alt.starIcon")}
                     width={20}
                     height={20}
                     className="inline-block"
                   />
-                  Welfare Insights
+                  {t("hero.welfareInsights")}
                 </div>
               </div>
 
               <div className="flex items-center justify-between gap-6 sm:gap-20  md:gap-10">
                 <div className="text-center">
                   <p className="text-2xl md:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
-                    800K
+                    {t("hero.mealsCount")}
                   </p>
-                  <p className="text-sm md:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
-                    Meals <br /> Served
+                  <p className="text-sm md:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0 max-w-[100px] mx-auto">
+                    {t("hero.mealsServed")}
                   </p>
                 </div>
                 <div className="text-center">
                   <p className="text-2xl md:text-[32px] font-bold leading-[120%] text-[#2C2C2C] m-0">
-                    50K
+                    {t("hero.childrenCount")}
                   </p>
-                  <p className="text-sm md:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0">
-                    Children&#39;s Educated
+                  <p className="text-sm md:text-[16px] font-medium leading-[120%] text-[#2C2C2C] m-0 max-w-[120px] mx-auto">
+                    {t("hero.childrenEducated")}
                   </p>
                 </div>
               </div>
@@ -295,7 +297,7 @@ export default function HeroSection() {
                   ))}
                 </div>
                 <span className="ml-2 text-gray-700 font-semibold italic text-xs md:text-sm">
-                  5000+ Donors around the world
+                  {t("hero.donorsCount")}
                 </span>
               </div>
             </div>
@@ -304,36 +306,34 @@ export default function HeroSection() {
             <SlideIn direction="up" delay={0.2} className="text-[#2C2C2C] shadow-xl flex w-full md:w-[400px] lg:w-[515px] px-4 md:px-[35px] py-4 md:py-[26px] justify-center items-center rounded-3xl bg-[rgba(237,242,247,0.80)] backdrop-blur-md">
               <div className="w-full text-center md:text-left">
                 <h3 className="text-lg  font-semibold mb-2">
-                  Nourish a Life. Uplift a Soul.
+                  {t("hero.title")}
                 </h3>
                 <p className="text-sm text-[#2C2C2C]/80 mb-4">
-                  Your support delivers food, education, and
-                  <br className="hidden md:block" />
-                  hope to those who need it most.
+                  {t("hero.subtitle")}
                 </p>
                 <div className="flex justify-evenly    gap-2 mt-4">
                   <Link href={appendUTMToUrl("/donation#annadan-seva")} onClick={handleDonateClick}>
                     <button className="btn-interactive flex flex-1 items-center justify-center gap-2 bg-blue-900 hover:bg-blue-800 text-white cursor-pointer font-semibold px-4 py-3 rounded-lg shadow-md">
                       <Image
                         src={Heart}
-                        alt="Donate Icon"
+                        alt={t("hero.alt.donateIcon")}
                         width={20}
                         height={20}
                         className="w-6 h-6"
                       />
-                      Donate Now
+                      {t("nav.donateNow")}
                     </button>
                   </Link>
                   <Link href="/about-us">
                     <button className="btn-interactive flex w-full justify-center items-center gap-2 bg-white hover:bg-gray-100 cursor-pointer font-semibold px-4 py-3 text-black rounded-lg shadow-md hover-lift">
                       <Image
                         src={info}
-                        alt="Info Icon"
+                        alt={t("hero.alt.infoIcon")}
                         width={20}
                         height={30}
                         className="w-6 h-6"
                       />
-                      About Us
+                      {t("nav.aboutUs")}
                     </button>
                   </Link>
                 </div>
@@ -351,7 +351,7 @@ export default function HeroSection() {
             ) : (
               <img
                 src={carouselSlides[0]}
-                alt="Hero Banner"
+                alt={t("hero.alt.heroBanner")}
                 className="w-full h-full md:object-cover md:object-center min-[1025px]:object-fill block"
               />
             )}
@@ -390,14 +390,14 @@ export default function HeroSection() {
       <section className="flex flex-col justify-center items-center md:items-center w-full px-4 md:px-0 lg:mx-4 my-10 lg:my-16">
         <ScaleIn duration={0.7} className="text-center">
           <h2 className="mb-1 text-[28px] sm:text-[42px] lg:text-[48px] font-extrabold leading-tight sm:leading-[120%] text-[#2C2C2C] drop-shadow-sm">
-            Give Nourishment, <br className="sm:hidden" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">Give Knowledge</span>, Give Hope
+            {t("hero.giveNourishment")} <br className="sm:hidden" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 animate-gradient-shift">{t("hero.giveKnowledge")}</span>{t("hero.giveHope")}
           </h2>
           <p className="text-[16px] sm:text-[18px] lg:text-[20px] font-medium leading-[160%] text-gray-600 mt-4 drop-shadow-sm max-w-2xl mx-auto">
             <span className="text-orange-500 font-bold px-1 py-0.5 rounded-md bg-orange-50 inline-block mr-1">
-              Decide the path
+              {t("hero.decidePath")}
             </span>
-            of your kindness - Your help leads to hope and transformation
+            {t("hero.decidePathDesc")}
           </p>
         </ScaleIn>
       </section>
