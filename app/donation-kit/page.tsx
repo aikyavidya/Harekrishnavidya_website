@@ -5,9 +5,10 @@ import { Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
+import { useLanguage } from "../components/LanguageProvider";
 
 const Donationkit = () => {
+  const { t } = useLanguage();
   type Pack = {
     _id?: string;
     title: string;
@@ -52,30 +53,30 @@ const Donationkit = () => {
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   };
 
-  const staticTestimonials: TestimonialCard[] = [
+  const localizedFallbackTestimonials: TestimonialCard[] = [
     {
-      name: "Priya Sharma",
-      role: "Regular Donor",
-      text: "Seeing the impact of my donations on children's education has been incredibly fulfilling. This organization makes it so easy to make a real difference.",
-      img: avatarDataUri("Priya Sharma"),
+      name: t("donationKit.testimonials.priyaName"),
+      role: t("donationKit.testimonials.priyaRole"),
+      text: t("donationKit.testimonials.priyaQuote"),
+      img: avatarDataUri(t("donationKit.testimonials.priyaName")),
     },
     {
-      name: "Rajesh Kumar",
-      role: "Corporate Sponsor",
-      text: "The transparency and dedication shown is outstanding. I know exactly where my contribution goes and how it helps families.",
-      img: avatarDataUri("Rajesh Kumar"),
+      name: t("donationKit.testimonials.rajeshName"),
+      role: t("donationKit.testimonials.rajeshRole"),
+      text: t("donationKit.testimonials.rajeshQuote"),
+      img: avatarDataUri(t("donationKit.testimonials.rajeshName")),
     },
     {
-      name: "Anita Desai",
-      role: "Monthly Contributor",
-      text: "Supporting this cause has changed my perspective on giving. The grocery kits ensure no family goes hungry, and that means everything to me.",
-      img: avatarDataUri("Anita Desai"),
+      name: t("donationKit.testimonials.anitaName"),
+      role: t("donationKit.testimonials.anitaRole"),
+      text: t("donationKit.testimonials.anitaQuote"),
+      img: avatarDataUri(t("donationKit.testimonials.anitaName")),
     },
     {
-      name: "Vikram Patel",
-      role: "Volunteer & Donor",
-      text: "I've witnessed firsthand how these education kits transform lives. Supporting this organization is one of the best decisions I've made.",
-      img: avatarDataUri("Vikram Patel"),
+      name: t("donationKit.testimonials.vikramName"),
+      role: t("donationKit.testimonials.vikramRole"),
+      text: t("donationKit.testimonials.vikramQuote"),
+      img: avatarDataUri(t("donationKit.testimonials.vikramName")),
     },
   ];
   const [isGuidanceDialogOpen, setIsGuidanceDialogOpen] = useState(false);
@@ -84,7 +85,7 @@ const Donationkit = () => {
   const validatePhone = (value: string) => {
     const phoneRegex = /^[6-9]\d{9}$/; // 10 digits, starts 6–9
     if (!phoneRegex.test(value)) {
-      setPhoneError("Enter a valid 10-digit phone number");
+      setPhoneError(t("donationKit.validation.invalidPhone"));
     } else {
       setPhoneError("");
     }
@@ -94,7 +95,7 @@ const Donationkit = () => {
   const [phoneError, setPhoneError] = useState("");
   const [packs, setPacks] = useState<Pack[]>([]);
   const [testimonials, setTestimonials] =
-    useState<TestimonialCard[]>(staticTestimonials);
+    useState<TestimonialCard[]>(localizedFallbackTestimonials);
 
   // Guidance form state
   const [guidanceName, setGuidanceName] = useState("");
@@ -160,7 +161,7 @@ const Donationkit = () => {
         });
 
         if (!res.ok) {
-          throw new Error("Failed to fetch donation kits");
+          throw new Error(t("donationKit.failedToFetch"));
         }
 
         const data = await res.json();
@@ -187,7 +188,7 @@ const Donationkit = () => {
       } catch (error) {
         console.error("Error loading donation kits:", error);
         setPacks([]);
-        setPacksError("Unable to load donation kits right now.");
+        setPacksError(t("donationKit.unableToLoad"));
       } finally {
         setLoading(false);
       }
@@ -214,10 +215,10 @@ const Donationkit = () => {
         const list = Array.isArray(data) ? (data as ApiTestimonial[]) : [];
 
         const mapped: TestimonialCard[] = list
-          .map((t, idx) => {
-            const name = (t?.fullName || "").trim() || `Donor ${idx + 1}`;
-            const text = (t?.testimonialText || "").trim();
-            const role = (t?.location || "").trim() || "Donor";
+          .map((tItem, idx) => {
+            const name = (tItem?.fullName || "").trim() || t("donationKit.testimonials.donorPrefix") + (idx + 1);
+            const text = (tItem?.testimonialText || "").trim();
+            const role = (tItem?.location || "").trim() || t("donationKit.testimonials.donorRoleDefault");
 
             return {
               name,
@@ -226,12 +227,12 @@ const Donationkit = () => {
               img: avatarDataUri(name),
             };
           })
-          .filter((t) => t.text.length > 0);
+          .filter((tItem) => tItem.text.length > 0);
 
-        setTestimonials(mapped.length > 0 ? mapped : staticTestimonials);
+        setTestimonials(mapped.length > 0 ? mapped : localizedFallbackTestimonials);
       } catch (error) {
         console.error("Error loading testimonials:", error);
-        setTestimonials(staticTestimonials);
+        setTestimonials(localizedFallbackTestimonials);
       }
     };
 
@@ -267,35 +268,31 @@ const Donationkit = () => {
     );
   };
 
-  const features = [
+  const localizedFeatures = [
     {
-      title: "Direct Impact",
-      description:
-        "Your donation directly reaches those in need. No middlemen, no delays - just immediate support to underserved communities.",
+      title: t("donationKit.features.directImpact.title"),
+      description: t("donationKit.features.directImpact.desc"),
       icon: <span className="text-5xl">🎯</span>,
       bg: "bg-gradient-to-r from-orange-400 to-orange-600",
     },
 
     {
-      title: "Community Support",
-      description:
-        "Together we uplift more families. Your contribution strengthens communities and builds hope.",
+      title: t("donationKit.features.communitySupport.title"),
+      description: t("donationKit.features.communitySupport.desc"),
       icon: <span className="text-5xl">👥</span>,
       bg: "bg-gradient-to-r from-orange-400 to-orange-600",
     },
 
     {
-      title: "Transform Lives",
-      description:
-        "Each kit empowers families with essential resources. From education to nutrition, you're creating lasting change.",
+      title: t("donationKit.features.transformLives.title"),
+      description: t("donationKit.features.transformLives.desc"),
       icon: <span className="text-5xl">✓</span>,
       bg: "bg-gradient-to-r from-orange-400 to-orange-600",
     },
 
     {
-      title: "100% Transparency",
-      description:
-        "Track exactly where your money goes. Receive updates and photos showing how your contribution makes a real difference.",
+      title: t("donationKit.features.transparency.title"),
+      description: t("donationKit.features.transparency.desc"),
       icon: <span className="text-5xl">📈</span>,
       bg: "bg-gradient-to-r from-orange-400 to-orange-600",
     },
@@ -316,19 +313,19 @@ const Donationkit = () => {
             <div className="animate-fade-in">
               <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-white shadow-lg rounded-full border-2 border-primary/20">
                 <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-primary fill-primary" />
-                <p className="text-primary text-xs sm:text-sm font-bold uppercase tracking-wide">Making Real Impact</p>
+                <p className="text-primary text-xs sm:text-sm font-bold uppercase tracking-wide">{t("donationKit.hero.badge")}</p>
               </div>
               <h1 className="text-3xl text-[#32241B] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 sm:mb-6 text-foreground leading-[1.1]">
-                Empowering Children
+                {t("donationKit.hero.headingPart1")}
                 <span className="block mt-1 sm:mt-2">
                   <span className="text-gradient bg-gradient-to-b from-[#FF7F2A] to-[#F96D2F] bg-clip-text text-transparent">
-                    Through Education
+                    {t("donationKit.hero.headingPart2")}
                   </span>
                 </span>
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-10 leading-relaxed max-w-xl">
-                Post-school initiative providing 2 hours daily education, nutritious food, values, life skills & wellness to underprivileged children from 1st to 10th class since 2021.
+                {t("donationKit.hero.description")}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
@@ -351,7 +348,7 @@ const Donationkit = () => {
                   // onMouseEnter={() => setHovered(true)}
                   // onMouseLeave={() => setHovered(false)}
                   >
-                    Donate Now
+                    {t("donationKit.hero.donateNowButton")}
                     {/* <Heart
                       className={`w-5 h-5 transition-colors duration-300 ${hovered ? "fill-white text-white" : "fill-transparent text-white"
                         }`}
@@ -373,7 +370,7 @@ const Donationkit = () => {
                               hover:scale-105
                               cursor-pointer
                               whitespace-nowrap">
-                  Learn More
+                  {t("donationKit.hero.learnMoreButton")}
                 </div>
 
               </div>
@@ -381,16 +378,16 @@ const Donationkit = () => {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-4 sm:pt-6 border-t-2 border-border">
                 <div>
-                  <div className="text-2xl sm:text-4xl font-extrabold text-primary mb-0.5 sm:mb-1">2,500+</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">Students Empowered</div>
+                  <div className="text-2xl sm:text-4xl font-extrabold text-primary mb-0.5 sm:mb-1">{t("donationKit.hero.studentsCount")}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">{t("donationKit.hero.studentsEmpowered")}</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-4xl font-extrabold text-primary mb-0.5 sm:mb-1">108</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">Villages Reached</div>
+                  <div className="text-2xl sm:text-4xl font-extrabold text-primary mb-0.5 sm:mb-1">{t("donationKit.hero.villagesCount")}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">{t("donationKit.hero.villagesReached")}</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-4xl font-extrabold text-primary mb-0.5 sm:mb-1">2 Hrs</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">Daily Support</div>
+                  <div className="text-2xl sm:text-4xl font-extrabold text-primary mb-0.5 sm:mb-1">{t("donationKit.hero.dailySupportCount")}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">{t("donationKit.hero.dailySupport")}</div>
                 </div>
               </div>
             </div>
@@ -406,7 +403,7 @@ const Donationkit = () => {
                 <div className="relative rounded-lg overflow-hidden shadow-2xl border-8 border-white">
                   <Image
                     src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                    alt="Children learning together"
+                    alt={t("donationKit.hero.alt.childrenLearning")}
                     width={1000}
                     height={500}
                     className="w-full h-[500px] object-cover rounded-lg"
@@ -419,8 +416,8 @@ const Donationkit = () => {
                         <Heart className="w-6 h-6 text-white fill-white" />
                       </div>
                       <div>
-                        <div className="text-2xl font-extrabold text-foreground">2,500+</div>
-                        <div className="text-sm text-muted-foreground font-medium">Children Empowered</div>
+                        <div className="text-2xl font-extrabold text-foreground">{t("donationKit.hero.studentsCount")}</div>
+                        <div className="text-sm text-muted-foreground font-medium">{t("donationKit.hero.childrenEmpowered")}</div>
                       </div>
                     </div>
                   </div>
@@ -436,20 +433,20 @@ const Donationkit = () => {
         <div className="text-center max-w-4xl mx-auto mb-12">
           <div className="inline-flex items-center bg-white border border-orange-200 rounded-full px-8 py-4 mb-4 text-orange-600 font-semibold text-sm shadow-sm">
             <span className="text-xl mr-2">💝</span>
-            OUR MISSION
+            {t("donationKit.why.badge").replace("💝 ", "")}
           </div>
 
           <h2 className="text-[56px] text-[#2D1B0F] sl font-extrabold mb-4 text-gray-900">
-            Why Donate With Us?
+            {t("donationKit.why.heading")}
           </h2>
           <p className="text-[#847062] text-base sm:text-lg">
-            Your generosity creates ripples of positive change across communities, providing <br />
-            essential resources and hope to those who need it most.
+            {t("donationKit.why.descPart1")}<br />
+            {t("donationKit.why.descPart2")}
           </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 max-w-7xl mx-auto">
-          {features.map((feature, idx) => (
+          {localizedFeatures.map((feature, idx) => (
             <div
               key={idx}
               className="flex items-start gap-4 p-10 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
@@ -483,12 +480,12 @@ const Donationkit = () => {
             </div>
 
             <p className="text-2xl sm:text-4xl font-semibold leading-snug">
-              &quot;The best way to find yourself is to lose yourself in the service of others.&quot;
+              &quot;{t("donationKit.quote.text")}&quot;
             </p>
 
             <div className="mt-8 flex flex-col items-center">
               <div className="h-[2px] w-20 bg-white/60 mb-3"></div>
-              <p className="text-lg font-medium tracking-wide">Mahatma Gandhi</p>
+              <p className="text-lg font-medium tracking-wide">{t("donationKit.quote.author")}</p>
             </div>
           </div>
         </div>
@@ -501,18 +498,18 @@ const Donationkit = () => {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2djRoOHYtNGgtOHptLTQgNHY0aDR2LTRoLTR6bTAgMGgtNHY0aDR2LTR6bTAgMHYtNGg0di00aC00djR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4">
-            Shape Young Minds for a Better India
+            {t("donationKit.shapeMinds.heading")}
           </h2>
           <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Support our mission to reach 1000 villages by 2030, providing education, food, and values to underprivileged children
+            {t("donationKit.shapeMinds.description")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg font-semibold shadow-lg bg-white text-primary hover:bg-white/90" asChild>
-              <Link href="/donation-kit/general-support">Become a Monthly Donor</Link>
+              <Link href="/donation-kit/general-support">{t("donationKit.shapeMinds.becomeMonthlyDonor")}</Link>
               {/* Become a Monthly Donor */}
             </Button>
             <Button size="lg" variant="outline" className="text-lg font-semibold bg-white/10 text-white border-2 border-white hover:bg-white hover:text-primary">
-              Volunteer With Us
+              {t("donationKit.shapeMinds.volunteerWithUs")}
             </Button>
           </div>
         </div>
@@ -538,21 +535,21 @@ const Donationkit = () => {
           <div className="text-center mb-16 sm:mb-20">
             <div className="inline-flex items-center gap-2 mb-6 sm:mb-8 px-6 sm:px-8 py-3 sm:py-4 bg-white/90 backdrop-blur-sm shadow-2xl rounded-full border-2 border-primary/20 animate-fade-in">
               <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-primary fill-primary animate-pulse" />
-              <p className="text-primary text-sm sm:text-base font-bold uppercase tracking-wider">Popular Causes Now</p>
+              <p className="text-primary text-sm sm:text-base font-bold uppercase tracking-wider">{t("donationKit.listing.badge")}</p>
             </div>
 
             <h2 className="text-4xl text-[#2D1B0F] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 sm:mb-8 text-foreground leading-[1.1] animate-fade-in" style={{ animationDelay: '100ms' }}>
-              Together We Can
+              {t("donationKit.listing.headingPart1")}
               <span className="block mt-2 sm:mt-3">
                 <span className="text-gradient bg-gradient-to-b from-[#FF7F2A] to-[#F96D2F] bg-clip-text text-transparent">
 
-                  Make a Difference
+                  {t("donationKit.listing.headingPart2")}
                 </span>
               </span>
             </h2>
 
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
-              Each kit is carefully curated to address specific needs in underserved communities
+              {t("donationKit.listing.description")}
             </p>
 
             {/* Decorative Elements */}
@@ -568,7 +565,7 @@ const Donationkit = () => {
             {loading ? (
               <div className="text-center py-20">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                <p className="mt-4 text-muted-foreground">Loading donation kits...</p>
+                <p className="mt-4 text-muted-foreground">{t("donationKit.loading")}</p>
               </div>
             ) : packsError ? (
               <div className="text-center py-20">
@@ -576,7 +573,7 @@ const Donationkit = () => {
               </div>
             ) : packs.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-muted-foreground">No donation kits available right now.</p>
+                <p className="text-muted-foreground">{t("donationKit.noKitsAvailable")}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -601,7 +598,7 @@ const Donationkit = () => {
 
                       {/* Included Items */}
                       <div className="border-2 border-primary/40 rounded-lg p-4 bg-primary/5">
-                        <p className="font-semibold mb-2">🧺 What’s Included:</p>
+                        <p className="font-semibold mb-2">{t("donationKit.listing.whatsIncluded")}</p>
                         <ul className="text-sm text-[#847062] space-y-3">
                           {pack.included.map((item, idx) => (
                             <li key={idx}>
@@ -609,7 +606,7 @@ const Donationkit = () => {
                             </li>
                           ))}
                         </ul>
-                        <button className="text-primary text-sm font-semibold mt-2">View All</button>
+                        <button className="text-primary text-sm font-semibold mt-2">{t("donationKit.listing.viewAll")}</button>
                       </div>
 
                       {/* Highlight */}
@@ -620,7 +617,7 @@ const Donationkit = () => {
 
                       {/* Quantity Section */}
                       <div className="border-2 rounded-lg p-4 bg-white">
-                        <p className="text-sm font-bold mb-2">Number of packs:</p>
+                        <p className="text-sm font-bold mb-2">{t("donationKit.listing.numberOfPacks")}</p>
 
                         <div className="flex items-center justify-between">
                           <button
@@ -640,7 +637,7 @@ const Donationkit = () => {
                         </div>
 
                         {/* Total */}
-                        <p className="mt-3 font-semibold text-gray-800"> Total: <span className="text-primary font-extrabold">₹{pack.total}</span></p>
+                        <p className="mt-3 font-semibold text-gray-800">{t("donationKit.listing.totalPrefix")}<span className="text-primary font-extrabold">₹{pack.total}</span></p>
                       </div>
 
                       {/* Buttons */}
@@ -649,13 +646,13 @@ const Donationkit = () => {
                           href={`/donation-kit/${pack.slug || pack.title.toLowerCase().replace(/\s+/g, '-')}?quantity=${pack.quantity}&total=${pack.total}`}
                           className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded-lg shadow text-center"
                         >
-                          Donate Now
+                          {t("donationKit.listing.donateNowButton")}
                         </Link>
                         <Link
                           href={`/donation-kit/${pack.slug || pack.title.toLowerCase().replace(/\s+/g, '-')}?quantity=${pack.quantity}&total=${pack.total}`}
                           className="flex-1 border border-orange-500 text-orange-600 font-semibold py-2 rounded-lg hover:bg-orange-50 text-center"
                         >
-                          Details
+                          {t("donationKit.listing.detailsButton")}
                         </Link>
                       </div>
                     </div>
@@ -669,17 +666,17 @@ const Donationkit = () => {
             <div className="inline-flex flex-col sm:flex-row items-center gap-4 px-6 sm:px-10 py-5 sm:py-6 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm rounded-lg sm:rounded-lg border-2 border-primary/20 shadow-xl">
               <div className="text-center sm:text-left">
                 <p className="text-lg sm:text-xl font-bold text-foreground mb-1">
-                  Can&apos;t decide which kit to donate?
+                  {t("donationKit.guidance.bannerHeading")}
                 </p>
                 <p className="text-sm sm:text-base text-muted-foreground">
-                  Our team can help you choose the perfect option for maximum impact
+                  {t("donationKit.guidance.bannerDescription")}
                 </p>
               </div>
               <div
                 className="whitespace-nowrap text-white p-3 cursor-pointer text-sm font-bold rounded-lg bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 onClick={() => setIsGuidanceDialogOpen(true)}
               >
-                Get Guidance
+                {t("donationKit.guidance.getGuidanceButton")}
               </div>
 
             </div>
@@ -706,11 +703,11 @@ const Donationkit = () => {
 
               {/* Title */}
               <h2 className="text-base font-bold text-center leading-tight mb-1">
-                Get Expert Guidance
+                {t("donationKit.guidance.dialogHeading")}
               </h2>
 
               <p className="text-center text-gray-600 text-[11px] mb-3 leading-tight">
-                Fill your details and our team will assist you.
+                {t("donationKit.guidance.dialogDescription")}
               </p>
 
               {/* Form */}
@@ -723,11 +720,11 @@ const Donationkit = () => {
 
                   // Basic front-end validation
                   if (!guidanceName || !guidanceEmail || !phone || !guidanceCity) {
-                    setGuidanceError("Please fill all required fields.");
+                    setGuidanceError(t("donationKit.validation.fillRequiredFields"));
                     return;
                   }
                   if (phoneError) {
-                    setGuidanceError("Please enter a valid phone number.");
+                    setGuidanceError(t("donationKit.validation.validPhoneRequired"));
                     return;
                   }
 
@@ -755,14 +752,14 @@ const Donationkit = () => {
 
                     if (!res.ok || !result.success) {
                       setGuidanceError(
-                        result?.error || "Something went wrong. Please try again."
+                        result?.error || t("donationKit.validation.somethingWentWrong")
                       );
                       return;
                     }
 
                     setGuidanceSuccess(
                       result?.message ||
-                      "Thank you! Our team will contact you within 24 hours."
+                      t("donationKit.validation.thankYou")
                     );
 
                     // Reset fields
@@ -774,7 +771,7 @@ const Donationkit = () => {
                     setPhoneError("");
                   } catch (error) {
                     console.error("Error submitting guidance form:", error);
-                    setGuidanceError("Something went wrong. Please try again.");
+                    setGuidanceError(t("donationKit.validation.somethingWentWrong"));
                   } finally {
                     setGuidanceLoading(false);
                   }
@@ -782,10 +779,10 @@ const Donationkit = () => {
               >
 
                 <div>
-                  <label className="text-[10px] font-semibold">Full Name *</label>
+                  <label className="text-[10px] font-semibold">{t("donationKit.guidance.fullNameLabel")}</label>
                   <input
                     type="text"
-                    placeholder="Full name"
+                    placeholder={t("donationKit.guidance.fullNamePlaceholder")}
                     value={guidanceName}
                     onChange={(e) => setGuidanceName(e.target.value)}
                     className="w-full mt-1 p-1.5 border rounded-lg text-[11px]"
@@ -793,21 +790,21 @@ const Donationkit = () => {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-semibold">Email *</label>
+                  <label className="text-[10px] font-semibold">{t("donationKit.guidance.emailLabel")}</label>
                   <input
                     type="email"
-                    placeholder="email@example.com"
+                    placeholder={t("donationKit.guidance.emailPlaceholder")}
                     value={guidanceEmail}
                     onChange={(e) => setGuidanceEmail(e.target.value)}
                     className="w-full mt-1 p-1.5 border rounded-lg text-[11px]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold">Phone *</label>
+                  <label className="text-[10px] font-semibold">{t("donationKit.guidance.phoneLabel")}</label>
 
                   <input
                     type="text"
-                    placeholder="+91 98765 43210"
+                    placeholder={t("donationKit.guidance.phonePlaceholder")}
                     value={phone}
                     onChange={(e) => {
                       let value = e.target.value.replace(/\D/g, ""); // remove non-digits
@@ -828,10 +825,10 @@ const Donationkit = () => {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-semibold">City *</label>
+                  <label className="text-[10px] font-semibold">{t("donationKit.guidance.cityLabel")}</label>
                   <input
                     type="text"
-                    placeholder="City"
+                    placeholder={t("donationKit.guidance.cityPlaceholder")}
                     value={guidanceCity}
                     onChange={(e) => setGuidanceCity(e.target.value)}
                     className="w-full mt-1 p-1.5 border rounded-lg text-[11px]"
@@ -840,11 +837,11 @@ const Donationkit = () => {
 
                 <div>
                   <label className="text-[10px] font-semibold">
-                    Your Question (Optional)
+                    {t("donationKit.guidance.questionLabel")}
                   </label>
                   <textarea
                     rows={1}
-                    placeholder="Message"
+                    placeholder={t("donationKit.guidance.questionPlaceholder")}
                     value={guidanceQuestion}
                     onChange={(e) => setGuidanceQuestion(e.target.value)}
                     className="w-full mt-1 p-1.5 border rounded-lg text-[11px] resize-none"
@@ -852,7 +849,7 @@ const Donationkit = () => {
                 </div>
 
                 <p className="text-[9px] bg-orange-50 text-orange-600 p-1.5 rounded-lg leading-tight">
-                  Team responds within 24 hrs.
+                  {t("donationKit.guidance.responseNote")}
                 </p>
 
                 {guidanceError && (
@@ -869,7 +866,7 @@ const Donationkit = () => {
                   disabled={guidanceLoading}
                   className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white py-1.5 rounded-lg text-xs font-semibold shadow-md"
                 >
-                  {guidanceLoading ? "Submitting..." : "Submit"}
+                  {guidanceLoading ? t("donationKit.guidance.submitting") : t("donationKit.guidance.submit")}
                 </button>
               </form>
             </div>
@@ -882,10 +879,10 @@ const Donationkit = () => {
         {/* Title */}
         <div className="text-center mb-12 px-4">
           <h2 className="text-4xl md:text-5xl font-black text-[#32241B]">
-            What They Are Talking About Us
+            {t("donationKit.testimonials.heading")}
           </h2>
           <p className="text-[#847062] mt-3 text-base md:text-sm">
-            Hear from our donors and see how your contributions create lasting change
+            {t("donationKit.testimonials.description")}
           </p>
         </div>
 
@@ -958,29 +955,29 @@ const Donationkit = () => {
             <div className="inline-flex items-center gap-2 mb-5 px-5 py-2.5 bg-white shadow-md rounded-full border border-primary/20">
               <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-primary fill-primary" />
               <span className="text-xs sm:text-sm font-bold text-primary uppercase tracking-wide">
-                Our Impact
+                {t("donationKit.impact.badge")}
               </span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-[#2D1B0F]">
-              Building Futures with
+              {t("donationKit.impact.headingPart1")}
               <span className="block bg-gradient-to-b from-[#FF7F2A] to-[#F96D2F] bg-clip-text text-transparent">
-                Your Support
+                {t("donationKit.impact.headingPart2")}
               </span>
             </h2>
 
             <p className="mt-4 text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Together, we&apos;ve created lasting change in thousands of lives across communities
+              {t("donationKit.impact.description")}
             </p>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
             {[
-              { number: "2,500+", label: "Students Empowered", icon: "📚", gradient: "from-orange-500 to-red-500" },
-              { number: "108", label: "Villages Reached", icon: "🌍", gradient: "from-blue-500 to-cyan-500" },
-              { number: "80", label: "Aikya Vidya Teachers", icon: "👨‍🏫", gradient: "from-purple-500 to-pink-500" },
-              { number: "2,28,000+", label: "Working Hours", icon: "⏰", gradient: "from-rose-500 to-pink-500" }
+              { number: t("donationKit.impact.stat1Value"), label: t("donationKit.impact.stat1Label"), icon: "📚", gradient: "from-orange-500 to-red-500" },
+              { number: t("donationKit.impact.stat2Value"), label: t("donationKit.impact.stat2Label"), icon: "🌍", gradient: "from-blue-500 to-cyan-500" },
+              { number: t("donationKit.impact.stat3Value"), label: t("donationKit.impact.stat3Label"), icon: "👨‍🏫", gradient: "from-purple-500 to-pink-500" },
+              { number: t("donationKit.impact.stat4Value"), label: t("donationKit.impact.stat4Label"), icon: "⏰", gradient: "from-rose-500 to-pink-500" }
             ].map((stat, index) => (
               <div key={index} className="group relative hover:scale-105 transition-transform duration-300">
                 <div className="relative bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-white text-center">
@@ -1012,7 +1009,7 @@ const Donationkit = () => {
           {/* CTA */}
           <div className="text-center mt-14 sm:mt-20">
             <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-6">
-              Be part of our growing community of changemakers
+              {t("donationKit.impact.footerText")}
             </p>
 
             <Link href="/donation-kit/general-support">
@@ -1033,7 +1030,7 @@ const Donationkit = () => {
       whitespace-nowrap
     "
               >
-                Start Making Impact Today
+                {t("donationKit.impact.startButton")}
                 <Heart className="w-4 h-4 fill-white" />
               </button>
             </Link>
