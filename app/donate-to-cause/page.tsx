@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useLanguage } from "../components/LanguageProvider";
 
 import {
   Heart,
@@ -36,6 +37,7 @@ const getBackendApiUrl = (endpoint: string) => {
 
 
 const Campaigns = () => {
+  const { t } = useLanguage();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -57,7 +59,7 @@ const Campaigns = () => {
             image: campaign.basicInfo?.coverImage || 'https://via.placeholder.com/400x300?text=No+Image',
             goalAmount: campaign.funds?.targetAmount || 0,
             raisedAmount: campaign.funds?.raisedAmount || 0,
-            category: campaign.basicInfo?.category || 'General',
+            category: campaign.basicInfo?.category || t("donateToCause.categoryFallback"),
             deadline: campaign.basicInfo?.deadline || new Date().toISOString(),
             supporters: campaign.donorWall?.recentDonors?.length || 0,
             featured: campaign.basicInfo?.isFeatured || false,
@@ -91,9 +93,9 @@ const Campaigns = () => {
   const otherCampaigns = campaigns.filter(c => !c.featured);
 
 
-  if (loading) return <p className="text-center mt-10">Loading campaigns...</p>;
+  if (loading) return <p className="text-center mt-10">{t("donateToCause.loading")}</p>;
   if (!campaigns.length)
-    return <p className="text-center mt-10">No campaigns found</p>;
+    return <p className="text-center mt-10">{t("donateToCause.noCampaignsFound")}</p>;
 
 
   return (
@@ -115,20 +117,20 @@ const Campaigns = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              <p className="text-primary text-sm sm:text-base font-bold uppercase tracking-wider">Live Campaigns</p>
+              <p className="text-primary text-sm sm:text-base font-bold uppercase tracking-wider">{t("donateToCause.hero.badge")}</p>
             </div>
 
             <h1 className="text-5xl text-[#2D1B0F]  sm:text-7xl md:text-8xl font-extrabold mb-8 text-foreground leading-[1.05] animate-fade-in tracking-tight" style={{ animationDelay: '100ms' }}>
-              Donate to a
+              {t("donateToCause.hero.headingPart1")}
               <span className="block mt-3">
                 <span className="text-gradient bg-gradient-to-b from-[#FF7F2A] to-[#F96D2F] bg-clip-text text-transparent">
-                  Specific Cause
+                  {t("donateToCause.hero.headingPart2")}
                 </span>
               </span>
             </h1>
 
             <p className="text-xl sm:text-2xl md:text-3xl text-[#847062]  max-w-4xl mx-auto leading-relaxed animate-fade-in font-medium" style={{ animationDelay: '200ms' }}>
-              Support focused initiatives that create <span className="text-primary font-semibold">measurable impact</span>. Track progress in real-time and see exactly how your contribution <br /> helps.
+              {t("donateToCause.hero.descPart1")}<span className="text-primary font-semibold">{t("donateToCause.hero.descPart2")}</span>{t("donateToCause.hero.descPart3")}<br />{t("donateToCause.hero.descPart4")}
             </p>
           </div>
         </div>
@@ -142,7 +144,7 @@ const Campaigns = () => {
           <div className="flex items-center gap-3 mb-8">
             <Heart className="w-6 h-6 text-primary fill-primary" />
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2D1B0F]">
-              Featured Campaigns
+              {t("donateToCause.featured.heading")}
             </h2>
           </div>
 
@@ -165,7 +167,7 @@ const Campaigns = () => {
                       {campaign.category}
                     </Badge>
                     <Badge className="bg-yellow-400 text-black font-bold px-3 py-1.5 animate-pulse">
-                      ⭐ Featured
+                      {t("donateToCause.featured.badge")}
                     </Badge>
                   </div>
 
@@ -183,7 +185,7 @@ const Campaigns = () => {
                             ).toFixed(0)}
                             %
                           </div>
-                          <div className="text-white/80 text-xs">Funded</div>
+                          <div className="text-white/80 text-xs">{t("donateToCause.featured.funded")}</div>
                         </div>
                       </div>
                       <Progress
@@ -210,7 +212,7 @@ const Campaigns = () => {
                     <div className="rounded-xl p-4 border-2 border-primary/40">
                       <div className="flex items-center gap-2">
                         <Users className="w-4 h-4 text-primary mb-1" />
-                        <span className="text-sm text-[#847062]">Supporters:</span>
+                        <span className="text-sm text-[#847062]">{t("donateToCause.featured.supporters")}</span>
                       </div>
                       <div className="text-2xl font-bold">
                         {campaign.supporters}
@@ -219,7 +221,7 @@ const Campaigns = () => {
                     <div className="rounded-xl p-4 border-2 border-primary/40">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-primary mb-1" />
-                        <span className="text-sm text-[#847062]">Days Left:</span>
+                        <span className="text-sm text-[#847062]">{t("donateToCause.featured.daysLeft")}</span>
                       </div>
                       <div className="text-2xl font-bold">
                         {calculateDaysLeft(campaign.deadline)}
@@ -229,18 +231,18 @@ const Campaigns = () => {
                   <div className="space-y-2 mt-2">
                     <div className="flex justify-between text-sm">
                       <span className="font-bold text-primary">
-                        ₹{(campaign.raisedAmount / 100000).toFixed(2)}L raised
+                        ₹{(campaign.raisedAmount / 100000).toFixed(2)}L{t("donateToCause.featured.raisedSuffix")}
                       </span>
 
                       <span className="font-semibold text-[#847062]">
-                        of ₹{(campaign.goalAmount / 100000).toFixed(2)}L
+                        {t("donateToCause.featured.ofPrefix")}₹{(campaign.goalAmount / 100000).toFixed(2)}L
                       </span>
                     </div>
                   </div>
 
                   <Link href={`/build-school?id=${campaign.id}`}>
                     <div className="w-full h-12 mt-4 text-white bg-gradient-to-br from-[#F96D2F] to-[#F1872B] rounded-xl flex items-center justify-center font-bold cursor-pointer">
-                      View Campaign & Donate
+                      {t("donateToCause.featured.viewButton")}
                     </div>
                   </Link>
                 </CardContent>
@@ -253,7 +255,7 @@ const Campaigns = () => {
             <>
               <div className="mb-8">
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2D1B0F]">
-                  More Campaigns
+                  {t("donateToCause.more.heading")}
                 </h2>
               </div>
 
@@ -293,12 +295,11 @@ const Campaigns = () => {
                               {calculateProgress(
                                 campaign.raisedAmount,
                                 campaign.goalAmount
-                              ).toFixed(0)}
-                              % funded
+                              ).toFixed(0)}{t("donateToCause.more.fundedSuffix")}
                             </span>
 
                             <span className="font-semibold">
-                              {calculateDaysLeft(campaign.deadline)} days left
+                              {calculateDaysLeft(campaign.deadline)}{t("donateToCause.more.daysLeftSuffix")}
                             </span>
                           </div>
                         </div>
@@ -318,21 +319,21 @@ const Campaigns = () => {
                       {/* STATS */}
                       <div className="flex justify-between mb-4">
                         <div className="border-2 border-primary/40 p-2 rounded-xl">
-                          <div className="text-xs text-muted-foreground">Raised</div>
+                          <div className="text-xs text-muted-foreground">{t("donateToCause.more.raised")}</div>
                           <div className="font-bold text-primary ">
                             ₹{((campaign.raisedAmount || 0) / 100000).toFixed(1)}L
                           </div>
                         </div>
 
                         <div className="border-2 border-primary/40 p-2 rounded-xl">
-                          <div className="text-xs text-muted-foreground">Supporters</div>
+                          <div className="text-xs text-muted-foreground">{t("donateToCause.more.supporters")}</div>
                           <div className="font-bold">{campaign.supporters}</div>
                         </div>
                       </div>
 
                       <Link href={`/build-school?id=${campaign.id}`}>
                         <div className="w-full h-11 bg-primary text-white rounded-xl flex items-center justify-center font-bold">
-                          View Campaign
+                          {t("donateToCause.more.viewButton")}
                         </div>
                       </Link>
                     </CardContent>
@@ -362,10 +363,10 @@ const Campaigns = () => {
             <Heart className="w-10 h-10 text-white fill-white" />
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
-            Can&apos;t Find Your Cause?
+            {t("donateToCause.cta.heading")}
           </h2>
           <p className="text-xl md:text-2xl text-white/95 mb-10 leading-relaxed max-w-2xl mx-auto font-medium">
-            Make a general donation to support our mission of reaching <span className="font-bold underline decoration-white/50">1000 villages by 2030</span>
+            {t("donateToCause.cta.descPart1")}<span className="font-bold underline decoration-white/50">{t("donateToCause.cta.descPart2")}</span>
           </p>
           <div className="flex justify-center">
             <Link href="/build-school">
@@ -388,7 +389,7 @@ const Campaigns = () => {
         w-fit
       "
               >
-                Donate a Grocery Kit Now
+                {t("donateToCause.cta.button")}
               </div>
             </Link>
           </div>
