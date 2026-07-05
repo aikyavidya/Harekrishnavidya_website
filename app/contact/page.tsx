@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import Image from "next/image"
+import { useLanguage } from "../components/LanguageProvider";
 // import logo from "../../public/images/logo.png";
 import logo from "../../public/images/HK Vidya Logo English contactpage.png";
 
@@ -17,6 +18,7 @@ type ContactFormData = {
 };
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     phone: "",
@@ -96,23 +98,23 @@ export default function ContactPage() {
 
     // Client-side validations
     if (formData.name.trim().length < 2) {
-      toast.error("❌ Name must be at least 2 characters.");
+      toast.error(t("contact.validation.nameLength"));
       return;
     }
 
     if (formData.phone.length !== 10) {
-      toast.error("❌ Phone number must be exactly 10 digits.");
+      toast.error(t("contact.validation.phoneDigits"));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      toast.error("❌ Please enter a valid email address.");
+      toast.error(t("contact.validation.invalidEmail"));
       return;
     }
 
     if (!formData.terms) {
-      toast.error("❌ You must agree to the Privacy Policy and Terms.");
+      toast.error(t("contact.validation.mustAgree"));
       return;
     }
 
@@ -121,7 +123,7 @@ export default function ContactPage() {
       setIsSubmitted(true);
 
       toast.success(
-        "🙏 Thank you for your message! We will get back to you soon.",
+        t("contact.validation.success"),
         {
           position: "top-right",
           autoClose: 5000,
@@ -142,7 +144,7 @@ export default function ContactPage() {
 
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (error: unknown) {
-      let errorMessage = "Submission failed. Please try again later.";
+      let errorMessage = t("contact.validation.fallbackError");
       if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -161,11 +163,12 @@ export default function ContactPage() {
         <div className="relative max-w-6xl mx-auto px-6 py-10">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl text-black font-bold mb-4 tracking-tight">
-              Get In Touch
+              {t("contact.hero.heading")}
             </h1>
             <p className="text-xl md:text-2xl text-orange-400 max-w-3xl mx-auto leading-relaxed">
-              We&apos;d love to hear from you. Send us a message and we&apos;ll
-              respond <br /> as soon as possible.
+              {t("contact.hero.subheadingPart1")}
+              <br />
+              {t("contact.hero.subheadingPart2")}
             </p>
           </div>
         </div>
@@ -183,14 +186,14 @@ export default function ContactPage() {
                 </div>
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  HARE KRISHNA MOVEMENT INDIA
+                  {t("contact.info.orgName")}
                 </h2>
                 <div className="flex items-start justify-center space-x-2 text-gray-600">
                   <MapPin className="w-5 h-5 mt-1 text-orange-500 flex-shrink-0" />
                   <p className="text-center leading-relaxed">
-                    Road No. 12, MLA Colony, Banjara Hills,
+                    {t("contact.info.addressLine1")}
                     <br />
-                    Hyderabad - 500034
+                    {t("contact.info.addressLine2")}
                   </p>
                 </div>
               </div>
@@ -198,7 +201,7 @@ export default function ContactPage() {
 
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-gray-800 mb-6">
-                Contact Information
+                {t("contact.info.heading")}
               </h3>
 
               <div className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
@@ -207,7 +210,7 @@ export default function ContactPage() {
                     <Mail className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800">Email</p>
+                    <p className="font-medium text-gray-800">{t("contact.info.email")}</p>
                     <a
                       href="mailto:connect@harekrishnavidya.org"
                       className="text-blue-600 hover:text-blue-800 transition-colors"
@@ -225,7 +228,7 @@ export default function ContactPage() {
                     <Phone className="w-6 h-6 text-green-600" />
                   </div>
                   <div className="space-y-1">
-                    <p className="font-medium text-gray-800">Phone</p>
+                    <p className="font-medium text-gray-800">{t("contact.info.phone")}</p>
                     <div className="flex flex-col lg:flex-row gap-1 lg:gap-6">
                       <a
                         href="https://wa.me/918121795663"
@@ -254,7 +257,7 @@ export default function ContactPage() {
                     <Globe className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800">Website</p>
+                    <p className="font-medium text-gray-800">{t("contact.info.website")}</p>
                     <a
                       href="https://www.harekrishnavidya.org/"
                       target="_blank"
@@ -274,10 +277,10 @@ export default function ContactPage() {
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                 <div className="mb-8">
                   <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                    Send us a message
+                    {t("contact.form.heading")}
                   </h2>
                   <p className="text-gray-600">
-                    We&apos;ll get back to you within 24 hours
+                    {t("contact.form.subheading")}
                   </p>
                 </div>
 
@@ -287,7 +290,7 @@ export default function ContactPage() {
                       htmlFor="name"
                       className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                      Full Name *
+                      {t("contact.form.nameLabel")}
                     </label>
                     <input
                       type="text"
@@ -297,7 +300,7 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      placeholder="Enter your full name"
+                      placeholder={t("contact.form.namePlaceholder")}
                     />
                   </div>
 
@@ -307,7 +310,7 @@ export default function ContactPage() {
                         htmlFor="phone"
                         className="block text-sm font-semibold text-gray-700 mb-2"
                       >
-                        Phone Number *
+                        {t("contact.form.phoneLabel")}
                       </label>
                       <input
                         type="tel"
@@ -318,7 +321,7 @@ export default function ContactPage() {
                         onChange={handleInputChange}
                         maxLength={10}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                        placeholder="+91 xxxxx xxxxx"
+                        placeholder={t("contact.form.phonePlaceholder")}
                       />
                     </div>
 
@@ -327,7 +330,7 @@ export default function ContactPage() {
                         htmlFor="email"
                         className="block text-sm font-semibold text-gray-700 mb-2"
                       >
-                        Email Address *
+                        {t("contact.form.emailLabel")}
                       </label>
                       <input
                         type="email"
@@ -337,7 +340,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                        placeholder="your@email.com"
+                        placeholder={t("contact.form.emailPlaceholder")}
                       />
                     </div>
                   </div>
@@ -347,7 +350,7 @@ export default function ContactPage() {
                       htmlFor="message"
                       className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                      Message
+                      {t("contact.form.messageLabel")}
                     </label>
                     <textarea
                       id="message"
@@ -356,7 +359,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
-                      placeholder="Tell us how we can help you..."
+                      placeholder={t("contact.form.messagePlaceholder")}
                     />
                   </div>
 
@@ -375,19 +378,19 @@ export default function ContactPage() {
                       htmlFor="terms"
                       className="text-sm text-gray-700 leading-relaxed"
                     >
-                      I agree to the{" "}
+                      {t("contact.form.agreePart1")}
                       <Link
                         href="/policies"
                         className="text-orange-600 hover:text-orange-800 font-medium underline"
                       >
-                        Privacy Policy
-                      </Link>{" "}
-                      and{" "}
+                        {t("contact.form.agreePrivacyPolicy")}
+                      </Link>
+                      {t("contact.form.agreePart2")}
                       <Link
                         href="/terms-conditions"
                         className="text-orange-600 hover:text-orange-800 font-medium underline"
                       >
-                        Terms and Conditions
+                        {t("contact.form.agreeTermsAndConditions")}
                       </Link>
                     </label>
                   </div>
@@ -401,12 +404,12 @@ export default function ContactPage() {
                       {isSubmitted ? (
                         <div className="flex items-center justify-center space-x-2">
                           <CheckCircle className="w-5 h-5" />
-                          <span>Message Sent!</span>
+                          <span>{t("contact.form.submitSuccess")}</span>
                         </div>
                       ) : (
                         <div className="flex items-center justify-center space-x-2">
                           <Send className="w-5 h-5" />
-                          <span>Send Message</span>
+                          <span>{t("contact.form.submitDefault")}</span>
                         </div>
                       )}
                     </button>
@@ -420,13 +423,10 @@ export default function ContactPage() {
         <div className="mt-16 text-center">
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Need immediate assistance?
+              {t("contact.assistance.heading")}
             </h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              For urgent inquiries or corporate/CSR related queries, please
-              don&apos;t hesitate to call us directly or send an email.
-              We&apos;re here to help you with any questions about our programs
-              and services.
+              {t("contact.assistance.description")}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
@@ -434,14 +434,14 @@ export default function ContactPage() {
                 className="inline-flex items-center px-6 py-3 border-2 border-black hover:border-orange-500 hover:bg-orange-500 text-black hover:text-white font-medium rounded-lg"
               >
                 <Phone className="w-4 h-4 mr-2" />
-                Call Now
+                {t("contact.assistance.callNow")}
               </a>
               <a
                 href="mailto:aikyavidya@hkmhyderabad.org"
                 className="inline-flex items-center px-5 py-3 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded-lg"
               >
                 <Mail className="w-4 h-4 mr-2" />
-                Send Email
+                {t("contact.assistance.sendEmail")}
               </a>
             </div>
           </div>
