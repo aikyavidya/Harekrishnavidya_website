@@ -11,6 +11,7 @@ import {
     Users, TrendingUp, Calendar, Sparkles
 } from "lucide-react";
 import useUTM from "../utils/useUTM";
+import { useLanguage } from "../components/LanguageProvider";
 
 // API Configuration
 // const API_BASE_URL = "http://localhost:5000/api";
@@ -83,6 +84,7 @@ const tierConfig = {
 };
 
 const DonorWall = () => {
+    const { t } = useLanguage();
     const { appendUTMToUrl } = useUTM();
     const [donors, setDonors] = useState<Donor[]>([]);
     const [loading, setLoading] = useState(true);
@@ -107,7 +109,7 @@ const DonorWall = () => {
             setDonors(visibleDonors);
         } catch (err) {
             console.error("Error fetching donors:", err);
-            setError("Failed to load donors. Please try again later.");
+            setError(t("donorWall.failedMessage"));
             setDonors([]);
         } finally {
             setLoading(false);
@@ -159,7 +161,7 @@ const DonorWall = () => {
                 <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
                     <div className="text-center">
                         <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-primary mb-4"></div>
-                        <p className="text-lg font-medium text-foreground">Loading donors...</p>
+                        <p className="text-lg font-medium text-foreground">{t("donorWall.loading")}</p>
                     </div>
                 </div>
             )}
@@ -169,7 +171,7 @@ const DonorWall = () => {
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
                         <Heart className="w-12 h-12 text-red-500 mx-auto mb-3" />
-                        <h3 className="text-xl font-bold text-red-800 mb-2">Failed to Load Donors</h3>
+                        <h3 className="text-xl font-bold text-red-800 mb-2">{t("donorWall.failedTitle")}</h3>
                         <p className="text-red-600 mb-4">{error}</p>
                         <Button onClick={fetchDonors} className="bg-red-600 hover:bg-red-700">
                             Try Again
@@ -215,7 +217,7 @@ const DonorWall = () => {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                                 </span>
-                                <span className="text-white/90 text-xs sm:text-sm font-medium">Wall of Gratitude</span>
+                                <span className="text-white/90 text-xs sm:text-sm font-medium">{t("donorWall.hero.badge")}</span>
                             </motion.div>
 
                             {/* Main Title */}
@@ -225,10 +227,10 @@ const DonorWall = () => {
                                 transition={{ duration: 0.7, delay: 0.1 }}
                                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight mb-6"
                             >
-                                Our
-                                <span className="block text-white/90">Generous</span>
+                                {t("donorWall.hero.titlePart1")}
+                                <span className="block text-white/90">{t("donorWall.hero.titlePart2")}</span>
                                 <span className="block relative">
-                                    <span className="relative z-10">Supporters</span>
+                                    <span className="relative z-10">{t("donorWall.hero.titlePart3")}</span>
                                     <motion.span
                                         initial={{ scaleX: 0 }}
                                         animate={{ scaleX: 1 }}
@@ -245,9 +247,8 @@ const DonorWall = () => {
                                 transition={{ duration: 0.6, delay: 0.3 }}
                                 className="text-lg sm:text-xl text-white/80 mb-8 max-w-md leading-relaxed"
                             >
-                                Celebrating the incredible individuals who make our mission possible —
-                                <span className="text-white font-semibold"> {uniqueDonors} donors</span> bringing hope to
-                                <span className="text-white font-semibold"> 2,500+ children</span>.
+                                {t("donorWall.hero.descPart1")}
+                                <span className="text-white font-semibold"> {uniqueDonors}{t("donorWall.hero.descPart2")}</span>{t("donorWall.hero.descPart3")}
                             </motion.p>
 
                             {/* Quick Stats - Inline */}
@@ -258,9 +259,9 @@ const DonorWall = () => {
                                 className="flex flex-wrap gap-6"
                             >
                                 {[
-                                    { value: formatAmount(totalDonations), label: "Raised" },
-                                    { value: `${uniqueDonors}`, label: "Donors" },
-                                    { value: "2,500+", label: "Lives" },
+                                    { value: formatAmount(totalDonations), label: t("donorWall.hero.statRaised") },
+                                    { value: `${uniqueDonors}`, label: t("donorWall.hero.statDonors") },
+                                    { value: "2,500+", label: t("donorWall.hero.statLives") },
                                 ].map((stat) => (
                                     <div key={stat.label} className="text-center">
                                         <div className="text-3xl sm:text-4xl font-black text-white">{stat.value}</div>
@@ -283,7 +284,7 @@ const DonorWall = () => {
                                 >
                                     <Link href={appendUTMToUrl("/donation#annadan-seva")}>
                                         <Heart className="w-3 h-3 mr-2 fill-[#FF7F2A] group-hover:scale-110 transition-transform" />
-                                        Donate
+                                        {t("donorWall.hero.donateButton")}
                                     </Link>
                                 </Button>
                             </motion.div>
@@ -311,11 +312,11 @@ const DonorWall = () => {
                                             className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center gap-4"
                                         >
                                             <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white`} style={{ backgroundColor: donor.avatarColor }}>
-                                                {donor.isAnonymous ? "?" : donor.fullName.charAt(0)}
+                                                {donor.isAnonymous ? t("donorWall.hero.avatarFallback") : donor.fullName.charAt(0)}
                                             </div>
                                             <div className="flex-1">
-                                                <div className="text-white font-semibold">{donor.isAnonymous ? "Anonymous" : donor.fullName}</div>
-                                                <div className="text-white/60 text-sm">{donor.showAmount ? formatAmount(donor.amount) : "Hidden"}</div>
+                                                <div className="text-white font-semibold">{donor.isAnonymous ? t("donorWall.hero.anonymous") : donor.fullName}</div>
+                                                <div className="text-white/60 text-sm">{donor.showAmount ? formatAmount(donor.amount) : t("donorWall.hero.hiddenAmount")}</div>
                                             </div>
                                             <div className={`px-3 py-1 rounded-full ${config.color} ${config.textColor} text-xs font-bold flex items-center gap-1`}>
                                                 <Icon className="w-3 h-3" />
@@ -339,7 +340,7 @@ const DonorWall = () => {
                                     </div>
                                     <div>
                                         <div className="text-2xl font-black text-foreground">{uniqueDonors}</div>
-                                        <div className="text-sm text-muted-foreground">Champions</div>
+                                        <div className="text-sm text-muted-foreground">{t("donorWall.hero.champions")}</div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -356,7 +357,7 @@ const DonorWall = () => {
                         transition={{ delay: 1 }}
                         className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                     >
-                        <span className="text-white/60 text-xs uppercase tracking-widest">Scroll to explore</span>
+                        <span className="text-white/60 text-xs uppercase tracking-widest">{t("donorWall.hero.scrollToExplore")}</span>
                         <motion.div
                             animate={{ y: [0, 8, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5 }}
@@ -389,9 +390,9 @@ const DonorWall = () => {
                                     className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full ${config.color} ${config.textColor} font-semibold text-xs sm:text-sm shadow-md cursor-default`}
                                 >
                                     <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                                    <span>{config.label}</span>
+                                    <span>{t(`donorWall.tier.${key}`)}</span>
                                     <span className="text-[10px] sm:text-xs opacity-75">
-                                        {config.minAmount > 0 ? `₹${config.minAmount.toLocaleString()}+` : "Any"}
+                                        {config.minAmount > 0 ? `₹${config.minAmount.toLocaleString()}+` : t("donorWall.tier.any")}
                                     </span>
                                 </motion.div>
                             );
@@ -428,13 +429,13 @@ const DonorWall = () => {
                     >
                         <div className="inline-flex items-center gap-2 mb-4 px-5 py-2.5 bg-white/20 backdrop-blur-md rounded-full border border-white/30">
                             <Crown className="w-5 h-5 text-yellow-300" />
-                            <span className="text-white text-sm font-semibold">Featured Donor of the Month</span>
+                            <span className="text-white text-sm font-semibold">{t("donorWall.featured.badge")}</span>
                         </div>
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-3">
-                            Celebrating Excellence
+                            {t("donorWall.featured.heading")}
                         </h2>
                         <p className="text-white/80 max-w-xl mx-auto">
-                            Honoring those who go above and beyond in their generosity
+                            {t("donorWall.featured.subheading")}
                         </p>
                     </motion.div>
 
@@ -450,7 +451,7 @@ const DonorWall = () => {
                         <div className="flex justify-center mb-[-20px] relative z-30">
                             <div className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white px-6 py-2.5 rounded-full shadow-lg flex items-center gap-2">
                                 <Crown className="w-5 h-5" />
-                                <span className="font-bold text-sm">Donor of the Month</span>
+                                <span className="font-bold text-sm">{t("donorWall.featured.crownBadge")}</span>
                             </div>
                         </div>
 
@@ -473,7 +474,7 @@ const DonorWall = () => {
                                                     }}
                                                 />
                                                 <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full flex items-center justify-center text-4xl sm:text-5xl font-black text-white shadow-2xl ring-4 ring-white" style={{ backgroundColor: donors[0].avatarColor }}>
-                                                    {donors[0].isAnonymous ? "?" : donors[0].fullName.charAt(0)}
+                                                    {donors[0].isAnonymous ? t("donorWall.hero.avatarFallback") : donors[0].fullName.charAt(0)}
                                                 </div>
 
                                                 {/* Static Stars */}
@@ -483,10 +484,10 @@ const DonorWall = () => {
                                             </div>
 
                                             <div className="mt-5 text-center">
-                                                <h3 className="text-xl sm:text-2xl font-black text-foreground">{donors[0].isAnonymous ? "Anonymous Donor" : donors[0].fullName}</h3>
+                                                <h3 className="text-xl sm:text-2xl font-black text-foreground">{donors[0].isAnonymous ? t("donorWall.featured.anonymousDonor") : donors[0].fullName}</h3>
                                                 <div className="flex items-center justify-center gap-1.5 mt-1">
                                                     <Crown className="w-4 h-4 text-amber-500" />
-                                                    <span className="text-amber-600 font-semibold text-sm">{tierConfig[tierMap[donors[0].tier] || "supporter"].label} Champion</span>
+                                                    <span className="text-amber-600 font-semibold text-sm">{t(`donorWall.tier.${tierMap[donors[0].tier] || "supporter"}`)}{t("donorWall.tier.championSuffix")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -495,9 +496,9 @@ const DonorWall = () => {
                                         <div className="md:col-span-2 space-y-5">
                                             {/* Amount */}
                                             <div>
-                                                <div className="text-sm text-muted-foreground font-medium mb-1">Total Contribution</div>
+                                                <div className="text-sm text-muted-foreground font-medium mb-1">{t("donorWall.featured.totalContribution")}</div>
                                                 <div className="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                                                    {donors[0].showAmount ? formatAmount(donors[0].amount) : "Hidden"}
+                                                    {donors[0].showAmount ? formatAmount(donors[0].amount) : t("donorWall.hero.hiddenAmount")}
                                                 </div>
                                             </div>
 
@@ -509,7 +510,7 @@ const DonorWall = () => {
                                                             <Heart className="w-5 h-5 text-primary" />
                                                         </div>
                                                         <div>
-                                                            <div className="text-sm text-muted-foreground font-medium mb-1">Their Message</div>
+                                                            <div className="text-sm text-muted-foreground font-medium mb-1">{t("donorWall.featured.theirMessage")}</div>
                                                             <p className="text-foreground italic text-base sm:text-lg">"{donors[0].message}"</p>
                                                         </div>
                                                     </div>
@@ -520,17 +521,17 @@ const DonorWall = () => {
                                             <div className="grid grid-cols-3 gap-3 sm:gap-4">
                                                 <div className="text-center p-3 bg-primary/5 rounded-xl border border-primary/10">
                                                     <div className="text-xl sm:text-2xl font-bold text-primary">1</div>
-                                                    <div className="text-xs text-muted-foreground">Campaign</div>
+                                                    <div className="text-xs text-muted-foreground">{t("donorWall.featured.campaign")}</div>
                                                 </div>
                                                 <div className="text-center p-3 bg-accent/10 rounded-xl border border-accent/10">
                                                     <div className="text-xl sm:text-2xl font-bold text-accent">
                                                         {new Date().getMonth() - new Date(donors[0].donationDate).getMonth() + 1}
                                                     </div>
-                                                    <div className="text-xs text-muted-foreground">Months Active</div>
+                                                    <div className="text-xs text-muted-foreground">{t("donorWall.featured.monthsActive")}</div>
                                                 </div>
                                                 <div className="text-center p-3 bg-amber-50 rounded-xl border border-amber-200/50">
                                                     <div className="text-xl sm:text-2xl font-bold text-amber-600">∞</div>
-                                                    <div className="text-xs text-muted-foreground">Lives Changed</div>
+                                                    <div className="text-xs text-muted-foreground">{t("donorWall.featured.livesChanged")}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -580,13 +581,13 @@ const DonorWall = () => {
                                 className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-primary/10 backdrop-blur-md rounded-full border border-primary/20"
                             >
                                 <Sparkles className="w-4 h-4 text-primary" />
-                                <span className="text-primary text-sm font-medium">Our Generous Donors</span>
+                                <span className="text-primary text-sm font-medium">{t("donorWall.grid.heading")}</span>
                             </motion.div>
                             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground mb-4">
-                                Wall of <span className="text-primary">Champions</span>
+                                {t("donorWall.grid.wallOfPart1")}<span className="text-primary">{t("donorWall.grid.wallOfPart2")}</span>
                             </h2>
                             <p className="text-muted-foreground max-w-2xl mx-auto">
-                                Every donor here has made a lasting impact on the lives of underprivileged children.
+                                {t("donorWall.grid.subheading")}
                             </p>
                         </motion.div>
 
@@ -602,7 +603,7 @@ const DonorWall = () => {
                                 <div className="flex-1 w-full sm:max-w-md">
                                     <input
                                         type="text"
-                                        placeholder="Search donors or campaigns..."
+                                        placeholder={t("donorWall.grid.searchPlaceholder")}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="w-full h-12 bg-white/80 border-2 border-primary/20 focus:border-primary rounded-xl px-4 text-base outline-none"
@@ -617,12 +618,12 @@ const DonorWall = () => {
                                         onChange={(e) => setTierFilter(e.target.value)}
                                         className="w-[150px] h-12 bg-white/80 border-2 border-primary/20 rounded-xl px-3 cursor-pointer"
                                     >
-                                        <option value="all">All Tiers</option>
-                                        <option value="platinum">Platinum</option>
-                                        <option value="gold">Gold</option>
-                                        <option value="silver">Silver</option>
-                                        <option value="bronze">Bronze</option>
-                                        <option value="supporter">Supporter</option>
+                                        <option value="all">{t("donorWall.grid.allTiers")}</option>
+                                        <option value="platinum">{t("donorWall.tier.platinum")}</option>
+                                        <option value="gold">{t("donorWall.tier.gold")}</option>
+                                        <option value="silver">{t("donorWall.tier.silver")}</option>
+                                        <option value="bronze">{t("donorWall.tier.bronze")}</option>
+                                        <option value="supporter">{t("donorWall.tier.supporter")}</option>
                                     </select>
 
                                     {/* Sort */}
@@ -631,9 +632,9 @@ const DonorWall = () => {
                                         onChange={(e) => setSortBy(e.target.value)}
                                         className="w-[150px] h-12 bg-white/80 border-2 border-primary/20 rounded-xl px-3 cursor-pointer"
                                     >
-                                        <option value="amount">Highest Amount</option>
-                                        <option value="date">Most Recent</option>
-                                        <option value="name">Name A-Z</option>
+                                        <option value="amount">{t("donorWall.sort.highestAmount")}</option>
+                                        <option value="date">{t("donorWall.sort.mostRecent")}</option>
+                                        <option value="name">{t("donorWall.sort.nameAZ")}</option>
                                     </select>
 
                                 </div>
@@ -701,16 +702,16 @@ const DonorWall = () => {
                                                         whileHover={{ scale: 1.15, rotate: 5 }}
                                                         transition={{ type: "spring", stiffness: 300 }}
                                                     >
-                                                        {donor.isAnonymous ? "?" : donor.fullName.charAt(0)}
+                                                        {donor.isAnonymous ? t("donorWall.hero.avatarFallback") : donor.fullName.charAt(0)}
                                                     </motion.div>
 
                                                     {/* Name & Amount */}
                                                     <div className="text-center">
                                                         <h3 className="font-bold text-foreground text-lg mb-1.5">
-                                                            {donor.isAnonymous ? "Anonymous Donor" : donor.fullName}
+                                                            {donor.isAnonymous ? t("donorWall.featured.anonymousDonor") : donor.fullName}
                                                         </h3>
                                                         <div className="text-2xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3">
-                                                            {donor.showAmount ? formatAmount(donor.amount) : "Hidden"}
+                                                            {donor.showAmount ? formatAmount(donor.amount) : t("donorWall.hero.hiddenAmount")}
                                                         </div>
 
                                                         {/* Campaign */}
@@ -754,8 +755,8 @@ const DonorWall = () => {
                                 <div className="w-24 h-24 mx-auto mb-6 bg-white/60 backdrop-blur-xl rounded-full flex items-center justify-center shadow-lg border border-primary/20">
                                     <Search className="w-10 h-10 text-primary/50" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-foreground mb-3">No donors found</h3>
-                                <p className="text-muted-foreground text-lg">Try adjusting your search or filters</p>
+                                <h3 className="text-2xl font-bold text-foreground mb-3">{t("donorWall.grid.noDonorsFound")}</h3>
+                                <p className="text-muted-foreground text-lg">{t("donorWall.grid.adjustFilters")}</p>
                             </motion.div>
                         )}
                     </div>
@@ -798,7 +799,7 @@ const DonorWall = () => {
                             transition={{ delay: 0.3 }}
                             className="text-2xl sm:text-3xl font-extrabold text-white mb-4"
                         >
-                            Join Our Wall of Champions
+                            {t("donorWall.cta.heading")}
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -807,7 +808,7 @@ const DonorWall = () => {
                             transition={{ delay: 0.4 }}
                             className="text-white/90 mb-8 max-w-xl mx-auto"
                         >
-                            Your name could be here too! Every donation makes a difference in the lives of underprivileged children.
+                            {t("donorWall.cta.description")}
                         </motion.p>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -838,7 +839,7 @@ const DonorWall = () => {
   "
                             >
                                 <Heart className="w-5 h-5 mr-2" />
-                                Make a Donation
+                                {t("donorWall.cta.button")}
                             </Link>
 
                         </motion.div>
