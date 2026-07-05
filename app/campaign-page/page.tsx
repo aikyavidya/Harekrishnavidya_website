@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Heart, TrendingUp } from "lucide-react";
+import { useLanguage } from "../components/LanguageProvider";
 
 interface CampaignerCampaign {
   id: string;
@@ -24,6 +25,7 @@ interface CampaignerCampaign {
 }
 
 const CampaignerCampaigns = () => {
+  const { t } = useLanguage();
   const [campaigns, setCampaigns] = useState<CampaignerCampaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,14 +51,14 @@ const CampaignerCampaigns = () => {
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
           console.error("Failed to fetch campaigns:", res.status, errorData);
-          throw new Error(errorData.message || "Failed to fetch campaigns");
+          throw new Error(errorData.message || t("campaignPage.failedToFetch"));
         }
 
         const data = await res.json();
         setCampaigns(data);
       } catch (err) {
         console.error("Failed to fetch campaigns", err);
-        setError(err instanceof Error ? err.message : "Failed to fetch campaigns");
+        setError(err instanceof Error ? err.message : t("campaignPage.failedToFetch"));
       } finally {
         setLoading(false);
       }
@@ -74,7 +76,7 @@ const CampaignerCampaigns = () => {
       <div className="min-h-screen bg-gradient-to-b from-orange-50 via-background to-orange-50/30 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading campaigns...</p>
+          <p className="text-muted-foreground">{t("campaignPage.loading")}</p>
         </div>
       </div>
     );
@@ -84,8 +86,8 @@ const CampaignerCampaigns = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-orange-50 via-background to-orange-50/30 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-500 mb-4">Error: {error}</p>
-          <Button onClick={() => window.location.reload()}>Retry</Button>
+          <p className="text-red-500 mb-4">{t("campaignPage.errorPrefix")}{error}</p>
+          <Button onClick={() => window.location.reload()}>{t("campaignPage.retry")}</Button>
         </div>
       </div>
     );
@@ -112,20 +114,20 @@ const CampaignerCampaigns = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
                 <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              <p className="text-primary text-sm sm:text-base font-bold uppercase tracking-wider">Personal Fundraisers</p>
+              <p className="text-primary text-sm sm:text-base font-bold uppercase tracking-wider">{t("campaignPage.hero.badge")}</p>
             </div>
 
             <h1 className="text-5xl text-[#2D1B0F] sm:text-7xl md:text-8xl font-extrabold mb-8 text-foreground leading-[1.05] animate-fade-in tracking-tight" style={{ animationDelay: '100ms' }}>
-              Support a
+              {t("campaignPage.hero.headingPart1")}
               <span className="block mt-3">
                 <span className="text-gradient bg-gradient-to-b from-[#FF7F2A] to-[#F96D2F] bg-clip-text text-transparent">
-                  Campaigner&apos;s Mission
+                  {t("campaignPage.hero.headingPart2")}
                 </span>
               </span>
             </h1>
 
             <p className="text-xl sm:text-2xl md:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed animate-fade-in font-medium" style={{ animationDelay: '200ms' }}>
-              Individuals making a difference in their communities. <span className="text-primary font-semibold">Support their personal initiatives</span> and help them reach their goals.
+              {t("campaignPage.hero.descPart1")}<span className="text-primary font-semibold">{t("campaignPage.hero.descPart2")}</span>{t("campaignPage.hero.descPart3")}
             </p>
           </div>
         </div>
@@ -187,15 +189,15 @@ const CampaignerCampaigns = () => {
                     <div>
                       <div className="flex justify-between text-sm mb-2">
                         <span className="font-bold text-primary">
-                          ₹{(campaign.raisedAmount / 1000).toFixed(0)}K raised
+                          ₹{(campaign.raisedAmount / 1000).toFixed(0)}K{t("campaignPage.card.raisedSuffix")}
                         </span>
                         <span className="font-semibold text-muted-foreground">
-                          of ₹{(campaign.targetAmount / 1000).toFixed(0)}K
+                          {t("campaignPage.card.ofPrefix")}₹{(campaign.targetAmount / 1000).toFixed(0)}K
                         </span>
                       </div>
                       <Progress value={calculateProgress(campaign.raisedAmount, campaign.targetAmount)} className="h-2.5" />
                       <div className="text-xs text-muted-foreground mt-1.5 font-medium">
-                        {calculateProgress(campaign.raisedAmount, campaign.targetAmount).toFixed(0)}% funded • {campaign.supporters} supporters
+                        {calculateProgress(campaign.raisedAmount, campaign.targetAmount).toFixed(0)}{t("campaignPage.card.fundedSeparator")}{campaign.supporters}{t("campaignPage.card.supportersSuffix")}
                       </div>
                     </div>
 
@@ -204,7 +206,7 @@ const CampaignerCampaigns = () => {
                       asChild
                     >
                       <Link href={`/support-compaign?id=${campaign.id}`} className="w-full">
-                        Support Campaign
+                        {t("campaignPage.card.supportButton")}
                       </Link>
                     </Button>
                   </div>
@@ -230,10 +232,10 @@ const CampaignerCampaigns = () => {
             <TrendingUp className="w-10 h-10 text-white" />
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
-            Start Your Own Campaign
+            {t("campaignPage.cta.heading")}
           </h2>
           <p className="text-xl md:text-2xl text-white/95 mb-10 leading-relaxed max-w-2xl mx-auto font-medium">
-            Have a cause close to your heart? Create your personal fundraising campaign and rally support from your community.
+            {t("campaignPage.cta.description")}
           </p>
           <div
             className="
@@ -255,7 +257,7 @@ const CampaignerCampaigns = () => {
   "
           >
             <Link href="/donation-kit/general-support">
-              Get Started Today
+              {t("campaignPage.cta.button")}
             </Link>
           </div>
 
