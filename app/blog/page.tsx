@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Calendar } from "lucide-react";
+import { useLanguage } from "../components/LanguageProvider";
 
 // Types
 interface BlogPost {
@@ -116,8 +117,8 @@ const BlogPostCard = ({
   );
 };
 
-// Main Blog Component
 const BlogSystem: React.FC = () => {
+  const { t } = useLanguage();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const router = useRouter();
 
@@ -152,12 +153,10 @@ const BlogSystem: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-3xl lg:text-5xl font-bold text-blue-900 mb-6">
-            Spiritual <span className="text-orange-500">Insights</span>
+            {t("blog.hero.headingPart1")} <span className="text-orange-500">{t("blog.hero.headingPart2")}</span>
           </h1>
           <p className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
-            Discover ancient wisdom for modern living through festivals,
-            philosophy, service, and spiritual practices that transform hearts
-            and minds.
+            {t("blog.hero.description")}
           </p>
         </div>
 
@@ -185,7 +184,7 @@ const BlogSystem: React.FC = () => {
         <section>
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-blue-900">
-              Latest Articles
+              {t("blog.listing.heading")}
             </h2>
           </div>
 
