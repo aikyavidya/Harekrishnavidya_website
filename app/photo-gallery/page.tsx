@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useLanguage } from "../components/LanguageProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,13 +39,7 @@ const categoryMap: Record<string, "education" | "event" | "celebration" | "volun
   "Other": "event"
 };
 
-const categoryConfig = {
-  education: { label: "Education", color: "bg-green-500" },
-  event: { label: "Event", color: "bg-blue-500" },
-  celebration: { label: "Celebration", color: "bg-purple-500" },
-  volunteer: { label: "Volunteer", color: "bg-amber-500" },
-  campaign: { label: "Campaign", color: "bg-primary" },
-};
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -98,11 +93,20 @@ const statCardVariants = {
 };
 
 const PhotoGallery = () => {
+  const { t } = useLanguage();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>("all");
+
+  const categoryConfig = {
+    education: { label: t("photoGallery.filter.education"), color: "bg-green-500" },
+    event: { label: t("photoGallery.filter.event"), color: "bg-blue-500" },
+    celebration: { label: t("photoGallery.filter.celebration"), color: "bg-purple-500" },
+    volunteer: { label: t("photoGallery.filter.volunteer"), color: "bg-amber-500" },
+    campaign: { label: t("photoGallery.filter.campaign"), color: "bg-primary" },
+  };
 
   // Fetch photos from API
   const fetchPhotos = async () => {
@@ -118,7 +122,7 @@ const PhotoGallery = () => {
       setPhotos(result.data || []);
     } catch (err) {
       console.error("Error fetching photos:", err);
-      setError("Failed to load photos. Please try again later.");
+      setError(t("photoGallery.failedMessage"));
       setPhotos([]);
     } finally {
       setLoading(false);
@@ -173,12 +177,12 @@ const PhotoGallery = () => {
   };
 
   const filterButtons = [
-    { id: "all", label: "All Photos", icon: LayoutGrid, count: photos.length },
-    { id: "education", label: "Education", icon: GraduationCap, count: photos.filter(p => categoryMap[p.category] === "education").length },
-    { id: "event", label: "Events", icon: Calendar, count: photos.filter(p => categoryMap[p.category] === "event").length },
-    { id: "celebration", label: "Celebrations", icon: PartyPopper, count: photos.filter(p => categoryMap[p.category] === "celebration").length },
-    { id: "volunteer", label: "Volunteers", icon: HandHeart, count: photos.filter(p => categoryMap[p.category] === "volunteer").length },
-    { id: "campaign", label: "Campaigns", icon: Target, count: photos.filter(p => categoryMap[p.category] === "campaign").length },
+    { id: "all", label: t("photoGallery.filter.allPhotos"), shortLabel: t("photoGallery.filter.allShort"), icon: LayoutGrid, count: photos.length },
+    { id: "education", label: t("photoGallery.filter.education"), shortLabel: t("photoGallery.filter.educationShort"), icon: GraduationCap, count: photos.filter(p => categoryMap[p.category] === "education").length },
+    { id: "event", label: t("photoGallery.filter.eventsLabel"), shortLabel: t("photoGallery.filter.eventShort"), icon: Calendar, count: photos.filter(p => categoryMap[p.category] === "event").length },
+    { id: "celebration", label: t("photoGallery.filter.celebrationsLabel"), shortLabel: t("photoGallery.filter.celebrationShort"), icon: PartyPopper, count: photos.filter(p => categoryMap[p.category] === "celebration").length },
+    { id: "volunteer", label: t("photoGallery.filter.volunteersLabel"), shortLabel: t("photoGallery.filter.volunteerShort"), icon: HandHeart, count: photos.filter(p => categoryMap[p.category] === "volunteer").length },
+    { id: "campaign", label: t("photoGallery.filter.campaignsLabel"), shortLabel: t("photoGallery.filter.campaignShort"), icon: Target, count: photos.filter(p => categoryMap[p.category] === "campaign").length },
   ];
 
   return (
@@ -188,7 +192,7 @@ const PhotoGallery = () => {
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-primary mb-4"></div>
-            <p className="text-lg font-medium text-foreground">Loading photos...</p>
+            <p className="text-lg font-medium text-foreground">{t("photoGallery.loading")}</p>
           </div>
         </div>
       )}
@@ -198,10 +202,10 @@ const PhotoGallery = () => {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
             <Camera className="w-12 h-12 text-red-500 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-red-800 mb-2">Failed to Load Photos</h3>
+            <h3 className="text-xl font-bold text-red-800 mb-2">{t("photoGallery.failedTitle")}</h3>
             <p className="text-red-600 mb-4">{error}</p>
             <Button onClick={fetchPhotos} className="bg-red-600 hover:bg-red-700">
-              Try Again
+              {t("photoGallery.tryAgain")}
             </Button>
           </div>
         </div>
@@ -245,7 +249,7 @@ const PhotoGallery = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                 </span>
-                <span className="text-white/90 text-xs sm:text-sm font-medium">Capturing Stories of Impact</span>
+                <span className="text-white/90 text-xs sm:text-sm font-medium">{t("photoGallery.hero.badge")}</span>
               </motion.div>
 
               {/* Main Title */}
@@ -255,10 +259,10 @@ const PhotoGallery = () => {
                 transition={{ duration: 0.7, delay: 0.1 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight mb-6"
               >
-                Our
-                <span className="block text-white/90">Photo</span>
+                {t("photoGallery.hero.titlePart1")}
+                <span className="block text-white/90">{t("photoGallery.hero.titlePart2")}</span>
                 <span className="block relative">
-                  <span className="relative z-10">Gallery</span>
+                  <span className="relative z-10">{t("photoGallery.hero.titlePart3")}</span>
                   <motion.span
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
@@ -275,9 +279,9 @@ const PhotoGallery = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-lg sm:text-xl text-white/80 mb-8 max-w-md leading-relaxed"
               >
-                Every frame captures a moment of transformation —
-                <span className="text-white font-semibold"> 2,500+ children</span> finding hope across
-                <span className="text-white font-semibold"> 108 villages</span>.
+                {t("photoGallery.hero.descPart1")}
+                <span className="text-white font-semibold">{t("photoGallery.hero.descPart2")}</span>{t("photoGallery.hero.descPart3")}
+                <span className="text-white font-semibold">{t("photoGallery.hero.descPart4")}</span>.
               </motion.p>
 
               {/* Quick Stats - Inline */}
@@ -288,9 +292,9 @@ const PhotoGallery = () => {
                 className="flex flex-wrap gap-6"
               >
                 {[
-                  { value: `${photos.length}+`, label: "Photos" },
-                  { value: "100+", label: "Events" },
-                  { value: "5+", label: "Years" },
+                  { value: `${photos.length}+`, label: t("photoGallery.hero.statPhotos") },
+                  { value: "100+", label: t("photoGallery.hero.statEvents") },
+                  { value: "5+", label: t("photoGallery.hero.statYears") },
                 ].map((stat, index) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-3xl sm:text-4xl font-black text-white">{stat.value}</div>
@@ -313,7 +317,7 @@ const PhotoGallery = () => {
                 >
                   <Link href={"/donation#annadan-seva"}>
                     <Heart className="w-3 h-3 mr-2 fill-[#FF7F2A] group-hover:scale-110 transition-transform" />
-                    Donate
+                    {t("photoGallery.hero.donateButton")}
                   </Link>
                 </Button>
               </motion.div>
@@ -360,7 +364,7 @@ const PhotoGallery = () => {
                   </div>
                   <div>
                     <div className="text-2xl font-black text-foreground">{photos.length}+</div>
-                    <div className="text-sm text-muted-foreground">Memories Captured</div>
+                    <div className="text-sm text-muted-foreground">{t("photoGallery.hero.memoriesCaptured")}</div>
                   </div>
                 </div>
               </motion.div>
@@ -377,7 +381,7 @@ const PhotoGallery = () => {
             transition={{ delay: 1 }}
             className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           >
-            <span className="text-white/60 text-xs uppercase tracking-widest">Scroll to explore</span>
+            <span className="text-white/60 text-xs uppercase tracking-widest">{t("photoGallery.hero.scrollToExplore")}</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
@@ -418,7 +422,7 @@ const PhotoGallery = () => {
               >
                 <filter.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">{filter.label}</span>
-                <span className="sm:hidden">{filter.id === "all" ? "All" : filter.label.split(" ")[0]}</span>
+                <span className="sm:hidden">{filter.shortLabel}</span>
                 <span className={`
                   px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold
                   ${activeFilter === filter.id
@@ -489,7 +493,7 @@ const PhotoGallery = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <Camera className="w-3 h-3" />
-                          {photo.viewCount} views
+                          {photo.viewCount}{t("videoGallery.grid.viewsSuffix")}
                         </span>
                       </div>
                     </div>
@@ -587,7 +591,7 @@ const PhotoGallery = () => {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Camera className="w-4 h-4" />
-                    {filteredPhotos[selectedPhoto].viewCount} views
+                    {filteredPhotos[selectedPhoto].viewCount}{t("videoGallery.grid.viewsSuffix")}
                   </span>
                 </div>
                 <p className="text-white/40 text-xs mt-3">{selectedPhoto + 1} / {filteredPhotos.length}</p>
