@@ -1,5 +1,6 @@
 "use client";
 import { useState, Suspense, useEffect } from "react";
+import { useLanguage } from "../components/LanguageProvider";
 import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 // import Image from 'next/image';
@@ -134,6 +135,32 @@ function DonatePageLoading() {
 }
 
 function DonatePageContent() {
+  const { t, language } = useLanguage();
+
+  const resolvePurposeDisplay = (purpose: string | null, lang: string) => {
+    if (!purpose) return purpose;
+    if (lang !== "te") return purpose;
+    const plower = purpose.trim().toLowerCase();
+    
+    if (plower === "annadan seva - any amount") return "అన్నదాన సేవ - ఏదైనా మొత్తం";
+    if (plower === "food & health - any amount") return "ఆహారం & ఆరోగ్యం - ఏదైనా మొత్తం";
+    if (plower === "education - any amount") return "విద్య - ఏదైనా మొత్తం";
+    if (plower === "sponsor education of 1 entire village for 1 month") return "1 నెల పాటు మొత్తం గ్రామం విద్యను స్పాన్సర్ చేయండి";
+    if (plower === "sponsor education of 1 entire village for 1 whole year") return "1 పూర్తి సంవత్సరం పాటు మొత్తం గ్రామం విద్యను స్పాన్సర్ చేయండి";
+    
+    const feedMatch = plower.match(/^feed (\d+) children$/);
+    if (feedMatch) return feedMatch[1] + " మంది పిల్లలకు ఆహారం అందించండి";
+    
+    const sponsorFoodEdMatch = plower.match(/^sponsor (\d+) child(ren)? - food and education$/);
+    if (sponsorFoodEdMatch) return sponsorFoodEdMatch[1] + " మంది పిల్లలకు స్పాన్సర్ చేయండి - ఆహారం మరియు విద్య";
+    
+    const sponsorEdMatch = plower.match(/^sponsor (\d+) children education$/);
+    if (sponsorEdMatch) return sponsorEdMatch[1] + " మంది పిల్లల విద్యకు స్పాన్సర్ చేయండి";
+    
+    console.warn("Unmapped purpose value for display translation:", purpose);
+    return purpose;
+  };
+
   const searchParams = useSearchParams();
   const purpose = searchParams.get("purpose");
   const amount = searchParams.get("amount");
@@ -436,13 +463,8 @@ function DonatePageContent() {
     } else if (formData.fullName.trim().length < 4) {
       newErrors.fullName = "Full name must be at least 4 characters";
     }
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-    if (!formData.areaOfStay.trim()) {
-      newErrors.areaOfStay = "Area of Stay is required";
+    if (formData.email.trim() && !validateEmail(formData.email)) {
+      newErrors.email = "Invalid Email ID";
     }
 
     if (!formData.phoneNumber || formData.phoneNumber === 0) {
@@ -474,14 +496,14 @@ function DonatePageContent() {
     // Validate address fields if Maha Prasadam OR 80G is selected
     if (formData.wantsMahaPrasadam || formData.wants80G) {
       if (!formData.houseApartment.trim()) {
-        newErrors.houseApartment = "Address Line 1 is required";
+        newErrors.houseApartment = "Address is required";
       } else if (formData.houseApartment.trim().length < 5) {
-        newErrors.houseApartment = "Address Line 1 must be at least 5 characters";
+        newErrors.houseApartment = "Address must be at least 5 characters";
       }
       if (!formData.address.trim()) {
-        newErrors.address = "Address Line 2 is required";
+        newErrors.address = "Street / Area / Locality is required";
       } else if (formData.address.trim().length < 5) {
-        newErrors.address = "Address Line 2 must be at least 5 characters";
+        newErrors.address = "Street / Area / Locality must be at least 5 characters";
       }
       if (!formData.village.trim()) {
         newErrors.village = "City/Village is required";
@@ -497,9 +519,9 @@ function DonatePageContent() {
         newErrors.state = "Please select a State / UT";
       }
       if (!formData.pinCode.trim()) {
-        newErrors.pinCode = "PIN code is required";
+        newErrors.pinCode = "PIN Code is required";
       } else if (!/^\d{6}$/.test(formData.pinCode)) {
-        newErrors.pinCode = "PIN code must be 6 digits";
+        newErrors.pinCode = "PIN Code must be exactly 6 digits";
       }
       if (!formData.locality.trim()) {
         newErrors.locality = "Locality/Area is required";
@@ -526,7 +548,7 @@ function DonatePageContent() {
       } else {
         // Validate PAN if 80G is selected and amount is valid
         if (!formData.panNumber.trim()) {
-          newErrors.panNumber = "PAN number is required for 80G tax exemption";
+          newErrors.panNumber = "PAN Number is required for 80G Tax Exemption";
         } else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber.toUpperCase())) {
           newErrors.panNumber = "Please enter a valid PAN number (e.g., ABCDE1234F)";
         }
@@ -905,7 +927,7 @@ function DonatePageContent() {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const errorFieldIds = [
-            'customAmount', 'fullName', 'phoneNumber', 'email', 'areaOfStay',
+            'customAmount', 'fullName', 'phoneNumber', 'email',
             'citizenType', 'houseApartment', 'village', 'district',
             'state', 'pinCode', 'panNumber', 'locality', 'country'
           ];
@@ -941,7 +963,7 @@ function DonatePageContent() {
         sevaType: getSevaType(purpose),
         sevaAmount: finalAmount,
         donorName: formData.fullName,
-        donorEmail: formData.email,
+        donorEmail: formData.email.trim() || "anonymous@harekrishnavidya.org",
         donorPhone: formatPhoneNumber(formData.phoneNumber, formData.citizenType as 'indian' | 'foreign'),
         donorType: formData.citizenType === "indian" ? "Indian Citizen" : "Foreign Citizen",
         description: `Donation for ${purpose || "General Donation"}`,
@@ -1030,17 +1052,17 @@ function DonatePageContent() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
               {/* SEVA NAME */}
               <div className="py-2 md:py-0">
-                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">SEVA NAME</p>
-                <p className="font-bold text-gray-900">{purpose || "General Donation"}</p>
+                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">{"SEVA NAME"}</p>
+                <p className="font-bold text-gray-900">{resolvePurposeDisplay(purpose, language) || "General Donation"}</p>
               </div>
               {/* SEVA TYPE */}
               <div className="py-2 md:py-0">
-                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">SEVA TYPE</p>
-                <p className="font-bold text-gray-900">{sevaType}</p>
+                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">{"SEVA TYPE"}</p>
+                <p className="font-bold text-gray-900">{resolvePurposeDisplay(sevaType, language)}</p>
               </div>
               {/* SEVA AMOUNT */}
               <div className="py-2 md:py-0">
-                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">SEVA AMOUNT</p>
+                <p className="text-xs font-semibold text-gray-500 tracking-wider mb-1">{"SEVA AMOUNT"}</p>
                 <p className="font-bold text-[#D32F2F] text-xl">
                   {isAnyAmountDonation
                     ? `₹ ${formatAmount(formData.customAmount ?? '0')}`
@@ -1142,7 +1164,7 @@ function DonatePageContent() {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    placeholder="Your Name"
+                    placeholder={"Your Name"}
                     required={true}
                     className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.fullName ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                   />
@@ -1166,7 +1188,7 @@ function DonatePageContent() {
                     name="phoneNumber"
                     value={formData.phoneNumber === 0 ? "" : formData.phoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Your Phone Number"
+                    placeholder={"Your Phone Number"}
                     min={1000000000}
                     max={9999999999}
                     required={true}
@@ -1184,7 +1206,7 @@ function DonatePageContent() {
               {/* Email */}
               <div>
                 <label className="block text-sm font-bold text-black mb-1">
-                  E-Mail ID<span className="text-red-600">*</span>
+                  E-Mail ID
                 </label>
                 <div className="relative">
                   <input
@@ -1192,8 +1214,8 @@ function DonatePageContent() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    required={true}
-                    placeholder="Your Email"
+                    required={false}
+                    placeholder={"Your Email"}
                     className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.email ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
                   />
                   {errors.email && (
@@ -1205,29 +1227,6 @@ function DonatePageContent() {
                 )}
               </div>
 
-              {/* Area of Stay */}
-              <div>
-                <label className="block text-sm font-bold text-black mb-1">
-                  Area of Stay<span className="text-red-600">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="areaOfStay"
-                    value={formData.areaOfStay}
-                    onChange={handleInputChange}
-                    required={true}
-                    placeholder="Your city or area"
-                    className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.areaOfStay ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
-                  />
-                  {errors.areaOfStay && (
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#D32F2F] bg-white text-[#D32F2F] text-xs font-bold pointer-events-none">!</span>
-                  )}
-                </div>
-                {errors.areaOfStay && (
-                  <p className="text-red-600 text-sm mt-1">{errors.areaOfStay}</p>
-                )}
-              </div>
             </div>
 
             {/* Payment Option */}
@@ -1244,9 +1243,7 @@ function DonatePageContent() {
                     checked={formData.citizenType === "indian"}
                     onChange={handleInputChange}
                     className="accent-blue-700"
-                  />
-                  Indian Citizen
-                </label>
+                  />Indian Citizen</label>
                 <label className="flex items-center gap-1">
                   <input
                     type="radio"
@@ -1255,9 +1252,7 @@ function DonatePageContent() {
                     checked={formData.citizenType === "foreign"}
                     onChange={handleInputChange}
                     className="accent-blue-700"
-                  />
-                  Foreign Citizen
-                </label>
+                  />Foreign Citizen</label>
               </div>
               {errors.citizenType && (
                 <p className="text-red-600 text-sm mt-1">{errors.citizenType}</p>
@@ -1277,10 +1272,10 @@ function DonatePageContent() {
                     className="accent-blue-700 mt-1 disabled:cursor-not-allowed"
                   />
                   <span>
-                    I would like to receive Maha Prasadam (Only within India)
+                    I wish to receive Maha Prasadam
                     {isMahaPrasadamDisabled && (
                       <p className="text-[11px] text-red-600 font-semibold mt-1">
-                        ⚠️ Maha Prasadam is available only for donations of ₹300 or above.
+                        Maha Prasadam is available only for donations of ₹500 or above
                       </p>
                     )}
                   </span>
@@ -1299,14 +1294,11 @@ function DonatePageContent() {
                   I wish to receive 80G Tax Exemption
                   {is80GDisabled && (
                     <p className="text-[11px] text-red-600 font-semibold mt-1">
-                      ⚠️ 80G Tax Exemption is available only for donations of ₹500 or above.
+                      80G Tax Exemption is available only for donations of ₹500 or above
                     </p>
                   )}
                   <p className="text-[11px] text-black font-semibold mt-1">
-                    Finance Act 2021 has made it mandatory to upload the details
-                    of donations collected by all those organisations collecting
-                    donations which qualify for 80G deduction in Form No. 10BD.
-                    The PAN and Address are mandatory details to be uploaded.
+                    (As per Finance Act 80G)
                   </p>
                 </span>
               </label>
@@ -1316,7 +1308,7 @@ function DonatePageContent() {
             {((formData.wantsMahaPrasadam && formData.citizenType === "indian") || formData.wants80G) && (
               <div className="mt-6 p-4 rounded-lg">
                 <h3 className="text-lg font-semibold text-blue-900 mb-4 text-center">
-                  📍 Address
+                  Address Details
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
 
@@ -1348,7 +1340,7 @@ function DonatePageContent() {
                   {/* Address Line 1 */}
                   <div>
                     <label className="block text-sm font-bold text-black mb-1">
-                      Address Line 1<span className="text-red-600">*</span>
+                      House / Apartment / Building No.<span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -1373,7 +1365,7 @@ function DonatePageContent() {
                   {/* Address Line 2 */}
                   <div>
                     <label className="block text-sm font-bold text-black mb-1">
-                      Address Line 2<span className="text-red-600">*</span>
+                      Street / Area / Locality<span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -1407,7 +1399,7 @@ function DonatePageContent() {
                         name="pinCode"
                         value={formData.pinCode}
                         onChange={handleInputChange}
-                        placeholder="6-digit PIN code"
+                        placeholder={"Enter 6-digit PIN code"}
                         maxLength={6}
                         required={formData.wantsMahaPrasadam || formData.wants80G}
                         className={`w-full px-4 py-2 rounded-md border focus:outline-none bg-white ${errors.pinCode ? 'border-2 border-[#D32F2F] pr-8' : 'border-gray-300'}`}
@@ -1435,7 +1427,7 @@ function DonatePageContent() {
                               value=""
                               disabled
                               readOnly
-                              placeholder="Enter PIN code first"
+                              placeholder={"Enter PIN code first"}
                               className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none bg-white text-gray-400 cursor-not-allowed"
                             />
                           ) : (
