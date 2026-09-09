@@ -12,7 +12,7 @@ const WhatsAppButton = () => {
 
   const handleSend = () => {
     if (message.trim() !== "") {
-      const url = `https://wa.me/918328389862?text=${encodeURIComponent(
+      const url = `https://wa.me/918019397108?text=${encodeURIComponent(
         message
       )}`;
       window.open(url, "_blank");
@@ -38,7 +38,7 @@ const WhatsAppButton = () => {
     <div className="fixed bottom-4 lg:bottom-10 left-1 lg:left-4 z-50 flex flex-col items-end ">
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.9, originY: 1, originX: 0 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -64,7 +64,7 @@ const WhatsAppButton = () => {
               <div className="text-center text-xs text-gray-500 mb-4 bg-white/60 mx-auto w-max px-3 py-1 rounded-full shadow-sm backdrop-blur-sm shadow-black/10">Today</div>
 
               {/* Message bubble */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20, scale: 0.9 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 transition={{ delay: 0.2, type: "spring" }}
@@ -79,8 +79,8 @@ const WhatsAppButton = () => {
                 </span>
                 <div className="text-xs text-orange-500 font-bold mb-1">Hare Krishna Vidya</div>
                 <div className="text-sm text-gray-800 leading-relaxed pr-8">
-                   Hare Krishna! <br />
-                    How can we help you?
+                  Hare Krishna! <br />
+                  How can we help you?
                 </div>
                 <div className="absolute right-2 bottom-1 text-[10px] text-gray-400">15:31</div>
               </motion.div>

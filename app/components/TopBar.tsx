@@ -24,7 +24,7 @@ export default function TopBar() {
             <Mail size={24} className="text-gray-800" />
           </a>
           <a
-            href="https://wa.me/918328389862"
+            href="https://wa.me/918019397108"
             className="flex items-center gap-1.5"
           >
             <FaWhatsapp size={24} className="text-gray-800" />

@@ -33,7 +33,7 @@ export default function ContactPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
-    
+
     // Live validation/sanitization for phone input
     if (name === "phone") {
       const onlyDigits = value.replace(/\D/g, "").slice(0, 10);
@@ -216,7 +216,7 @@ export default function ContactPage() {
                       className="text-blue-600 hover:text-blue-800 transition-colors"
                     >
                       {/* connect@harekrishnavidya.org */}
-                       connect@harekrishnavidya.org
+                      connect@harekrishnavidya.org
                     </a>
                   </div>
                 </div>
@@ -239,7 +239,7 @@ export default function ContactPage() {
                         81217 95663
                       </a>
                       <a
-                        href="https://wa.me/918328389862"
+                        href="https://wa.me/918019397108"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block text-green-600 hover:text-green-800 transition-colors"
