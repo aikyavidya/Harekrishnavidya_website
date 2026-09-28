@@ -306,6 +306,7 @@
   "contact.form.emailPlaceholder": "your@email.com",
   "contact.form.messageLabel": "సందేశం",
   "contact.form.messagePlaceholder": "మేము మీకు ఎలా సహాయపడగలమో తెలియజేయండి...",
+  "contact.form.ndncDisclaimer": "నా వివరాలను సమర్పించడం ద్వారా, నేను నా జాతీయ డు నాట్ కాల్ (NDNC) నమోదును అధిగమిస్తున్నానని ధృవీకరిస్తున్నాను. నేను harekrishnavidya.Org మరియు దాని అధీకృత ప్రతినిధులను ఇమెయిల్ / SMS / కాల్ / RCS / WhatsApp ద్వారా నన్ను సంప్రదించడానికి అధికారం ఇస్తున్నాను. ఈ ప్రతిపాదనను మూల్యాంకనం చేయడానికి మరియు ప్రాసెస్ చేయడానికి నా సమాచారాన్ని మూడవ పక్షాలతో గోప్యంగా పంచుకోవడానికి నేను మరింత సమ్మతిస్తున్నాను.",
   "contact.form.submitDefault": "సందేశం పంపండి",
   "contact.form.submitSuccess": "సందేశం పంపబడింది!",
   "contact.form.agreePart1": "నేను ",

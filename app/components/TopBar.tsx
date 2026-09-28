@@ -28,7 +28,7 @@ export default function TopBar() {
             className="flex items-center gap-1.5"
           >
             <FaWhatsapp size={24} className="text-gray-800" />
-            <span className="hidden sm:inline text-[14px] font-bold">+91 83283 89862</span>
+            <span className="hidden sm:inline text-[14px] font-bold">+91 80193 97108</span>
           </a>
         </div>
 

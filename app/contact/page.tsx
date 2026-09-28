@@ -223,30 +223,18 @@ export default function ContactPage() {
               </div>
 
               <div className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
-                <div className="flex items-start space-x-4">
+                <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
                     <Phone className="w-6 h-6 text-green-600" />
                   </div>
-                  <div className="space-y-1">
+                  <div>
                     <p className="font-medium text-gray-800">{t("contact.info.phone")}</p>
-                    <div className="flex flex-col lg:flex-row gap-1 lg:gap-6">
-                      <a
-                        href="https://wa.me/918121795663"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-green-600 hover:text-green-800 transition-colors"
-                      >
-                        81217 95663
-                      </a>
-                      <a
-                        href="https://wa.me/918019397108"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-green-600 hover:text-green-800 transition-colors"
-                      >
-                        83283 89862
-                      </a>
-                    </div>
+                    <a
+                      href="tel:+918019397108"
+                      className="text-green-600 hover:text-green-800 transition-colors"
+                    >
+                      +91 80193 97108
+                    </a>
                   </div>
                 </div>
               </div>
@@ -363,6 +351,12 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  <div className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-700 text-xs sm:text-sm leading-relaxed">
+                    <p>
+                      {t("contact.form.ndncDisclaimer")}
+                    </p>
+                  </div>
+
                   <div className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -430,7 +424,7 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="tel:+918121795663"
+                href="tel:+918019397108"
                 className="inline-flex items-center px-6 py-3 border-2 border-black hover:border-orange-500 hover:bg-orange-500 text-black hover:text-white font-medium rounded-lg"
               >
                 <Phone className="w-4 h-4 mr-2" />
