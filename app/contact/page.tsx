@@ -170,12 +170,14 @@ export default function ContactPage() {
           <div className="space-y-8">
             <div className="bg-white rounded-2xl shadow-xs p-8 border border-gray-100">
               <div className="text-center mb-8">
-                <div className="flex justify-center items-center ">
+                <div className="flex justify-center items-center mb-4">
                   <Image
                     src={logo}
-                    alt="logo"
-                    className="h-20 w-auto object-contain text-center m-4"
-                    style={{ width: "auto", height: "auto" }}
+                    alt="Hare Krishna Vidya Logo"
+                    width={180}
+                    height={80}
+                    className="h-16 md:h-20 w-auto max-w-[220px] object-contain rounded-lg"
+                    style={{ height: "auto", width: "auto", maxHeight: "75px" }}
                     priority
                   />
                 </div>
