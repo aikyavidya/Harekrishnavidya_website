@@ -255,7 +255,9 @@ export default function Header() {
               alt="Hare Krishna Movement Logo"
               width={105}
               height={95}
-              className="object-contain w-[105px] md:w-[80px] min-[1025px]:w-[105px]"
+              className="object-contain w-[105px] h-auto md:w-[80px] min-[1025px]:w-[105px]"
+              style={{ height: "auto" }}
+              priority
             />
           </Link>
         </motion.div>

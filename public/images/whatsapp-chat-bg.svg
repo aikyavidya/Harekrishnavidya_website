@@ -1,0 +1,15 @@
+<svg width="320" height="480" viewBox="0 0 320 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="480" fill="#F0F2F5"/>
+  <g opacity="0.4">
+    <pattern id="chatTile" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#F0F2F5"/>
+      <circle cx="2" cy="2" r="1.2" fill="#D0D7DE"/>
+      <circle cx="18" cy="10" r="1.2" fill="#E5E7EB"/>
+      <circle cx="10" cy="20" r="1.2" fill="#D8DEE4"/>
+      <circle cx="26" cy="26" r="1.2" fill="#E2E8F0"/>
+      <path d="M0 0L32 32" stroke="#E5E7EB" stroke-width="0.5" opacity="0.55"/>
+      <path d="M32 0L0 32" stroke="#E5E7EB" stroke-width="0.5" opacity="0.4"/>
+    </pattern>
+    <rect width="320" height="480" fill="url(#chatTile)"/>
+  </g>
+</svg>
