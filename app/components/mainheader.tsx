@@ -216,6 +216,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [showDonation, setShowDonation] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
+  const [showActivities, setShowActivities] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const { startLoading } = usePageLoader();
@@ -280,14 +281,12 @@ export default function Header() {
             Gallery
           </Link> */}
 
-          {/* Media Desktop Dropdown */}
+          {/* Gallery Desktop Dropdown */}
           <div className="relative group">
             <div
-              className={`flex items-center gap-1 cursor-pointer ${linkClass(
-                "/media"
-              )}`}
+              className={`flex items-center gap-1 cursor-pointer ${linkClass("/photo-gallery")}`}
             >
-              <span>{t("nav.media")}</span>
+              <span>{t("nav.gallery")}</span>
               <IoChevronDown className="text-black text-lg transition-transform duration-300 group-hover:rotate-180" />
             </div>
 
@@ -300,29 +299,70 @@ export default function Header() {
               >
                 <li>
                   <Link
-                    href="/video-gallery"
-                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
-                    onClick={startLoading}
-                  >
-                    {t("nav.videoGallery")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/donor-wall"
-                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
-                    onClick={startLoading}
-                  >
-                    {t("nav.donorWall")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/photo-gallery"
                     className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
                     onClick={startLoading}
                   >
-                    {t("nav.photoGallery")}
+                    {t("nav.pictures")}
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    href="/video-gallery"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
+                  >
+                    {t("nav.videos")}
+                  </Link>
+                </li>
+              </motion.ul>
+            </div>
+          </div>
+
+          {/* Activities Desktop Dropdown */}
+          <div className="relative group">
+            <div
+              className={`flex items-center gap-1 cursor-pointer ${linkClass("/events")}`}
+            >
+              <span>{t("nav.activities")}</span>
+              <IoChevronDown className="text-black text-lg transition-transform duration-300 group-hover:rotate-180" />
+            </div>
+
+            <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <motion.ul
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.2 }}
+                className="bg-[#0279BC]/90 backdrop-blur-md rounded-lg shadow-lg py-3 w-56 space-y-1"
+              >
+                <li>
+                  <Link
+                    href="/events"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
+                  >
+                    {t("nav.events")}
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    href="/our-initiative"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
+                  >
+                    {t("nav.education")}
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    href="/trust"
+                    className="block px-4 py-2 text-white hover:bg-[#0279BC]/50 hover:text-yellow-200 transition-colors"
+                    onClick={startLoading}
+                  >
+                    {t("nav.foodDistribution")}
                   </Link>
                 </li>
               </motion.ul>
@@ -468,8 +508,7 @@ export default function Header() {
                 </Link>
               </motion.div>
             ))}
-
-            {/* Mobile Media Dropdown */}
+            {/* Mobile Gallery Dropdown */}
             <motion.div
               className="flex flex-col py-2"
               initial={{ opacity: 0, x: -20 }}
@@ -480,9 +519,11 @@ export default function Header() {
                 className="flex items-center justify-between w-full text-left font-medium text-black"
                 onClick={() => setShowMedia(!showMedia)}
               >
-                {t("nav.media")}
+                {t("nav.gallery")}
                 <IoChevronDown
-                  className={`transition-transform duration-300 ${showMedia ? "rotate-180 text-[#1C398E]" : ""}`}
+                  className={`transition-transform duration-300 ${
+                    showMedia ? "rotate-180 text-[#1C398E]" : ""
+                  }`}
                 />
               </button>
 
@@ -496,15 +537,18 @@ export default function Header() {
                     className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#1C398E]/30 pl-4 py-1 overflow-hidden"
                   >
                     {[
-                      { l: t("nav.videoGallery"), h: "/video-gallery" },
-                      { l: t("nav.donorWall"), h: "/donor-wall" },
-                      { l: t("nav.photoGallery"), h: "/photo-gallery" }
+                      { l: t("nav.pictures"), h: "/photo-gallery" },
+                      { l: t("nav.videos"), h: "/video-gallery" }
                     ].map(link => (
                       <Link
                         key={link.h}
                         href={link.h}
                         className="hover:text-[#1C398E] transition-colors"
-                        onClick={() => { startLoading(); setIsOpen(false); setShowMedia(false); }}
+                        onClick={() => {
+                          startLoading();
+                          setIsOpen(false);
+                          setShowMedia(false);
+                        }}
                       >
                         {link.l}
                       </Link>
@@ -514,19 +558,75 @@ export default function Header() {
               </AnimatePresence>
             </motion.div>
 
+            {/* Mobile Activities Dropdown */}
             <motion.div
+              className="flex flex-col py-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
+              <button
+                className="flex items-center justify-between w-full text-left font-medium text-black"
+                onClick={() => setShowActivities(!showActivities)}
+              >
+                {t("nav.activities")}
+                <IoChevronDown
+                  className={`transition-transform duration-300 ${
+                    showActivities ? "rotate-180 text-[#1C398E]" : ""
+                  }`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {showActivities && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="ml-4 mt-2 flex flex-col gap-3 text-base text-gray-600 border-l-2 border-[#1C398E]/30 pl-4 py-1 overflow-hidden"
+                  >
+                    {[
+                      { l: t("nav.events"), h: "/events" },
+                      { l: t("nav.education"), h: "/our-initiative" },
+                      { l: t("nav.foodDistribution"), h: "/trust" }
+                    ].map(link => (
+                      <Link
+                        key={link.h}
+                        href={link.h}
+                        className="hover:text-[#1C398E] transition-colors"
+                        onClick={() => {
+                          startLoading();
+                          setIsOpen(false);
+                          setShowActivities(false);
+                        }}
+                      >
+                        {link.l}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Contact Us */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
               <Link
                 href="/contact"
                 className={`block py-2 ${linkClass("/contact")}`}
-                onClick={() => { startLoading(); setIsOpen(false); }}
+                onClick={() => {
+                  startLoading();
+                  setIsOpen(false);
+                }}
               >
                 {t("nav.contactUs")}
               </Link>
             </motion.div>
+
 
             {/* Mobile New Donation Dropdown */}
             <motion.div
