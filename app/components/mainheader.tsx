@@ -273,7 +273,7 @@ export default function Header() {
             {t("nav.aboutUs")}
           </Link>
 
-          <Link href="/our-initiative" className={linkClass("/our-initiative")} onClick={startLoading}>
+          <Link href="/our-initiative" className="text-black hover:text-[#1C398E] transition-colors" onClick={startLoading}>
             {t("nav.ourInitiative")}
           </Link>
 
